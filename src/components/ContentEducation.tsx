@@ -28,7 +28,7 @@ export default function ContentEducation() {
 
         {education && (
           <div id="tab-content" className="p-8 rounded-lg bg-[var(--dark-blue)] grid w-full grid-cols-1 md:grid-cols-2 lg:gap-20 gap-10">
-            <div className="flex flex-col justify-between relative">
+            <div className="flex flex-col justify-between relative h-fit">
               <div className="flex flex-col gap-4">
                 <h3 className="lg:text-3xl text-2xl font-bold">{education.title}</h3>
                 <div
@@ -40,7 +40,7 @@ export default function ContentEducation() {
               </div>
             </div>
 
-            {education.image && <img src={education.image} alt={`${education.title} Timo Smit`} className="w-full h-auto object-cover" />}
+            {education.image && <div className="flex justify-end w-full"><img className='w-full object-cover' src={education.image} alt={`${education.title} Timo Smit`} width="475" height="317" /></div>}
           </div>
         )}
       </div>

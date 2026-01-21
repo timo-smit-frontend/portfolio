@@ -59,7 +59,7 @@ const TraitSwapper = () => {
   }, []);
 
   useEffect(() => {
-    let timeoutId;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     if (!isErasing && charIndex < currentTrait.length) {
       // Typing phase

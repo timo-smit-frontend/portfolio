@@ -12,7 +12,7 @@ export default function Header() {
     >
       <div className="container h-full flex flex-col">
         <nav className="py-10">
-          <img className="lg:h-20 h-10 w-auto" src={logoTS} alt="Timo Smit" />
+          <img className="lg:h-20 h-10 w-auto" src={logoTS} alt="Timo Smit" width="300" height="300" />
         </nav>
         <div className="flex-1 flex justify-center items-center">
           <h1 className="font-bold lg:text-5xl text-4xl text-[var(--white)]">

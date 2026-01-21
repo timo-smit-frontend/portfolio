@@ -13,6 +13,8 @@ export default function Footer() {
         alt="Timo Smit"
         title="Scroll up!"
         className="cursor-pointer w-[100px] h-[100px]"
+        width="300"
+        height="300"
       />
 
       <Socials />
