@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap');
+
+:root {
+  --black: #000000;
+  --blue: #23286b;
+  --dark-blue: #121435;
+  --white: #ebe7ef;
+  --dark-white: #d6dee1;
+  --darkest-white: #a8bbbf;
+  --yellow: #f1b503;
+  --dark-yellow: #f1b503d9;
+  --shadow: #0000004d;
+  --focus: #fa8072;
+}
+
+@import 'tailwindcss';
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply antialiased bg-[var(--blue)];
+}
+
+p,
+h1,
+h2,
+h3 {
+  @apply text-[var(--white)];
+}
+
+h1 span,
+h2 span {
+  @apply text-[var(--yellow)];
+}
+
+a {
+  @apply text-[var(--yellow)];
+}
+
+a:hover {
+  @apply underline decoration-2 smooth;
+}
+
+ul {
+  @apply list-inside list-disc;
+}
+
+#header {
+  box-shadow: var(--blue) 0 -20rem 20rem -28px inset;
+}
+
+.section {
+  @apply lg:my-20 sm:my-16 my-8;
+}
+
+@utility smooth {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  @apply outline-3 outline-offset-2 outline-[var(--focus)];
+}
