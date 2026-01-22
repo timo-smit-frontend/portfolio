@@ -40,7 +40,7 @@ export default function ContentEducation() {
               </div>
             </div>
 
-            {education.image && <div className="flex justify-end w-full"><img className='w-full object-cover' src={education.image} alt={`${education.title} Timo Smit`} width="475" height="317" /></div>}
+            {education.image && <img className="w-full h-full object-cover" src={education.image} alt={`${education.title} Timo Smit`} width="475" height="317" />}
           </div>
         )}
       </div>
