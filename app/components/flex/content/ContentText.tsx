@@ -15,6 +15,7 @@ export default function ContentText({
   title,
   srTitle,
   description,
+  htmlParagraphs,
   image,
   alt,
   link,
@@ -26,6 +27,7 @@ export default function ContentText({
   title?: string
   srTitle?: string
   description?: string
+  htmlParagraphs?: string[]
   image?: string
   alt?: string
   link?: { url: string; title: string; target?: string }
@@ -37,6 +39,7 @@ export default function ContentText({
   const { ref, isFirst } = useLocationFinder()
   const Title = heading
   const hasSections = Boolean(sections?.length)
+  const hasHtmlParagraphs = Boolean(htmlParagraphs?.length)
 
   return (
     <section id={id} ref={ref} className={cn('section', isFirst && 'lg:mt-16! mt-12!')}>
@@ -45,7 +48,7 @@ export default function ContentText({
           <div className="flex flex-col gap-8">
             {isFirst && <Breadcrumbs />}
             <div className="flex flex-col gap-4 lg:gap-8">
-              {(title || description) && (
+              {(title || description || hasHtmlParagraphs) && (
                 <div className="flex flex-col gap-2 lg:gap-4">
                   {srTitle && <Title className="sr-only">{srTitle}</Title>}
                   {title && (
@@ -59,10 +62,20 @@ export default function ContentText({
                       )}
                     </Animated>
                   )}
-                  {description && (
+                  {hasHtmlParagraphs ? (
                     <Animated delay={200}>
-                      <p className="content-l text-site-mantle">{description}</p>
+                      <div className="flex flex-col gap-4">
+                        {htmlParagraphs?.map((html) => (
+                          <div key={html.slice(0, 24)} className="content-l text-site-mantle" dangerouslySetInnerHTML={{ __html: html }} />
+                        ))}
+                      </div>
                     </Animated>
+                  ) : (
+                    description && (
+                      <Animated delay={200}>
+                        <p className="content-l text-site-mantle">{description}</p>
+                      </Animated>
+                    )
                   )}
                 </div>
               )}
