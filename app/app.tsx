@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router'
+import Seo from '~/components/elements/Seo'
 import ScrollToTop from '~/components/layout/ScrollToTop'
 import { InitialDocumentProvider } from '~/hooks/initialDocument'
 import Root from '~/root'
@@ -17,6 +18,7 @@ export function App() {
   return (
     <>
       <ScrollToTop />
+      <Seo />
       <InitialDocumentProvider>
         <Routes>
           <Route element={<Root />}>

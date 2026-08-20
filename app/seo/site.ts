@@ -2,8 +2,9 @@ export const SITE_URL = 'https://www.timosmit.dev'
 export const SITE_NAME = 'Timo Smit'
 export const SITE_LOCALE = 'en_GB'
 export const SITE_DESCRIPTION = 'The portfolio of Timo Smit, a front-end developer working at UBO Agency.'
-export const SITE_IMAGE = '/images/hero.jpg'
+export const SITE_IMAGE = '/images/timosmit.webp'
 export const SITE_THEME_COLOR = '#1c2030'
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/timo-smit-09983b14a/'
 
 export function normalizePath(pathname: string): string {
   const path = pathname.split('?')[0]?.split('#')[0] ?? '/'
@@ -11,6 +12,14 @@ export function normalizePath(pathname: string): string {
     return path.slice(0, -1)
   }
   return path || '/'
+}
+
+export function isCurrentPath(pathname: string, href: string): boolean {
+  const current = normalizePath(pathname)
+  const target = normalizePath(href)
+
+  if (target === '/') return current === '/'
+  return current === target || current.startsWith(`${target}/`)
 }
 
 export function canonicalUrl(path: string): string {

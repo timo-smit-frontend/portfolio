@@ -1,7 +1,36 @@
+import { getSeoForPath } from './pages'
+import { SITE_DESCRIPTION, SITE_NAME, canonicalUrl } from './site'
+
+const PAGE_PATHS = ['/', '/experience', '/education', '/contact'] as const
+
+function pageName(path: string): string {
+  if (path === '/') return 'Home'
+  return getSeoForPath(path).title.replace(` | ${SITE_NAME}`, '')
+}
+
 export function buildLlmsTxt(): string {
-  return ''
+  const pages = PAGE_PATHS.map((path) => {
+    const seo = getSeoForPath(path)
+    return `- [${pageName(path)}](${canonicalUrl(path)}): ${seo.description}`
+  })
+
+  const privacy = getSeoForPath('/privacy')
+
+  return [
+    `# ${SITE_NAME}`,
+    `> ${SITE_DESCRIPTION}`,
+    '',
+    `${SITE_NAME} is a front-end developer at UBO Agency.`,
+    '',
+    '## Pages',
+    ...pages,
+    '',
+    '## Optional',
+    `- [Privacy statement](${canonicalUrl('/privacy')}): ${privacy.description}`,
+    ''
+  ].join('\n')
 }
 
 export function buildLlmsFullTxt(): string {
-  return ''
+  return buildLlmsTxt()
 }
