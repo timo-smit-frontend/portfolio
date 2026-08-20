@@ -9,3 +9,6 @@ dist
 .superpowers
 query-error.json
 .react-router
+public/sitemap.xml
+public/llms.txt
+public/llms-full.txt

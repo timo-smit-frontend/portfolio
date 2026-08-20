@@ -3,8 +3,8 @@ import { Route, Routes } from 'react-router'
 import Seo from '~/components/elements/Seo'
 import ScrollToTop from '~/components/layout/ScrollToTop'
 import { InitialDocumentProvider } from '~/hooks/initialDocument'
-import Home from '~/routes/home'
 import Root from '~/root'
+import Home from '~/routes/home'
 
 const Experience = lazy(() => import('~/routes/experience'))
 const Education = lazy(() => import('~/routes/education'))
