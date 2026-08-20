@@ -7,6 +7,7 @@ import Home from '~/routes/home'
 import Root from '~/root'
 
 const Experience = lazy(() => import('~/routes/experience'))
+const Education = lazy(() => import('~/routes/education'))
 
 export function App() {
   return (
@@ -19,6 +20,7 @@ export function App() {
             <Route element={<Root />}>
               <Route index element={<Home />} />
               <Route path="experience" element={<Experience />} />
+              <Route path="education" element={<Education />} />
             </Route>
           </Routes>
         </Suspense>
