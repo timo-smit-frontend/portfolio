@@ -11,8 +11,8 @@ export default function ContentEducation() {
 
   return (
     <section className="section flex flex-col items-center">
-      <div className="container flex flex-col gap-8">
-        <nav className="my-4 flex gap-2 p-0">
+      <div className="container-full flex flex-col gap-8">
+        <nav className="my-4 flex flex-wrap gap-2 p-0">
           {Object.entries(EDUCATIONS).map(([key, edu]) => (
             <button
               key={key}

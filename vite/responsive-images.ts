@@ -36,6 +36,41 @@ function contentType(format: ImageFormat): string {
   return format === 'avif' ? 'image/avif' : 'image/webp'
 }
 
+function isOriginalImage(fileName: string): boolean {
+  return ORIGINAL_EXTENSIONS.some((extension) => fileName.toLowerCase().endsWith(extension))
+}
+
+function publicSrcStem(publicDir: string, originalPath: string): string {
+  const relativePath = path.relative(publicDir, originalPath).split(path.sep).join('/')
+  return `/${relativePath.replace(/\.(png|jpe?g|webp)$/i, '')}`
+}
+
+async function findOriginalImages(dir: string, imagesRoot: string): Promise<string[]> {
+  const results: string[] = []
+  let entries: import('node:fs').Dirent[]
+  try {
+    entries = await fs.readdir(dir, { withFileTypes: true })
+  } catch {
+    return results
+  }
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name)
+    if (entry.isDirectory()) {
+      results.push(...(await findOriginalImages(fullPath, imagesRoot)))
+      continue
+    }
+    if (!entry.isFile() || !isOriginalImage(entry.name)) continue
+
+    const relativeToImages = path.relative(imagesRoot, fullPath).split(path.sep).join('/')
+    if (parseRasterVariant(path.posix.join('/images', relativeToImages))) continue
+
+    results.push(fullPath)
+  }
+
+  return results
+}
+
 export function responsiveImagesPlugin(): Plugin {
   let publicDir = ''
   let outDir = ''
@@ -88,25 +123,19 @@ export function responsiveImagesPlugin(): Plugin {
     },
     async closeBundle() {
       const imagesDir = path.join(publicDir, 'images')
-      let entries: string[]
-      try {
-        entries = await fs.readdir(imagesDir)
-      } catch {
-        return
-      }
+      const originals = await findOriginalImages(imagesDir, imagesDir)
 
-      for (const entry of entries) {
-        if (parseRasterVariant(`/${entry}`) || !ORIGINAL_EXTENSIONS.some((extension) => entry.toLowerCase().endsWith(extension))) {
-          continue
-        }
+      for (const originalPath of originals) {
+        const stem = publicSrcStem(publicDir, originalPath)
+        const placeholderSrc = `${stem}.png`
 
-        const originalPath = path.join(imagesDir, entry)
-        const stem = path.posix.join('/images', entry.replace(/\.(png|jpe?g|webp)$/i, ''))
         for (const width of variantWidthsFor()) {
           for (const format of IMAGE_FORMATS) {
             const body = await variantBuffer(originalPath, width, format)
-            const fileName = path.basename(rasterVariantSrc(`${stem}.png`, width, format))
-            await fs.writeFile(path.join(outDir, 'images', fileName), body)
+            const variantRelative = rasterVariantSrc(placeholderSrc, width, format).slice(1)
+            const outPath = path.join(outDir, variantRelative)
+            await fs.mkdir(path.dirname(outPath), { recursive: true })
+            await fs.writeFile(outPath, body)
           }
         }
       }

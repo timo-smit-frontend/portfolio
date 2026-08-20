@@ -44,7 +44,7 @@ export default function ContentText({
   return (
     <section id={id} ref={ref} className={cn('section', isFirst && 'lg:mt-16! mt-12!')}>
       <div className="container-full">
-        <div className={cn('grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16', hasSections ? 'items-start' : 'items-stretch')}>
+        <div className={cn('grid grid-cols-1 gap-10 lg:gap-16', image && 'lg:grid-cols-2', hasSections ? 'items-start' : 'items-stretch')}>
           <div className="flex flex-col gap-8">
             {isFirst && <Breadcrumbs />}
             <div className="flex flex-col gap-4 lg:gap-8">
