@@ -1,9 +1,11 @@
 node_modules
+dist
 .DS_Store
-/.cache
-/build
 .env
+.env.*
+!.env.example
+*.local
+.cache
+.superpowers
 query-error.json
 .react-router
-.worktrees
-.superpowers
