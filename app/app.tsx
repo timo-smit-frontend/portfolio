@@ -1,4 +1,6 @@
 import { Route, Routes } from 'react-router'
+import ScrollToTop from '~/components/layout/ScrollToTop'
+import { InitialDocumentProvider } from '~/hooks/initialDocument'
 import Root from '~/root'
 
 function HomeStub() {
@@ -13,10 +15,15 @@ function HomeStub() {
 
 export function App() {
   return (
-    <Routes>
-      <Route element={<Root />}>
-        <Route index element={<HomeStub />} />
-      </Route>
-    </Routes>
+    <>
+      <ScrollToTop />
+      <InitialDocumentProvider>
+        <Routes>
+          <Route element={<Root />}>
+            <Route index element={<HomeStub />} />
+          </Route>
+        </Routes>
+      </InitialDocumentProvider>
+    </>
   )
 }
