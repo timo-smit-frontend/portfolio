@@ -8,6 +8,9 @@ import Root from '~/root'
 
 const Experience = lazy(() => import('~/routes/experience'))
 const Education = lazy(() => import('~/routes/education'))
+const Contact = lazy(() => import('~/routes/contact'))
+const Privacy = lazy(() => import('~/routes/privacy'))
+const ErrorPage = lazy(() => import('~/routes/error'))
 
 export function App() {
   return (
@@ -21,7 +24,10 @@ export function App() {
               <Route index element={<Home />} />
               <Route path="experience" element={<Experience />} />
               <Route path="education" element={<Education />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="privacy" element={<Privacy />} />
             </Route>
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>
       </InitialDocumentProvider>
