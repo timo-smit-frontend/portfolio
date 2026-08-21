@@ -1,77 +1,39 @@
+import { Link } from 'react-router'
 import { Animated } from '~/components/elements/Animated'
-import Breadcrumbs from '~/components/elements/Breadcrumbs'
-import Image from '~/components/elements/Image'
-import useLocationFinder from '~/hooks/useLocationFinder'
-import { resolveImageAlt } from '~/services/imageCopy'
-import { cn } from '~/services/utils'
+import SectionCard from '~/components/elements/SectionCard'
 
 export default function ContentCta({
   title,
   description,
-  image,
-  alt,
   link,
   id = 'content-cta'
 }: {
   title?: string
   description?: string
-  image?: string
-  alt?: string
   link?: { url?: string; title?: string }
   id?: string
 }) {
-  const { ref, isFirst } = useLocationFinder()
-
   return (
-    <section id={id} ref={ref} className={cn('section', isFirst && 'lg:mt-16! mt-12!')}>
-      <div className="container-full">
-        {isFirst && (
-          <div className="mb-8">
-            <Breadcrumbs />
-          </div>
+    <SectionCard tone="cyan" id={id} innerClassName="flex flex-col items-center px-6 py-16 text-center sm:px-10 lg:px-16 lg:py-20">
+      <div className="flex max-w-2xl flex-col items-center gap-4 lg:gap-6">
+        {title && (
+          <Animated delay={100}>
+            <h2 className="title-section">{title}</h2>
+          </Animated>
         )}
-        <div className="grid items-center overflow-hidden rounded-panel bg-site-gunmetal shadow-card ring-1 ring-site-mulled-wine lg:grid-cols-2 lg:gap-16">
-          {(title || description || link) && (
-            <div className={cn('flex flex-col gap-4 px-6 py-10 sm:px-8 lg:gap-8 lg:px-12 lg:py-16', !image && 'items-center text-center')}>
-              {(title || description) && (
-                <div className="flex flex-col gap-2 lg:gap-4">
-                  {title && (
-                    <Animated delay={100}>
-                      <h2 className="title-l">{title}</h2>
-                    </Animated>
-                  )}
-                  {description && (
-                    <Animated delay={200}>
-                      <p className="content-l text-site-mantle">{description}</p>
-                    </Animated>
-                  )}
-                </div>
-              )}
-              {link?.url && link?.title && (
-                <Animated delay={300}>
-                  <div>
-                    <a href={link.url} className="button-green gap-2.5">
-                      {link.title}
-                    </a>
-                  </div>
-                </Animated>
-              )}
-            </div>
-          )}
-          {image && (
-            <Animated delay={400}>
-              <Image
-                src={image}
-                alt={resolveImageAlt(image, alt)}
-                width={1280}
-                height={960}
-                maxwidth={1200}
-                className="sm:aspect-7/6 aspect-3/2 h-full w-full object-cover max-h-140"
-              />
-            </Animated>
-          )}
-        </div>
+        {description && (
+          <Animated delay={200}>
+            <p className="content-l text-site-cyan-fg/80">{description}</p>
+          </Animated>
+        )}
+        {link?.url && link?.title && (
+          <Animated delay={300}>
+            <Link to={link.url} className="button-gold">
+              {link.title}
+            </Link>
+          </Animated>
+        )}
       </div>
-    </section>
+    </SectionCard>
   )
 }
