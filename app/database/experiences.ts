@@ -2,7 +2,6 @@ export type ExperienceProject = {
   image: string
   title: string
   role?: string
-  period?: string
   width: number
   height: number
   description: string
@@ -26,7 +25,54 @@ export const EXPERIENCES: Experience[] = [
     height: 163,
     description:
       'I joined the UBO development team to sharpen my skills as a developer, with a strong focus on improving my coding abilities, while also having the opportunity to contribute to accessibility efforts by being the switch between the developers and the designers.',
-    link: 'https://ubo.agency'
+    link: 'https://ubo.agency',
+    projects: [
+      {
+        image: '/images/logo/casio.svg',
+        title: 'Casio LMS',
+        role: 'Front-end developer (Accessibility)',
+        width: 177,
+        height: 32,
+        description:
+          "I worked on Casio's learning platform, focusing on accessibility in the React frontend and the login theme. Contrast, focus outlines, and making the LMS usable for more people. Same accessibility thread I picked up at the Tweede Kamer."
+      },
+      {
+        image: '/images/logo/fairbanks.svg',
+        title: 'Fairbanks',
+        role: 'Front-end developer',
+        width: 158,
+        height: 31,
+        description:
+          'I spent a large part of my time on Fairbanks, a Dutch IT consultancy. I built and iterated on their multilingual Remix site: knowledge base, keynotes, language switching, and motion on forms.'
+      },
+      {
+        image: '/images/logo/movimento.svg',
+        title: 'Movimento',
+        role: 'Front-end developer',
+        width: 178,
+        height: 34,
+        description:
+          'For Movimento, a healthcare recruitment agency, I worked on their Remix site and the job application flow, including how candidates get assigned from vacancies, plus accessibility and animation polish.'
+      },
+      {
+        image: '/images/logo/brouwer-metaal.svg',
+        title: 'Brouwer Metaal',
+        role: 'Front-end developer',
+        width: 294,
+        height: 35,
+        description:
+          "I developed Brouwer Metaal's international site, including interactive 3D product models, quote requests, and translations across English, French, German, Portuguese, and Spanish."
+      },
+      {
+        image: '/images/logo/im-duurzaam.svg',
+        title: 'IM Duurzaam',
+        role: 'Front-end developer',
+        width: 473,
+        height: 380,
+        description:
+          "I shipped IM Duurzaam's Remix site with GSAP-driven motion, sliders, and an English translation, for a sustainability brand where animation and content structure had to work together."
+      }
+    ]
   },
   {
     title: 'Capgemini',
@@ -37,10 +83,9 @@ export const EXPERIENCES: Experience[] = [
       "For about a year, I've been part of Capgemini, working on exciting projects and gaining valuable experience. I've dedicated much of my time to mastering React and Next.js while developing my skills as a consultant. Additionally, I've had the privilege of staying connected to my creative side by focusing on user experience and accessibility.",
     projects: [
       {
-        image: '/images/logo/tweede-kamer.jpg',
+        image: '/images/logo/tweede-kamer.png',
         title: 'Tweede Kamer der Staten-Generaal',
         role: 'Next Developer (Accessibility)',
-        period: 'Mar 2024 - Jul 2024 · 5 mnd',
         width: 1200,
         height: 339,
         description:
@@ -50,7 +95,6 @@ export const EXPERIENCES: Experience[] = [
         image: '/images/logo/wfp.webp',
         title: 'Project Enhance',
         role: 'React Developer',
-        period: 'Oct 2023 - Mar 2024 · 6 mnd',
         width: 360,
         height: 167,
         description:
@@ -59,7 +103,7 @@ export const EXPERIENCES: Experience[] = [
     ]
   },
   {
-    image: '/images/logo/accent-interactive.jpeg',
+    image: '/images/logo/accent-interactive.png',
     title: 'Accent Interactive',
     width: 4500,
     height: 1458,
@@ -68,7 +112,7 @@ export const EXPERIENCES: Experience[] = [
     link: 'https://accentinteractive.nl'
   },
   {
-    image: '/images/logo/smart-hotel.jpg',
+    image: '/images/logo/smart-hotel.png',
     title: 'SmartHOTEL',
     width: 1000,
     height: 215,

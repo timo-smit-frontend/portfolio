@@ -4,7 +4,7 @@ import ContentEducation from '~/components/flex/content/ContentEducation'
 export default function Education() {
   return (
     <>
-      <BannerPage title="Education" description="Accessibility, consultancy, creative development, and React / Next.js." />
+      <BannerPage title="Education" description="CMD, accessibility, consultancy, and React / Next.js." />
       <ContentEducation />
     </>
   )

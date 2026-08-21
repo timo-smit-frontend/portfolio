@@ -2,7 +2,6 @@ import { useState, type MouseEvent } from 'react'
 import { Animated } from '~/components/elements/Animated'
 import Image from '~/components/elements/Image'
 import Accordion from '~/components/flex/content/Accordion'
-import SectionCard from '~/components/elements/SectionCard'
 import { EXPERIENCES, type Experience, type ExperienceProject } from '~/database/experiences'
 import { cn } from '~/services/utils'
 
@@ -26,8 +25,10 @@ function ExperienceLogo({
   className?: string
 }) {
   return (
-    <span className={cn('flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-2.5', className)}>
-      <Image src={image} width={width} height={height} alt={title} className="h-full w-full object-contain" />
+    <span
+      className={cn('flex aspect-2/1 h-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white py-4 px-3', className)}
+    >
+      <Image src={image} width={width} height={height} alt={title} className="h-8 w-full object-contain" />
     </span>
   )
 }
@@ -54,37 +55,46 @@ function VisitLink({ href }: { href: string }) {
   )
 }
 
-function ProjectCard({
-  project,
-  open,
+function ProjectRows({
+  projects,
+  openProjectIndex,
   onToggle
 }: {
-  project: ExperienceProject
-  open: boolean
-  onToggle: (event: MouseEvent<HTMLButtonElement>) => void
+  projects: ExperienceProject[]
+  openProjectIndex: number | null
+  onToggle: (index: number, event: MouseEvent<HTMLButtonElement>) => void
 }) {
   return (
-    <div className={cn('overflow-hidden rounded-2xl bg-white ring-1 ring-site-chrome/8', open && 'ring-2 ring-site-gold')}>
-      <button
-        type="button"
-        className="flex w-full items-start gap-4 p-5 text-left smooth hover:bg-site-chrome/5 sm:p-6"
-        onClick={onToggle}
-        aria-expanded={open}
-      >
-        <ExperienceLogo image={project.image} title={project.title} width={project.width} height={project.height} className="size-14" />
-        <span className="min-w-0 flex-1">
-          <span className="block text-lg font-semibold tracking-tight">{project.title}</span>
-          {(project.role || project.period) && (
-            <span className="mt-1 block text-sm text-site-cream-fg/60">{[project.role, project.period].filter(Boolean).join(' · ')}</span>
-          )}
-        </span>
-        <ToggleMark open={open} />
-      </button>
-      <Accordion open={open}>
-        <div className="px-5 pb-6 sm:px-6">
-          <p className="content-m text-site-cream-fg/80">{project.description}</p>
-        </div>
-      </Accordion>
+    <div className="flex flex-col">
+      {projects.map((project, index) => {
+        const open = openProjectIndex === index
+
+        return (
+          <div key={project.title} className="border-t border-site-chrome/8">
+            <button
+              type="button"
+              className="flex w-full items-center gap-3 py-3 text-left smooth hover:text-site-cyan"
+              onClick={(event) => onToggle(index, event)}
+              aria-expanded={open}
+            >
+              <ExperienceLogo
+                image={project.image}
+                title={project.title}
+                width={project.width}
+                height={project.height}
+                className="h-12 w-24 rounded-lg py-3 px-2"
+              />
+              <span className="min-w-0 flex-1">
+                <span className="block font-semibold tracking-tight">{project.title}</span>
+                {project.role ? <span className="mt-0.5 block text-sm text-site-cream-fg/60">{project.role}</span> : null}
+              </span>
+            </button>
+            <Accordion open={open}>
+              <p className="content-m pb-3 pl-[4.75rem] text-site-cream-fg/80">{project.description}</p>
+            </Accordion>
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -107,12 +117,7 @@ function JobCard({
   const panelId = `experience-panel-${index}`
 
   return (
-    <article
-      className={cn(
-        'overflow-hidden rounded-3xl bg-site-cream text-site-cream-fg ring-1 ring-site-chrome/8',
-        open && 'ring-2 ring-site-gold'
-      )}
-    >
+    <article className="overflow-hidden rounded-3xl bg-site-cream text-site-cream-fg ring-1 ring-site-chrome/8">
       <button
         type="button"
         className={cn('flex w-full items-center gap-4 p-5 text-left sm:gap-6 sm:p-7 lg:p-8', !open && 'hover:bg-site-chrome/5 smooth')}
@@ -122,27 +127,15 @@ function JobCard({
       >
         <span className="font-site-outfit text-sm font-semibold tracking-[0.16em] text-site-gold">{padIndex(index)}</span>
         <ExperienceLogo image={job.image} title={job.title} width={job.width} height={job.height} />
-        <h3 className="title-xs min-w-0 flex-1 text-balance">{job.title}</h3>
+        <h2 className="title-xs min-w-0 flex-1 text-balance">{job.title}</h2>
         <ToggleMark open={open} />
       </button>
       <Accordion open={open}>
         <div id={panelId} className="flex flex-col gap-6 px-5 pb-6 sm:px-7 sm:pb-8 lg:px-8">
-          <p className="content-l max-w-3xl text-site-cream-fg/80">{job.description}</p>
+          <p className="content-l text-site-cream-fg/80">{job.description}</p>
           {job.link ? <VisitLink href={job.link} /> : null}
           {job.projects?.length ? (
-            <div className="flex flex-col gap-4">
-              <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-gold">Projects:</h4>
-              <div className="grid gap-3 lg:grid-cols-2">
-                {job.projects.map((project, projectIndex) => (
-                  <ProjectCard
-                    key={project.title}
-                    project={project}
-                    open={openProjectIndex === projectIndex}
-                    onToggle={(event) => onProjectToggle(projectIndex, event)}
-                  />
-                ))}
-              </div>
-            </div>
+            <ProjectRows projects={job.projects} openProjectIndex={openProjectIndex} onToggle={onProjectToggle} />
           ) : null}
         </div>
       </Accordion>
@@ -166,8 +159,8 @@ export default function ContentExperiences() {
   }
 
   return (
-    <SectionCard tone="cream" id="content-experiences" innerClassName="px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
-      <ul className="flex flex-col gap-4">
+    <section id="content-experiences" className="px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
+      <ul className="flex flex-col gap-4 lg:mx-auto lg:max-w-4xl">
         {EXPERIENCES.map((job, index) => (
           <li key={job.title}>
             <Animated delay={ENTRY_DELAYS[index] ?? 400}>
@@ -183,6 +176,6 @@ export default function ContentExperiences() {
           </li>
         ))}
       </ul>
-    </SectionCard>
+    </section>
   )
 }

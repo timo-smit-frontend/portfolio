@@ -14,8 +14,6 @@ export function buildLlmsTxt(): string {
     return `- [${pageName(path)}](${canonicalUrl(path)}): ${seo.description}`
   })
 
-  const privacy = getSeoForPath('/privacy')
-
   return [
     `# ${SITE_NAME}`,
     `> ${SITE_DESCRIPTION}`,
@@ -24,9 +22,6 @@ export function buildLlmsTxt(): string {
     '',
     '## Pages',
     ...pages,
-    '',
-    '## Optional',
-    `- [Privacy statement](${canonicalUrl('/privacy')}): ${privacy.description}`,
     ''
   ].join('\n')
 }

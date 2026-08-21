@@ -9,8 +9,7 @@ export type BreadcrumbItem = {
 const PAGE_TITLES: Record<string, string> = {
   experience: 'Experience',
   education: 'Education',
-  contact: 'Contact',
-  privacy: 'Privacy statement'
+  contact: 'Contact'
 }
 
 function crumbsFromPath(pathname: string): BreadcrumbItem[] {

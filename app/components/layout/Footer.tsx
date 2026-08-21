@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router'
 import Logo from '~/components/elements/Logo'
-import { CONTACT_URL, FOOTER_NAV, GET_IN_TOUCH } from '~/components/layout/nav'
+import { FOOTER_NAV } from '~/components/layout/nav'
 import { SITE_NAME, isCurrentPath } from '~/seo/site'
 import { LINKEDIN_URL } from '~/services/contact'
 
@@ -12,14 +12,9 @@ export default function Footer() {
       <div className="container-full">
         <div className="overflow-clip rounded-4xl bg-site-cyan px-6 py-12 sm:px-10 lg:px-16 lg:py-16">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-24">
-            <div className="flex flex-col gap-8">
-              <Link to="/" className="block w-fit transition-opacity hover:opacity-80" aria-label={SITE_NAME}>
-                <Logo className="h-12 w-auto" tone="cyan" />
-              </Link>
-              <Link to={CONTACT_URL} className="button-gold w-fit">
-                {GET_IN_TOUCH}
-              </Link>
-            </div>
+            <Link to="/" className="block w-fit transition-opacity hover:opacity-80" aria-label={SITE_NAME}>
+              <Logo className="h-12 w-auto" tone="cyan" />
+            </Link>
 
             <div className="grid gap-10 sm:grid-cols-2 sm:gap-16">
               <nav aria-label="Footer menu">
@@ -40,7 +35,7 @@ export default function Footer() {
               </nav>
 
               <div>
-                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cyan-fg/55">Follow</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cyan-fg/55">Follow me</h2>
                 <ul className="mt-4 flex flex-col gap-3 text-base font-medium leading-7">
                   <li>
                     <a
@@ -70,19 +65,6 @@ export default function Footer() {
                 </ul>
               </div>
             </div>
-          </div>
-
-          <div className="mt-12 flex flex-col gap-4 border-t border-site-cyan-fg/15 pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm font-medium leading-7 text-site-cyan-fg/70">
-              © {new Date().getFullYear()} Timo Smit. All rights reserved.
-            </p>
-            <Link
-              to="/privacy/"
-              className="link-underline w-fit text-sm font-medium leading-7 text-site-cyan-fg/70 transition-colors hover:text-site-gold aria-[current=page]:text-site-gold"
-              aria-current={isCurrentPath(location.pathname, '/privacy/') ? 'page' : undefined}
-            >
-              Privacy statement
-            </Link>
           </div>
         </div>
       </div>

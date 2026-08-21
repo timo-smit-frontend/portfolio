@@ -1,20 +1,17 @@
 import { Link } from 'react-router'
 import { Animated } from '~/components/elements/Animated'
-import SectionCard from '~/components/elements/SectionCard'
 
 export default function ContentCta({
   title,
   description,
-  link,
-  id = 'content-cta'
+  link
 }: {
   title?: string
   description?: string
   link?: { url?: string; title?: string }
-  id?: string
 }) {
   return (
-    <SectionCard tone="cyan" id={id} innerClassName="flex flex-col items-center px-6 py-16 text-center sm:px-10 lg:px-16 lg:py-20">
+    <section id="content-cta" className="flex flex-col items-center px-6 py-16 text-center sm:px-10 lg:px-16 lg:py-20">
       <div className="flex max-w-2xl flex-col items-center gap-4 lg:gap-6">
         {title && (
           <Animated delay={100}>
@@ -34,6 +31,6 @@ export default function ContentCta({
           </Animated>
         )}
       </div>
-    </SectionCard>
+    </section>
   )
 }

@@ -8,7 +8,7 @@ import { SITE_NAME, isCurrentPath } from '~/seo/site'
 import { cn } from '~/services/utils'
 
 const navLinkClass =
-  'inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium smooth hover:bg-site-cream-fg/10 aria-[current=page]:bg-site-cream-fg/15'
+  'inline-flex items-center rounded-full px-3 py-1.5 text-base font-medium smooth hover:bg-site-cream-fg/10 aria-[current=page]:bg-site-cream-fg/15'
 const mobileNavLinkClass = 'mobile-menu-hover title-base flex w-full items-center px-0 py-2 text-2xl sm:text-3xl lg:text-4xl'
 
 function MobileNavLink({ to, pathname, onNavigate, children }: { to: string; pathname: string; onNavigate: () => void; children: string }) {
@@ -109,8 +109,8 @@ export default function Header() {
       <div className="container-full pt-2">
         <div
           className={cn(
-            'pointer-events-auto flex items-center justify-between rounded-4xl px-5 smooth',
-            isSticky ? 'h-16 bg-site-cream/90 shadow backdrop-blur-md' : 'h-20 bg-transparent'
+            'pointer-events-auto flex items-center justify-between rounded-4xl px-10 smooth',
+            isSticky ? 'h-20 bg-site-cream/90 shadow backdrop-blur-md' : 'h-20 bg-transparent'
           )}
         >
           <Link to="/" className="shrink-0 transition-opacity hover:opacity-80">
@@ -132,7 +132,7 @@ export default function Header() {
               ))}
             </nav>
 
-            <Link to={CONTACT_URL} className="button-gold hidden h-8 px-4 text-sm lg:inline-flex">
+            <Link to={CONTACT_URL} className="button-gold hidden h-8 px-4 text-base lg:inline-flex">
               {GET_IN_TOUCH}
             </Link>
 

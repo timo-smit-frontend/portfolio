@@ -171,7 +171,7 @@ export function getSeoForPath(pathname: string): SeoPage {
     return page({
       path,
       title: titleWithBrand('Education'),
-      description: 'Accessibility, consultancy, creative development, and React / Next.js.',
+      description: 'CMD, accessibility, consultancy, and React / Next.js.',
       webPageType: 'WebPage'
     })
   }
@@ -185,15 +185,6 @@ export function getSeoForPath(pathname: string): SeoPage {
     })
   }
 
-  if (path === '/privacy') {
-    return page({
-      path,
-      title: titleWithBrand('Privacy statement'),
-      description: 'How this portfolio handles the contact form.',
-      webPageType: 'PrivacyPolicy'
-    })
-  }
-
   return notFoundPage(path)
 }
 
@@ -202,7 +193,6 @@ export function getIndexableSeoPages(): SeoPage[] {
     getSeoForPath('/'),
     getSeoForPath('/experience'),
     getSeoForPath('/education'),
-    getSeoForPath('/contact'),
-    getSeoForPath('/privacy')
+    getSeoForPath('/contact')
   ]
 }

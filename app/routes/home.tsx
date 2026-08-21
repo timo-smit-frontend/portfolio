@@ -1,7 +1,6 @@
 import BannerHero from '~/components/flex/banner/BannerHero'
 import ContentCta from '~/components/flex/content/ContentCta'
 import ContentLogos from '~/components/flex/content/ContentLogos'
-import ContentSelectedWork from '~/components/flex/content/ContentSelectedWork'
 import ContentStory from '~/components/flex/content/ContentStory'
 
 const INTRO_PARAGRAPHS = [
@@ -14,9 +13,8 @@ export default function Home() {
   return (
     <>
       <BannerHero />
-      <ContentLogos />
-      <ContentSelectedWork />
       <ContentStory htmlParagraphs={INTRO_PARAGRAPHS} />
+      <ContentLogos />
       <ContentCta
         title="Want to know more about me?"
         description="Questions about work, accessibility, or a project? Send a message."
