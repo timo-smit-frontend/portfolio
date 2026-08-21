@@ -49,7 +49,7 @@ function ToggleMark({ open }: { open: boolean }) {
 function VisitLink({ href }: { href: string }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="button-gold-outline mt-2 w-fit text-site-cream-fg">
-      Visit website
+      Visit website →
       <span className="sr-only"> (opens in a new tab)</span>
     </a>
   )
@@ -127,7 +127,7 @@ function JobCard({
           {job.link ? <VisitLink href={job.link} /> : null}
           {job.projects?.length ? (
             <div className="flex flex-col gap-4">
-              <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-gold">Projects</h4>
+              <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-gold">Projects:</h4>
               <div className="grid gap-3 lg:grid-cols-2">
                 {job.projects.map((project, projectIndex) => (
                   <ProjectCard
