@@ -9,7 +9,7 @@ import { cn } from '~/services/utils'
 
 const navLinkClass =
   'inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium smooth hover:bg-site-cream-fg/10 aria-[current=page]:bg-site-cream-fg/15'
-const mobileNavLinkClass = 'mobile-menu-hover title-base flex w-full items-center px-0 py-2 text-2xl sm:text-3xl'
+const mobileNavLinkClass = 'mobile-menu-hover title-base flex w-full items-center px-0 py-2 text-2xl sm:text-3xl lg:text-4xl'
 
 function MobileNavLink({ to, pathname, onNavigate, children }: { to: string; pathname: string; onNavigate: () => void; children: string }) {
   const current = isCurrentPath(pathname, to)
