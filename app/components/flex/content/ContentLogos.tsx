@@ -71,7 +71,7 @@ export default function ContentLogos() {
       <div className="flex flex-col items-center gap-8">
         <Animated delay={100}>
           <p className="px-6 text-center text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/60 sm:px-10 lg:px-16">
-            Places I’ve worked for.
+            Projects and collaborations.
           </p>
         </Animated>
         {prefersReducedMotion ? (
@@ -92,7 +92,7 @@ export default function ContentLogos() {
           <Carousel
             opts={{ loop: true, align: 'start', dragFree: true }}
             plugins={[autoScroll]}
-            aria-label="Places I’ve worked for"
+            aria-label="Projects and collaborations."
             className="w-full [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
           >
             <CarouselContent>

@@ -140,7 +140,7 @@ Green `SectionCard first`. Extra top padding for fixed header (`pt-28 lg:pt-32`)
 
 - [ ] **Step 2: ContentLogos**
 
-White card. Label `Places I’ve worked for.` Logos in order from existing files:
+White card. Label `Companies I’ve done work for.` Logos in order from existing files:
 
 1. `/images/logo/ubo.png` (310×163)
 2. `/images/logo/capgemini.svg` (1024×239)

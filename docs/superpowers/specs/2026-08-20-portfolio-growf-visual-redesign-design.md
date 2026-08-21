@@ -126,7 +126,7 @@ Block order, all copy existing except the proof-strip label and hero kicker (sho
    Buttons: gold **Get in touch** → `/contact/`; outline **Experience** → `/experience/`.
 
 2. **`ContentLogos`** (white inner card)  
-   Label: `Places I’ve worked for.`  
+   Label: `Companies I’ve done work for.`  
    Logos in this order, using existing files: UBO, Capgemini, WFP, Tweede Kamer, Accent Interactive, SmartHOTEL.  
    Decorative; no new case-study claims.
 
@@ -144,7 +144,7 @@ Block order, all copy existing except the proof-strip label and hero kicker (sho
 
 5. **`ContentCta`** (green inner card, no photo)  
    Title: `Want to know more about me?`  
-   Description: `Questions about work, accessibility, or a project? Send a message.`  
+   Description: `Questions about my work, accessibility, or a project? Send me a message.`  
    Gold **Get in touch** → `/contact/`.
 
 Do not keep `BannerOverlay` on Home.
@@ -181,7 +181,7 @@ Active tab: `button-gold`. Inactive: outline. Panel: white card, image + text, s
 
 ### Contact
 
-`FormContact` stays the data/behavior owner. Visual: `BannerPage` is optional if the form already has title + description; do not duplicate headings. Title `Get in touch`, description `Questions about work, accessibility, or a project? Send a message.` White form card on green chrome. Gold submit. Fields on white with chrome text and gold focus.
+`FormContact` stays the data/behavior owner. Visual: `BannerPage` is optional if the form already has title + description; do not duplicate headings. Title `Get in touch`, description `Questions about my work, accessibility, or a project? Send me a message.` White form card on green chrome. Gold submit. Fields on white with chrome text and gold focus.
 
 - Submit: Web3Forms via `import.meta.env.VITE_WEB3FORMS_ACCESS_KEY` only. Key may be in the client bundle; destination email must not.
 - `.env.example` keeps `VITE_WEB3FORMS_ACCESS_KEY=` empty. Missing key: do not submit, show `Something went wrong. Try again later.`

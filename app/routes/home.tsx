@@ -17,7 +17,7 @@ export default function Home() {
       <ContentLogos />
       <ContentCta
         title="Want to know more about me?"
-        description="Questions about work, accessibility, or a project? Send a message."
+        description="Questions about my work, accessibility, or a project? Send me a message."
         link={{ url: '/contact/', title: 'Get in touch' }}
       />
     </>

@@ -822,11 +822,7 @@ import TraitSwapper from '~/components/elements/TraitSwapper'
 export default function BannerOverlay() {
   return (
     <section id="banner-overlay" className="relative h-screen overflow-hidden bg-site-dark">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: 'url("/images/timosmit.webp")' }}
-        aria-hidden
-      />
+      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url("/images/timosmit.webp")' }} aria-hidden />
       <div className="relative flex h-full flex-col">
         <div className="container-full flex flex-1 items-center justify-center">
           <h1 className="title-l max-w-5xl text-center text-balance text-site-gray-nurse">
@@ -892,7 +888,7 @@ export default function Home() {
       />
       <ContentCta
         title="Want to know more about me?"
-        description="Questions about work, accessibility, or a project? Send a message."
+        description="Questions about my work, accessibility, or a project? Send me a message."
         image="/images/timosmit.webp"
         link={{ url: '/contact/', title: 'Get in touch' }}
       />
@@ -906,13 +902,11 @@ Keep original spelling (`june`, `strenghtened`, `alot`). The old `<strong>` wrap
 Replace `paragraphs?: string[]` with `htmlParagraphs?: string[]` rendered as:
 
 ```tsx
-{htmlParagraphs?.map((html) => (
-  <div
-    key={html.slice(0, 24)}
-    className="content-l text-site-mantle"
-    dangerouslySetInnerHTML={{ __html: html }}
-  />
-))}
+{
+  htmlParagraphs?.map((html) => (
+    <div key={html.slice(0, 24)} className="content-l text-site-mantle" dangerouslySetInnerHTML={{ __html: html }} />
+  ))
+}
 ```
 
 Copy the three inner HTML strings from `src/components/ContentIntro.tsx` including `<strong>` tags.
@@ -1144,12 +1138,7 @@ Copy `$HWC/app/components/flex/form/FormContact.tsx`. Then:
 import FormContact from '~/components/flex/form/FormContact'
 
 export default function Contact() {
-  return (
-    <FormContact
-      title="Get in touch"
-      description="Questions about work, accessibility, or a project? Send a message."
-    />
-  )
+  return <FormContact title="Get in touch" description="Questions about my work, accessibility, or a project? Send me a message." />
 }
 ```
 
@@ -1346,17 +1335,17 @@ EOF
 
 ## Spec coverage
 
-| Spec item | Task |
-| --- | --- |
-| HWC stack, `app/`, Tailwind tokens, no worker | 1 |
-| Primitives, Image, Animated, Layout | 2 |
-| Person SEO, sitemap, llms, no Store | 3 |
-| Overlay header, footer, LinkedIn only, images | 4 |
-| BannerFigcaption, ContentText, ContentCta | 5 |
-| BannerOverlay, TraitSwapper, intro, CTA | 6 |
-| Experience accordion + copy | 7 |
-| Education tabs + copy | 8 |
-| Contact Web3Forms, privacy, 404 | 9 |
-| Delete old src, lint/build/grep | 10 |
-| GitHub Pages `gh-pages` | 1 (`deploy` script) |
-| No GTM / Instagram / email in source | 1, 4, 9, 10 |
+| Spec item                                     | Task                |
+| --------------------------------------------- | ------------------- |
+| HWC stack, `app/`, Tailwind tokens, no worker | 1                   |
+| Primitives, Image, Animated, Layout           | 2                   |
+| Person SEO, sitemap, llms, no Store           | 3                   |
+| Overlay header, footer, LinkedIn only, images | 4                   |
+| BannerFigcaption, ContentText, ContentCta     | 5                   |
+| BannerOverlay, TraitSwapper, intro, CTA       | 6                   |
+| Experience accordion + copy                   | 7                   |
+| Education tabs + copy                         | 8                   |
+| Contact Web3Forms, privacy, 404               | 9                   |
+| Delete old src, lint/build/grep               | 10                  |
+| GitHub Pages `gh-pages`                       | 1 (`deploy` script) |
+| No GTM / Instagram / email in source          | 1, 4, 9, 10         |

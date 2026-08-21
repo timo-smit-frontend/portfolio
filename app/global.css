@@ -153,7 +153,7 @@
 }
 
 @utility field {
-  @apply w-full resize-none rounded-xl border border-site-cyan/20 bg-site-cream px-4 py-3 text-base text-site-cream-fg placeholder:text-site-cream-fg/50 smooth;
+  @apply w-full resize-none rounded-xl border border-site-cyan/20 bg-white px-4 py-3 text-base text-site-cream-fg placeholder:text-site-cream-fg/50 smooth;
 }
 
 @utility smooth {

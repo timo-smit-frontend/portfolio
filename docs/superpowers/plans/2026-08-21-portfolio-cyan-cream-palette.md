@@ -300,7 +300,7 @@ Leave `title-landing`, sr-only SEO span, TraitSwapper, and gold Get in touch unc
 ```
 
 ```tsx
-<p className="text-center text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/60">Places I’ve worked for.</p>
+<p className="text-center text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/60">Companies I’ve done work for.</p>
 ```
 
 `ContentStory.tsx`:
