@@ -132,7 +132,7 @@ export default function Header() {
               ))}
             </nav>
 
-            <Link to={CONTACT_URL} className="button-gold hidden h-8 px-4 text-base lg:inline-flex">
+            <Link to={CONTACT_URL} className="button-gold hidden lg:inline-flex">
               {GET_IN_TOUCH}
             </Link>
 
