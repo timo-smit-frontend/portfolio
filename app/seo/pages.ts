@@ -189,10 +189,5 @@ export function getSeoForPath(pathname: string): SeoPage {
 }
 
 export function getIndexableSeoPages(): SeoPage[] {
-  return [
-    getSeoForPath('/'),
-    getSeoForPath('/experience'),
-    getSeoForPath('/education'),
-    getSeoForPath('/contact')
-  ]
+  return [getSeoForPath('/'), getSeoForPath('/experience'), getSeoForPath('/education'), getSeoForPath('/contact')]
 }
