@@ -171,7 +171,7 @@ export function getSeoForPath(pathname: string): SeoPage {
     return page({
       path,
       title: titleWithBrand('Education'),
-      description: 'CMD, accessibility, consultancy, and React / Next.js.',
+      description: 'Accessibility, React / Next.js, Artificial Intelligence, Communication and Multimedia Design, and consultancy.',
       webPageType: 'WebPage'
     })
   }

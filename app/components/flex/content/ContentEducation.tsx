@@ -10,7 +10,7 @@ export default function ContentEducation() {
   const education = EDUCATIONS[activeTopic]
 
   return (
-    <section className="flex flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
+    <section className="container-full flex flex-col gap-8 py-16 lg:py-20">
       <nav className="flex flex-wrap gap-2 p-0">
         {Object.entries(EDUCATIONS).map(([key, edu]) => (
           <button

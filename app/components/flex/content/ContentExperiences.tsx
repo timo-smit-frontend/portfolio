@@ -135,7 +135,7 @@ export default function ContentExperiences() {
   if (!job) return null
 
   return (
-    <section id="content-experiences" className="px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
+    <section id="content-experiences" className="container-full py-16 lg:py-20">
       <Animated delay={100}>
         <div className="grid gap-10 lg:grid-cols-[minmax(16rem,20rem)_1fr] lg:gap-14">
           <nav aria-label="Employers" className="flex flex-col gap-2 lg:sticky lg:top-28 lg:self-start bg-site-cream rounded-2xl p-4">

@@ -15,7 +15,7 @@ export default {
         card: '0 10px 28px rgb(0 0 0 / 0.4)'
       },
       colors: {
-        'site-chrome': '#061A1E',
+        'site-chrome': '#0C2A30',
         'site-cyan': '#145A63',
         'site-cyan-fg': '#F4F7F6',
         'site-cream': '#F4F3EE',

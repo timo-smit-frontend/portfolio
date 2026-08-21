@@ -8,25 +8,32 @@ export const EDUCATIONS = {
       <p>At <strong>UBO Agency</strong> I am the switch between developers and designers, so accessibility stays in the work instead of landing as an afterthought. On <strong>Casio</strong>'s learning platform I worked on contrast, focus outlines, and the login theme in the React frontend. Same thread as the Tweede Kamer, applied to a live LMS.</p>`,
     image: '/images/accessibility_presentation.jpg'
   },
-  consultancy: {
-    title: 'Consultancy & Client Work',
-    description: `<p>At <strong>Capgemini</strong> I learned consultancy on real client work: talking to stakeholders, reading complex requirements, and getting the work live. That included <strong>Project Enhance</strong> with the <strong>United Nations World Food Programme</strong>, focused on performance and user experience, and the Tweede Kamer accessibility project.</p>
-      <p>At <strong>UBO Agency</strong> the client mix is wide. Featured work includes <strong>Fairbanks</strong> (multilingual Remix), <strong>Movimento</strong> (healthcare recruitment and job applications), <strong>Casio</strong> (accessibility), <strong>Brouwer Metaal</strong> (international site with 3D product models), and <strong>IM Duurzaam</strong> (GSAP motion). I have also worked with tech companies like NTT DATA and Worldstream, and notaries such as Van Eeten and Hak en Rein Vos.</p>
-      <p>I took Coursera courses in <strong>Giving Helpful Feedback</strong>, <strong>High-Impact Business Writing</strong>, and <strong>Teamwork Skills</strong>. Clear communication is part of the job, not extra.</p>`,
-    image: PLACEHOLDER
-  },
-  creativeDeveloper: {
-    title: 'Creative Developer',
-    description: `<p>During <strong>Communication and Multimedia Design</strong> at the University of Applied Sciences in Amsterdam I became a UX/UI designer and a front-end developer in one. I graduated in June 2023. That mix is still the core: creative development with user experience and accessibility in the middle.</p>
-      <p>At <strong>SmartHOTEL</strong> I used Figma and user-centered research to refresh their digital platforms. At <strong>Accent Interactive</strong> I sat with developers, designed, and built frontend in Laravel and SCSS, including a new version of PlanAhead for clients such as ProRail.</p>
-      <p><strong>Capgemini</strong> then pushed the React and Next.js side, including the World Food Programme and the Tweede Kamer. At <strong>UBO Agency</strong> I keep both sides: motion and 3D on sites like IM Duurzaam and Brouwer Metaal, and the designer-developer bridge on accessibility. To me, coding is like putting together a puzzle. Adding creativity and aiming to make something that brings happiness makes the process special.</p>`,
-    image: PLACEHOLDER
-  },
   reactNextjs: {
     title: 'React & Next.js',
     description: `<p>I spent a lot of time on <strong>React</strong> and <strong>Next.js</strong>, including <strong>React - The Complete Guide (2024 Edition)</strong> on Udemy. I also studied <strong>Angular</strong> through Udemy's Complete Guide, which helps when a stack is not React.</p>
       <p>At <strong>Capgemini</strong> I used React and Next.js daily. On <strong>Project Enhance</strong> for the World Food Programme I focused on performance and UX. For the <strong>Tweede Kamer</strong> I built the frontend in React and Next.js around WCAG.</p>
       <p>At <strong>UBO Agency</strong> I still work in React, including Casio's LMS, and in Remix on Fairbanks, Movimento, and IM Duurzaam. Same component thinking, different framework.</p>`,
+    image: PLACEHOLDER
+  },
+  ai: {
+    title: 'Artificial Intelligence',
+    description: `<p>Artificial intelligence came into the work after my bachelor, once I was shipping every day. Across about <strong>three years</strong> of professional front-end — a year at <strong>Capgemini</strong>, then <strong>UBO Agency</strong> — I learned to use it as a pair, not a replacement: faster on React and Remix, still responsible for what goes live.</p>
+      <p>At <strong>UBO Agency</strong> that is part of how we deliver. Client work like <strong>Fairbanks</strong>, <strong>Movimento</strong>, <strong>Casio</strong>, and <strong>Profield</strong> still needs accessibility, motion, and a frontend that holds up. Artificial intelligence helps me get there. It does not skip <strong>WCAG</strong>, content, or the designer-developer conversation.</p>
+      <p>I keep learning it the same way I learned React: on real projects, then tightening the craft. The puzzle is still the puzzle. Artificial intelligence just lets me try more pieces before the deadline.</p>`,
+    image: PLACEHOLDER
+  },
+  consultancy: {
+    title: 'Consultancy & client work',
+    description: `<p>At <strong>Capgemini</strong> I learned consultancy on real client work: talking to stakeholders, reading complex requirements, and getting the work live. That included <strong>Project Enhance</strong> with the <strong>United Nations World Food Programme</strong>, focused on performance and user experience, and the Tweede Kamer accessibility project.</p>
+      <p>At <strong>UBO Agency</strong> the client mix is wide. Featured work includes <strong>Fairbanks</strong> (multilingual Remix), <strong>Movimento</strong> (healthcare recruitment and job applications), <strong>Casio</strong> (accessibility), <strong>Brouwer Metaal</strong> (international site with 3D product models), and <strong>IM Duurzaam</strong> (GSAP motion). I have also worked with tech companies like NTT DATA and Worldstream, and notaries such as Van Eeten and Hak en Rein Vos. Artificial intelligence is in how I ship that mix, not a separate service I sell.</p>
+      <p>I took Coursera courses in <strong>Giving Helpful Feedback</strong>, <strong>High-Impact Business Writing</strong>, and <strong>Teamwork Skills</strong>. Clear communication is part of the job, not extra.</p>`,
+    image: PLACEHOLDER
+  },
+  creativeDeveloper: {
+    title: 'Creative background',
+    description: `<p>During <strong>Communication and Multimedia Design</strong> at the University of Applied Sciences in Amsterdam I became a UX/UI designer and a front-end developer in one. I graduated in June 2023. That mix is still the core: creative development with user experience and accessibility in the middle.</p>
+      <p>At <strong>SmartHOTEL</strong> I used Figma and user-centered research to refresh their digital platforms. At <strong>Accent Interactive</strong> I sat with developers, designed, and built frontend in Laravel and SCSS, including a new version of PlanAhead for clients such as ProRail.</p>
+      <p><strong>Capgemini</strong> then pushed the React and Next.js side, including the World Food Programme and the Tweede Kamer. At <strong>UBO Agency</strong> I keep both sides: motion and 3D on sites like IM Duurzaam and Brouwer Metaal, and the designer-developer bridge on accessibility. To me, coding is like putting together a puzzle. Adding creativity and aiming to make something that brings happiness makes the process special.</p>`,
     image: PLACEHOLDER
   }
 }

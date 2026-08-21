@@ -24,7 +24,7 @@ export const EXPERIENCES: Experience[] = [
     width: 310,
     height: 163,
     description:
-      'I joined the UBO development team to sharpen my skills as a developer, with a strong focus on improving my coding abilities, while also having the opportunity to contribute to accessibility efforts by being the switch between the developers and the designers.',
+      'I joined the UBO development team to sharpen my skills as a developer, with a strong focus on improving my coding abilities, while also having the opportunity to contribute to accessibility efforts by being the switch between the developers and the designers. Over these years AI became part of how I build: a pair on React and Remix, never a skip past accessibility or that designer conversation.',
     link: 'https://ubo.agency',
     projects: [
       {
@@ -43,7 +43,7 @@ export const EXPERIENCES: Experience[] = [
         width: 158,
         height: 31,
         description:
-          "I built Fairbanks' multilingual Remix site: knowledge base, keynotes, language switching, and motion on the forms. A full content platform for a Dutch IT consultancy, not a brochure. Frontend that has to look considered and still work when the content keeps moving."
+          "I built Fairbanks' multilingual Remix site: knowledge base, keynotes, language switching, and motion on the forms. A full content platform for a Dutch IT consultancy, not a brochure. Frontend that has to look considered and still work when the content keeps moving. AI helped me move faster on that Remix work without losing the structure."
       },
       {
         image: '/images/logo/movimento.svg',
@@ -52,7 +52,7 @@ export const EXPERIENCES: Experience[] = [
         width: 178,
         height: 34,
         description:
-          'For Movimento I built the healthcare recruitment site and the path from vacancy to application, including how candidates get assigned. Accessibility and motion were part of that journey, not a polish pass. Real candidate-facing product work, for people looking for a job in care.'
+          'For Movimento I built the healthcare recruitment site and the path from vacancy to application, including how candidates get assigned. Accessibility and motion were part of that journey, not a polish pass. AI sped up the Remix side; the candidate-facing decisions stayed mine. Real product work, for people looking for a job in care.'
       },
       {
         image: '/images/logo/brouwer-metaal.svg',
@@ -70,7 +70,7 @@ export const EXPERIENCES: Experience[] = [
         width: 473,
         height: 380,
         description:
-          "I built IM Duurzaam's Remix site with motion that carries the story, not decoration on top. GSAP, sliders, and an English version, for a sustainability brand that needed the frontend to feel as considered as the work. Creative development in the open, not only in the design file."
+          "I built IM Duurzaam's Remix site with motion that carries the story, not decoration on top. GSAP, sliders, and an English version, for a sustainability brand that needed the frontend to feel as considered as the work. Creative development in the open, not only in the design file. AI helped with the Remix scaffolding; the motion and the story were still mine to get right."
       },
       {
         image: '/images/logo/profield.svg',
@@ -79,7 +79,7 @@ export const EXPERIENCES: Experience[] = [
         width: 845,
         height: 178,
         description:
-          'For Profield I built vacancy search, the application flow, and an internal meetings dashboard on live data. Closer to a product than a brochure. Frontend recruiters and candidates depend on during a working day, including forms that have to submit and a dashboard that has to stay in sync.'
+          'For Profield I built vacancy search, the application flow, and an internal meetings dashboard on live data. Closer to a product than a brochure. Frontend recruiters and candidates depend on during a working day, including forms that have to submit and a dashboard that has to stay in sync. I used AI the same way I use any other tool: to ship the product, not to hide the work.'
       }
     ]
   },

@@ -4,7 +4,8 @@ export const SITE_IMAGE_ALT = 'Portrait of Timo Smit'
 type ImageCopy = { title: string; alt: string }
 
 const IMAGE_COPY: Record<string, ImageCopy> = {
-  '/images/timosmit.webp': { title: SITE_IMAGE_TITLE, alt: SITE_IMAGE_ALT }
+  '/images/timosmit.webp': { title: SITE_IMAGE_TITLE, alt: SITE_IMAGE_ALT },
+  '/images/timosmit-headshot.png': { title: SITE_IMAGE_TITLE, alt: SITE_IMAGE_ALT }
 }
 
 function normalizeSrc(src: string) {

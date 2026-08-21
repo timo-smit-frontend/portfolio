@@ -15,11 +15,13 @@ export default function BannerHero() {
         <Animated delay={100}>
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/70">Front-end developer at UBO Agency</p>
         </Animated>
+        <h1 className="sr-only">Timo Smit is a creative Front-end Developer</h1>
         <Animated delay={200}>
-          <h1 className="title-landing mt-5 max-w-5xl text-balance">
-            <span className="sr-only">Timo Smit, Front-end Developer. </span>
-            Timo Smit is a <TraitSwapper /> Front-end Developer!
-          </h1>
+          <p className="title-landing mt-5 max-w-5xl" aria-hidden="true">
+            Timo Smit is a <TraitSwapper />
+            <br />
+            Front-end Developer!
+          </p>
         </Animated>
         <Animated delay={300}>
           <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row">
