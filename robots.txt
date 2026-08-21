@@ -1,0 +1,6 @@
+# AI agents: https://www.timosmit.dev/llms.txt
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.timosmit.dev/sitemap.xml
