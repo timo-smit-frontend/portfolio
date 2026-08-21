@@ -1,11 +1,12 @@
 import { FormEvent, useRef, useState } from 'react'
 import { Animated } from '~/components/elements/Animated'
 import Breadcrumbs from '~/components/elements/Breadcrumbs'
+import SectionCard from '~/components/elements/SectionCard'
 import useLocationFinder from '~/hooks/useLocationFinder'
 import { LINKEDIN_URL, sendContactMessage } from '~/services/contact'
 import { cn, isValidEmail } from '~/services/utils'
 
-const contactLinkClass = 'group flex w-fit items-center gap-2 transition-colors hover:text-site-envy'
+const contactLinkClass = 'group flex w-fit items-center gap-2 transition-colors hover:text-site-gold'
 
 function LinkedInIcon() {
   return (
@@ -19,9 +20,9 @@ function LinkedInIcon() {
       strokeLinejoin="round"
       aria-hidden
     >
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+      <rect width="4" height="12" x="2" y="9" />
+      <circle cx="4" cy="4" r="2" />
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
     </svg>
   )
 }
@@ -135,7 +136,7 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5 rounded-panel bg-site-gunmetal p-6 sm:p-8 lg:p-10">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5 rounded-2xl bg-white p-6 text-site-cream-fg ring-1 ring-site-chrome/8 sm:p-8 lg:p-10">
       <div className="hidden" aria-hidden>
         <label htmlFor="contact-company">Company</label>
         <input
@@ -173,7 +174,7 @@ function ContactForm() {
           className="field"
         />
         {showNameError && (
-          <p id="contact-name-error" className="content-s text-site-mantle">
+          <p id="contact-name-error" className="content-s text-site-cream-fg/70">
             {NAME_HINT}
           </p>
         )}
@@ -209,7 +210,7 @@ function ContactForm() {
           className="field"
         />
         {showEmailError && (
-          <p id="contact-email-error" className="content-s text-site-mantle">
+          <p id="contact-email-error" className="content-s text-site-cream-fg/70">
             {emailHint(email)}
           </p>
         )}
@@ -239,7 +240,7 @@ function ContactForm() {
           className="field min-h-40"
         />
         {showMessageError && (
-          <p id="contact-message-error" className="content-s text-site-mantle">
+          <p id="contact-message-error" className="content-s text-site-cream-fg/70">
             {MESSAGE_HINT}
           </p>
         )}
@@ -247,62 +248,64 @@ function ContactForm() {
 
       <button
         type="submit"
-        className="button-green cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+        className="button-gold cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
         disabled={status === 'submitting'}
       >
         {status === 'submitting' ? 'Sending…' : 'Send message'}
       </button>
 
       <div aria-live="polite">
-        {status === 'success' && <p className="content-s text-site-summer-green">Thanks! I will get back to you soon.</p>}
-        {status === 'error' && <p className="content-s text-site-mantle">Something went wrong. Try again later.</p>}
+        {status === 'success' && <p className="content-s text-site-cyan">Thanks! I will get back to you soon.</p>}
+        {status === 'error' && <p className="content-s text-site-cream-fg/70">Something went wrong. Try again later.</p>}
       </div>
     </form>
   )
 }
 
 export default function FormContact({ title, description }: { title?: string; description?: string }) {
-  const { ref, isFirst } = useLocationFinder()
+  const { ref } = useLocationFinder()
 
   return (
-    <section id="form-contact" ref={ref} className={cn('section', isFirst && 'lg:mt-16! mt-12!')}>
-      <div className="container-full">
-        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
-          <div className="flex flex-col gap-12">
-            {(title || description) && (
-              <div className="flex max-w-xl flex-col gap-8">
-                {isFirst && <Breadcrumbs />}
-                {(title || description) && (
-                  <div className="flex flex-col gap-2 lg:gap-4">
-                    {title && (
-                      <Animated delay={100}>
-                        <h1 className="title-l">{title}</h1>
-                      </Animated>
-                    )}
-                    {description && (
-                      <Animated delay={200}>
-                        <p className="content-l text-site-mantle">{description}</p>
-                      </Animated>
-                    )}
-                  </div>
+    <SectionCard
+      tone="cream"
+      first
+      id="form-contact"
+      innerClassName="px-6 pt-28 pb-16 sm:px-10 lg:px-16 lg:pt-32 lg:pb-20"
+      sectionRef={ref}
+    >
+      <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
+        <div className="flex flex-col gap-12">
+          {(title || description) && (
+            <div className="flex max-w-xl flex-col gap-8">
+              <Breadcrumbs className="text-site-cream-fg/70" />
+              <div className="flex flex-col gap-2 lg:gap-4">
+                {title && (
+                  <Animated delay={100}>
+                    <h1 className="title-section">{title}</h1>
+                  </Animated>
+                )}
+                {description && (
+                  <Animated delay={200}>
+                    <p className="content-l text-site-cream-fg/80">{description}</p>
+                  </Animated>
                 )}
               </div>
-            )}
+            </div>
+          )}
 
-            <Animated delay={300}>
-              <div>
-                <FormContactLinks />
-              </div>
-            </Animated>
-          </div>
-
-          <Animated delay={400}>
+          <Animated delay={300}>
             <div>
-              <ContactForm />
+              <FormContactLinks />
             </div>
           </Animated>
         </div>
+
+        <Animated delay={400}>
+          <div>
+            <ContactForm />
+          </div>
+        </Animated>
       </div>
-    </section>
+    </SectionCard>
   )
 }

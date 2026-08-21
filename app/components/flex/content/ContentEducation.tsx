@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Image from '~/components/elements/Image'
+import SectionCard from '~/components/elements/SectionCard'
 import { EDUCATIONS } from '~/database/educations'
 import { cn } from '~/services/utils'
 
@@ -10,52 +11,44 @@ export default function ContentEducation() {
   const education = EDUCATIONS[activeTopic]
 
   return (
-    <section className="section flex flex-col items-center">
-      <div className="container-full flex flex-col gap-8">
-        <nav className="my-4 flex flex-wrap gap-2 p-0">
-          {Object.entries(EDUCATIONS).map(([key, edu]) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setActiveTopic(key as EducationKey)}
-              className={cn(
-                'cursor-pointer rounded-lg border-0 px-4 py-2 text-base transition-all duration-200',
-                activeTopic === key ? 'button-green' : 'bg-site-gunmetal text-site-gray-nurse hover:bg-site-mulled-wine/20'
-              )}
-              aria-pressed={activeTopic === key}
-            >
-              {edu.title}
-            </button>
-          ))}
-        </nav>
-
-        {education && (
-          <div
-            id="tab-content"
-            className="grid w-full gap-10 rounded-panel bg-site-gunmetal p-8 ring-1 ring-site-mulled-wine md:grid-cols-2"
+    <SectionCard tone="cream" innerClassName="flex flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
+      <nav className="flex flex-wrap gap-2 p-0">
+        {Object.entries(EDUCATIONS).map(([key, edu]) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setActiveTopic(key as EducationKey)}
+            className={cn(activeTopic === key ? 'button-gold' : 'button-gold-outline text-site-cream-fg', 'cursor-pointer')}
+            aria-pressed={activeTopic === key}
           >
-            <div className="relative flex h-fit flex-col justify-between">
-              <div className="flex flex-col gap-4">
-                <h2 className="title-xs">{education.title}</h2>
-                <div
-                  className="content-m flex flex-col gap-4 text-site-mantle"
-                  dangerouslySetInnerHTML={{ __html: education.description }}
-                />
-              </div>
-            </div>
+            {edu.title}
+          </button>
+        ))}
+      </nav>
 
-            {education.image && (
-              <Image
-                src={education.image}
-                alt={`${education.title} Timo Smit`}
-                width={475}
-                height={317}
-                className="h-full w-full object-cover"
+      {education && (
+        <div id="tab-content" className="grid w-full gap-10 rounded-2xl bg-white p-8 text-site-cream-fg ring-1 ring-site-chrome/8 md:grid-cols-2">
+          <div className="relative flex h-fit flex-col justify-between">
+            <div className="flex flex-col gap-4">
+              <h2 className="title-xs">{education.title}</h2>
+              <div
+                className="content-m flex flex-col gap-4 text-site-cream-fg/80"
+                dangerouslySetInnerHTML={{ __html: education.description }}
               />
-            )}
+            </div>
           </div>
-        )}
-      </div>
-    </section>
+
+          {education.image && (
+            <Image
+              src={education.image}
+              alt={`${education.title} Timo Smit`}
+              width={475}
+              height={317}
+              className="h-full w-full rounded-xl object-cover"
+            />
+          )}
+        </div>
+      )}
+    </SectionCard>
   )
 }
