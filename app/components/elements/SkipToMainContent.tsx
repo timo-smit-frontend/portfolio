@@ -20,7 +20,7 @@ export default function SkipToMainContent() {
     <a
       href={`#${MAIN_ID}`}
       onClick={handleClick}
-      className="button-green sr-only focus:not-sr-only focus:fixed focus:inset-auto focus:top-4 focus:left-4 focus:z-100 focus:w-auto focus:px-7! focus:py-3.5!"
+      className="button-gold sr-only focus:not-sr-only focus:fixed focus:inset-auto focus:top-4 focus:left-4 focus:z-100 focus:w-auto focus:px-7! focus:py-3.5!"
     >
       Skip to main content
     </a>

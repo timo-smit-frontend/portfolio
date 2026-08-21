@@ -27,7 +27,10 @@ export default function ContentEducation() {
       </nav>
 
       {education && (
-        <div id="tab-content" className="grid w-full gap-10 rounded-2xl bg-white p-8 text-site-cream-fg ring-1 ring-site-chrome/8 md:grid-cols-2">
+        <div
+          id="tab-content"
+          className="grid w-full gap-10 rounded-2xl bg-white p-8 text-site-cream-fg ring-1 ring-site-chrome/8 md:grid-cols-2"
+        >
           <div className="relative flex h-fit flex-col justify-between">
             <div className="flex flex-col gap-4">
               <h2 className="title-xs">{education.title}</h2>

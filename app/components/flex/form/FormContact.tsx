@@ -136,7 +136,10 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5 rounded-2xl bg-white p-6 text-site-cream-fg ring-1 ring-site-chrome/8 sm:p-8 lg:p-10">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-5 rounded-2xl bg-white p-6 text-site-cream-fg ring-1 ring-site-chrome/8 sm:p-8 lg:p-10"
+    >
       <div className="hidden" aria-hidden>
         <label htmlFor="contact-company">Company</label>
         <input

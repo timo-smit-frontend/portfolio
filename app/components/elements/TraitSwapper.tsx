@@ -96,7 +96,7 @@ const TraitSwapper = () => {
   const displayedTrait = traitToDisplay
 
   return (
-    <span id="trait-styling" className="text-site-envy">
+    <span id="trait-styling" className="text-site-gold">
       {displayedTrait}
     </span>
   )

@@ -1,14 +1,10 @@
-import BannerFigcaption from '~/components/flex/banner/BannerFigcaption'
+import BannerPage from '~/components/flex/banner/BannerPage'
 import ContentEducation from '~/components/flex/content/ContentEducation'
 
 export default function Education() {
   return (
     <>
-      <BannerFigcaption
-        title="Education"
-        description="Accessibility, consultancy, creative development, and React / Next.js."
-        image="/images/timosmit.webp"
-      />
+      <BannerPage title="Education" description="Accessibility, consultancy, creative development, and React / Next.js." />
       <ContentEducation />
     </>
   )

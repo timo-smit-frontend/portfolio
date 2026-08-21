@@ -49,8 +49,7 @@ function ToggleMark({ open }: { open: boolean }) {
 function VisitLink({ href }: { href: string }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="button-gold-outline mt-2 w-fit text-site-cream-fg">
-      Visit website →
-      <span className="sr-only"> (opens in a new tab)</span>
+      Visit website →<span className="sr-only"> (opens in a new tab)</span>
     </a>
   )
 }
@@ -108,7 +107,12 @@ function JobCard({
   const panelId = `experience-panel-${index}`
 
   return (
-    <article className={cn('overflow-hidden rounded-3xl bg-site-cream text-site-cream-fg ring-1 ring-site-chrome/8', open && 'ring-2 ring-site-gold')}>
+    <article
+      className={cn(
+        'overflow-hidden rounded-3xl bg-site-cream text-site-cream-fg ring-1 ring-site-chrome/8',
+        open && 'ring-2 ring-site-gold'
+      )}
+    >
       <button
         type="button"
         className={cn('flex w-full items-center gap-4 p-5 text-left sm:gap-6 sm:p-7 lg:p-8', !open && 'hover:bg-site-chrome/5 smooth')}

@@ -154,8 +154,7 @@ export function getSeoForPath(pathname: string): SeoPage {
     return page({
       path,
       title: `${SITE_NAME} | Front-end Developer`,
-      description: SITE_DESCRIPTION,
-      lcp: { src: SITE_IMAGE, maxWidth: 1600, sizes: '100vw' }
+      description: SITE_DESCRIPTION
     })
   }
 

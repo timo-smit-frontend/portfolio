@@ -3,10 +3,8 @@ import ContentText from '~/components/flex/content/ContentText'
 export default function Privacy() {
   return (
     <ContentText
-      heading="h1"
       title="Privacy statement"
       description="This page says what happens when you visit timosmit.dev or send a message with the contact form."
-      image="/images/timosmit.webp"
       updated="20 August 2026"
       sections={[
         {
