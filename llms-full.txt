@@ -6,5 +6,5 @@ Timo Smit is a front-end developer at UBO Agency.
 ## Pages
 - [Home](https://www.timosmit.dev/): The portfolio of Timo Smit, a front-end developer working at UBO Agency.
 - [Experience](https://www.timosmit.dev/experience/): Front-end work at UBO Agency, Capgemini, Accent Interactive, and SmartHOTEL.
-- [Education](https://www.timosmit.dev/education/): CMD, accessibility, consultancy, and React / Next.js.
+- [Education](https://www.timosmit.dev/education/): Accessibility, React / Next.js, Artificial Intelligence, Communication and Multimedia Design, and consultancy.
 - [Contact](https://www.timosmit.dev/contact/): Send Timo Smit a message about work, accessibility, or a project.
