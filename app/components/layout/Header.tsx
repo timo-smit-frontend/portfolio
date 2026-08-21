@@ -109,7 +109,7 @@ export default function Header() {
       <div className="container-full pt-2">
         <div
           className={cn(
-            'pointer-events-auto flex items-center justify-between rounded-4xl px-10 smooth',
+            'pointer-events-auto flex items-center justify-between sm:rounded-4xl rounded-2xl sm:px-10 px-6 smooth',
             isSticky ? 'h-20 bg-site-cream/90 shadow backdrop-blur-md' : 'h-20 bg-transparent'
           )}
         >

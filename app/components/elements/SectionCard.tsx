@@ -21,7 +21,7 @@ export default function SectionCard({
       <div className="container-full">
         <div
           className={cn(
-            'overflow-clip rounded-4xl',
+            'overflow-clip rounded-2xl sm:rounded-4xl',
             tone === 'cyan' ? 'bg-site-cyan text-site-cyan-fg' : 'bg-site-cream text-site-cream-fg',
             innerClassName
           )}

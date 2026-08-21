@@ -13,8 +13,8 @@ export default function ContentCta({
   link?: { url?: string; title?: string }
 }) {
   return (
-    <section id="content-cta" className="flex flex-col items-center px-6 py-16 text-center sm:px-10 lg:px-16 lg:py-20">
-      <div className="flex max-w-2xl flex-col items-center gap-4 lg:gap-6">
+    <section id="content-cta" className="flex flex-col items-center px-6 py-16 sm:text-center sm:px-10 lg:px-16 lg:py-20">
+      <div className="flex max-w-2xl flex-col sm:items-center gap-4 lg:gap-6">
         <Animated>
           <div className="size-28 overflow-hidden rounded-full ring-2 ring-site-cyan-fg/15 sm:size-32">
             <Image

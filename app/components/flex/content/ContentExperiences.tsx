@@ -2,12 +2,12 @@ import { Fragment, useState, type MouseEvent } from 'react'
 import { Animated } from '~/components/elements/Animated'
 import Image from '~/components/elements/Image'
 import Accordion from '~/components/flex/content/Accordion'
-import { EXPERIENCES, type ExperienceProject } from '~/database/experiences'
+import { EXPERIENCES, type Experience, type ExperienceProject } from '~/database/experiences'
 import { cn } from '~/services/utils'
 
 const LOGO_FRAME = {
   sm: 'h-6 w-20',
-  lg: 'h-16 w-44'
+  lg: 'h-auto lg:w-44 w-32'
 } as const
 
 const LOGO_IMAGE = {
@@ -48,11 +48,13 @@ function ExperienceLogo({
 function ProjectTiles({
   projects,
   openProjectIndex,
-  onToggle
+  onToggle,
+  idPrefix
 }: {
   projects: ExperienceProject[]
   openProjectIndex: number | null
   onToggle: (index: number, event: MouseEvent<HTMLButtonElement>) => void
+  idPrefix: string
 }) {
   return (
     <ul className="grid gap-3 sm:grid-cols-2">
@@ -63,8 +65,8 @@ function ProjectTiles({
         const rowEnd = Math.min(rowStart + 1, projects.length - 1)
         const openInRow = openProjectIndex !== null && openProjectIndex >= rowStart && openProjectIndex <= rowEnd
         const rowProject = openInRow ? projects[openProjectIndex] : null
-        const rowPanelId = `project-row-${rowStart}`
-        const tilePanelId = `project-${index}`
+        const rowPanelId = `${idPrefix}project-row-${rowStart}`
+        const tilePanelId = `${idPrefix}project-${index}`
 
         return (
           <Fragment key={project.title}>
@@ -115,11 +117,74 @@ function ProjectTiles({
   )
 }
 
+function EmployerButton({
+  item,
+  index,
+  selected,
+  panelId,
+  expanded,
+  accent,
+  onSelect
+}: {
+  item: Experience
+  index: number
+  selected: boolean
+  panelId: string
+  expanded?: boolean
+  accent?: boolean
+  onSelect: () => void
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      aria-expanded={expanded}
+      aria-controls={panelId}
+      className={cn(
+        'flex w-full items-center gap-4 rounded-2xl p-3 text-left smooth',
+        selected && accent
+          ? 'cursor-default bg-site-gold text-site-gold-fg'
+          : selected
+            ? 'cursor-default'
+            : 'cursor-pointer hover:bg-site-chrome/5'
+      )}
+      onClick={onSelect}
+    >
+      <ExperienceLogo image={item.image} title={item.title} width={item.width} height={item.height} size="sm" />
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs font-semibold tracking-[0.16em] text-site-cream-fg opacity-70">{padIndex(index)}</span>
+        <span className="mt-0.5 block font-semibold tracking-tight text-site-cream-fg">{item.title}</span>
+      </span>
+    </button>
+  )
+}
+
+function JobBody({
+  job,
+  openProjectIndex,
+  onProjectToggle,
+  idPrefix
+}: {
+  job: Experience
+  openProjectIndex: number | null
+  onProjectToggle: (index: number, event: MouseEvent<HTMLButtonElement>) => void
+  idPrefix: string
+}) {
+  return (
+    <>
+      <p className="content-l text-site-cream-fg/80">{job.description}</p>
+      {job.projects?.length ? (
+        <ProjectTiles projects={job.projects} openProjectIndex={openProjectIndex} onToggle={onProjectToggle} idPrefix={idPrefix} />
+      ) : null}
+    </>
+  )
+}
+
 export default function ContentExperiences() {
   const [openIndex, setOpenIndex] = useState(0)
   const [openProjectIndex, setOpenProjectIndex] = useState<number | null>(null)
   const job = EXPERIENCES[openIndex]
-  const panelId = 'experience-split-panel'
+  const splitPanelId = 'experience-split-panel'
 
   const handleToggle = (index: number) => {
     if (openIndex === index) return
@@ -137,42 +202,59 @@ export default function ContentExperiences() {
   return (
     <section id="content-experiences" className="container-full py-16 lg:py-20">
       <Animated delay={100}>
-        <div className="grid gap-10 lg:grid-cols-[minmax(16rem,20rem)_1fr] lg:gap-14">
-          <nav aria-label="Employers" className="flex flex-col gap-2 lg:sticky lg:top-28 lg:self-start bg-site-cream rounded-2xl p-4">
+        <div>
+          <div className="flex flex-col gap-4 lg:hidden">
             {EXPERIENCES.map((item, index) => {
               const selected = openIndex === index
+              const panelId = `experience-accordion-${index}`
 
               return (
-                <button
-                  key={item.title}
-                  type="button"
-                  aria-pressed={selected}
-                  aria-controls={panelId}
-                  className={cn(
-                    'flex w-full items-center gap-4 rounded-2xl p-3 text-left smooth',
-                    selected ? 'cursor-default bg-site-gold text-site-gold-fg' : 'cursor-pointer hover:bg-site-chrome/5'
-                  )}
-                  onClick={() => handleToggle(index)}
-                >
-                  <ExperienceLogo image={item.image} title={item.title} width={item.width} height={item.height} size="sm" />
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-xs font-semibold tracking-[0.16em] text-site-cream-fg opacity-70">{padIndex(index)}</span>
-                    <span className="mt-0.5 block font-semibold tracking-tight text-site-cream-fg">{item.title}</span>
-                  </span>
-                </button>
+                <div key={item.title} className="rounded-2xl bg-site-cream p-4">
+                  <EmployerButton
+                    item={item}
+                    index={index}
+                    selected={selected}
+                    panelId={panelId}
+                    expanded={selected}
+                    onSelect={() => handleToggle(index)}
+                  />
+                  <Accordion open={selected}>
+                    <div id={panelId} className="flex flex-col gap-4 px-3 pb-3 pt-4">
+                      <JobBody
+                        job={item}
+                        openProjectIndex={openProjectIndex}
+                        onProjectToggle={handleProjectToggle}
+                        idPrefix={`accordion-${index}-`}
+                      />
+                    </div>
+                  </Accordion>
+                </div>
               )
             })}
-          </nav>
+          </div>
 
-          <div id={panelId} className="flex flex-col gap-6 bg-site-cream p-8 rounded-2xl">
-            <div className="flex flex-col gap-4 sm:gap-10 ">
-              <ExperienceLogo image={job.image} title={job.title} width={job.width} height={job.height} size="lg" />
-              <h2 className="title-l min-w-0 flex-1 text-balance text-site-cream-fg">{job.title}</h2>
+          <div className="hidden gap-10 lg:grid lg:grid-cols-[minmax(16rem,20rem)_1fr] lg:gap-14">
+            <nav aria-label="Employers" className="flex flex-col gap-2 rounded-2xl bg-site-cream p-4 lg:sticky lg:top-28 lg:self-start">
+              {EXPERIENCES.map((item, index) => (
+                <EmployerButton
+                  key={item.title}
+                  item={item}
+                  index={index}
+                  selected={openIndex === index}
+                  panelId={splitPanelId}
+                  accent
+                  onSelect={() => handleToggle(index)}
+                />
+              ))}
+            </nav>
+
+            <div id={splitPanelId} className="flex flex-col gap-4 rounded-2xl bg-site-cream p-8 lg:gap-6">
+              <div className="flex flex-col gap-10">
+                <ExperienceLogo image={job.image} title={job.title} width={job.width} height={job.height} size="lg" />
+                <h2 className="title-l min-w-0 flex-1 text-balance text-site-cream-fg">{job.title}</h2>
+              </div>
+              <JobBody job={job} openProjectIndex={openProjectIndex} onProjectToggle={handleProjectToggle} idPrefix="split-" />
             </div>
-            <p className="content-l text-site-cream-fg/80">{job.description}</p>
-            {job.projects?.length ? (
-              <ProjectTiles projects={job.projects} openProjectIndex={openProjectIndex} onToggle={handleProjectToggle} />
-            ) : null}
           </div>
         </div>
       </Animated>

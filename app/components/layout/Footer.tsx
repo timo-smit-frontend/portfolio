@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="pb-2 text-site-cream-fg">
       <div className="container-full">
-        <div className="overflow-clip rounded-4xl bg-site-cream px-6 py-12 sm:px-10 lg:px-16 lg:py-16">
+        <div className="overflow-clip rounded-2xl bg-site-cream px-6 py-12 sm:rounded-4xl sm:px-10 lg:px-16 lg:py-16">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-24">
             <Link to="/" className="block w-fit transition-opacity hover:opacity-80" aria-label={SITE_NAME}>
               <Logo className="h-12 w-auto" tone="cream" />
