@@ -1,6 +1,6 @@
 import { buildLcpPreloadTag, isLocalRasterSrc } from '../services/responsiveImage'
 import type { SeoPage } from './pages'
-import { SITE_LOCALE, SITE_NAME, SITE_THEME_COLOR } from './site'
+import { SITE_NAME, SITE_THEME_COLOR } from './site'
 
 const SEO_START = '<!--app-seo-start-->'
 const SEO_END = '<!--app-seo-end-->'
@@ -20,9 +20,8 @@ export function buildSeoHead(seo: SeoPage): string {
     `<title>${escapeHtml(seo.title)}</title>`,
     `<meta name="description" content="${escapeHtml(seo.description)}" />`,
     `<meta name="robots" content="${escapeHtml(seo.robots)}" />`,
-    `<meta name="theme-color" content="${SITE_THEME_COLOR}" />`,
     `<meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" />`,
-    `<meta property="og:locale" content="${SITE_LOCALE}" />`,
+    `<meta property="og:locale" content="${seo.ogLocale}" />`,
     `<meta property="og:type" content="${seo.type}" />`,
     `<meta property="og:title" content="${escapeHtml(seo.title)}" />`,
     `<meta property="og:description" content="${escapeHtml(seo.description)}" />`,
@@ -40,6 +39,16 @@ export function buildSeoHead(seo: SeoPage): string {
     tags.splice(8, 0, `<meta property="og:url" content="${escapeHtml(seo.canonical)}" />`)
   }
 
+  for (const alternate of seo.alternates) {
+    tags.push(`<link rel="alternate" hreflang="${escapeHtml(alternate.hrefLang)}" href="${escapeHtml(alternate.href)}" />`)
+  }
+
+  const otherLocales = seo.alternates.filter((alternate) => alternate.hrefLang !== 'x-default' && alternate.hrefLang !== seo.htmlLang)
+  for (const alternate of otherLocales) {
+    tags.push(`<meta property="og:locale:alternate" content="${alternate.hrefLang.replace('-', '_')}" />`)
+  }
+
+  tags.push(`<meta name="theme-color" content="${SITE_THEME_COLOR}" />`)
   tags.push(`<script id="seo-jsonld" type="application/ld+json">${serializeJsonLd(seo.jsonLd)}</script>`)
 
   return `${SEO_START}\n    ${tags.join('\n    ')}\n    ${SEO_END}`
@@ -52,7 +61,7 @@ export function buildLcpHead(seo: SeoPage): string {
 }
 
 export function applySeoHead(html: string, seo: SeoPage): string {
-  let next = html
+  let next = html.replace(/<html lang="[^"]*">/, `<html lang="${seo.htmlLang}">`)
   const seoBlock = buildSeoHead(seo)
 
   if (next.includes(SEO_START) && next.includes(SEO_END)) {

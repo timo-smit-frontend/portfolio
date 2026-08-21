@@ -1,20 +1,22 @@
 import { useState } from 'react'
 import Image from '~/components/elements/Image'
 import { EDUCATIONS } from '~/database/educations'
+import type { Locale } from '~/i18n/locale'
+import { useLocale } from '~/i18n/useLocale'
 import { cn } from '~/services/utils'
 
 type EducationKey = keyof typeof EDUCATIONS
 type Education = (typeof EDUCATIONS)[EducationKey]
 
-function EducationCard({ education }: { education: Education }) {
+function EducationCard({ education, locale }: { education: Education; locale: Locale }) {
   return (
     <div className="grid w-full gap-10 rounded-2xl bg-site-cream p-8 text-site-cream-fg ring-1 ring-site-chrome/8 md:grid-cols-2">
       <div className="relative flex h-fit flex-col justify-between">
         <div className="flex flex-col gap-4">
-          <h2 className="title-xs">{education.title}</h2>
+          <h2 className="title-xs">{education.title[locale]}</h2>
           <div
             className="content-m flex flex-col gap-4 text-site-cream-fg/80"
-            dangerouslySetInnerHTML={{ __html: education.description }}
+            dangerouslySetInnerHTML={{ __html: education.description[locale] }}
           />
         </div>
       </div>
@@ -27,6 +29,7 @@ function EducationCard({ education }: { education: Education }) {
 }
 
 export default function ContentEducation() {
+  const { locale } = useLocale()
   const [activeTopic, setActiveTopic] = useState<EducationKey>('accessibility')
   const education = EDUCATIONS[activeTopic]
 
@@ -41,20 +44,20 @@ export default function ContentEducation() {
             className={cn(activeTopic === key ? 'button-gold' : 'button-gold-outline text-site-cream', 'cursor-pointer')}
             aria-pressed={activeTopic === key}
           >
-            {edu.title}
+            {edu.title[locale]}
           </button>
         ))}
       </nav>
 
       <div className="flex flex-col gap-8 sm:hidden">
         {Object.values(EDUCATIONS).map((item) => (
-          <EducationCard key={item.title} education={item} />
+          <EducationCard key={item.title.en} education={item} locale={locale} />
         ))}
       </div>
 
       {education && (
         <div id="tab-content" className="hidden sm:block">
-          <EducationCard education={education} />
+          <EducationCard education={education} locale={locale} />
         </div>
       )}
     </section>

@@ -3,6 +3,8 @@ import { Animated } from '~/components/elements/Animated'
 import Image from '~/components/elements/Image'
 import Accordion from '~/components/flex/content/Accordion'
 import { EXPERIENCES, type Experience, type ExperienceProject } from '~/database/experiences'
+import { type Locale } from '~/i18n/locale'
+import { useLocale } from '~/i18n/useLocale'
 import { cn } from '~/services/utils'
 
 const LOGO_FRAME = {
@@ -49,12 +51,14 @@ function ProjectTiles({
   projects,
   openProjectIndex,
   onToggle,
-  idPrefix
+  idPrefix,
+  locale
 }: {
   projects: ExperienceProject[]
   openProjectIndex: number | null
   onToggle: (index: number, event: MouseEvent<HTMLButtonElement>) => void
   idPrefix: string
+  locale: Locale
 }) {
   return (
     <ul className="grid gap-3 sm:grid-cols-2">
@@ -92,12 +96,12 @@ function ProjectTiles({
                 />
                 <span className="min-w-0">
                   <span className="block font-semibold tracking-tight text-site-cream-fg">{project.title}</span>
-                  {project.role ? <span className="mt-0.5 block text-sm text-site-cream-fg/60">{project.role}</span> : null}
+                  {project.role ? <span className="mt-0.5 block text-sm text-site-cream-fg/60">{project.role[locale]}</span> : null}
                 </span>
               </button>
               <div id={tilePanelId} className="sm:hidden">
                 <Accordion open={open}>
-                  <p className="content-m px-4 pb-4 text-site-cream-fg/80">{project.description}</p>
+                  <p className="content-m px-4 pb-4 text-site-cream-fg/80">{project.description[locale]}</p>
                 </Accordion>
               </div>
             </li>
@@ -105,7 +109,7 @@ function ProjectTiles({
               <li id={rowPanelId} className="col-span-full hidden sm:block">
                 <Accordion open={Boolean(rowProject)}>
                   <p className="content-m rounded-2xl bg-site-chrome/5 px-5 py-4 text-site-cream-fg/80 ring-1 ring-site-chrome/8">
-                    {rowProject?.description}
+                    {rowProject?.description[locale]}
                   </p>
                 </Accordion>
               </li>
@@ -163,24 +167,33 @@ function JobBody({
   job,
   openProjectIndex,
   onProjectToggle,
-  idPrefix
+  idPrefix,
+  locale
 }: {
   job: Experience
   openProjectIndex: number | null
   onProjectToggle: (index: number, event: MouseEvent<HTMLButtonElement>) => void
   idPrefix: string
+  locale: Locale
 }) {
   return (
     <>
-      <p className="content-l text-site-cream-fg/80">{job.description}</p>
+      <p className="content-l text-site-cream-fg/80">{job.description[locale]}</p>
       {job.projects?.length ? (
-        <ProjectTiles projects={job.projects} openProjectIndex={openProjectIndex} onToggle={onProjectToggle} idPrefix={idPrefix} />
+        <ProjectTiles
+          projects={job.projects}
+          openProjectIndex={openProjectIndex}
+          onToggle={onProjectToggle}
+          idPrefix={idPrefix}
+          locale={locale}
+        />
       ) : null}
     </>
   )
 }
 
 export default function ContentExperiences() {
+  const { locale, t } = useLocale()
   const [openIndex, setOpenIndex] = useState(0)
   const [openProjectIndex, setOpenProjectIndex] = useState<number | null>(null)
   const job = EXPERIENCES[openIndex]
@@ -225,6 +238,7 @@ export default function ContentExperiences() {
                         openProjectIndex={openProjectIndex}
                         onProjectToggle={handleProjectToggle}
                         idPrefix={`accordion-${index}-`}
+                        locale={locale}
                       />
                     </div>
                   </Accordion>
@@ -234,7 +248,10 @@ export default function ContentExperiences() {
           </div>
 
           <div className="hidden gap-10 lg:grid lg:grid-cols-[minmax(16rem,20rem)_1fr] lg:gap-14">
-            <nav aria-label="Employers" className="flex flex-col gap-2 rounded-2xl bg-site-cream p-4 lg:sticky lg:top-28 lg:self-start">
+            <nav
+              aria-label={t.experience.employers}
+              className="flex flex-col gap-2 rounded-2xl bg-site-cream p-4 lg:sticky lg:top-28 lg:self-start"
+            >
               {EXPERIENCES.map((item, index) => (
                 <EmployerButton
                   key={item.title}
@@ -253,7 +270,13 @@ export default function ContentExperiences() {
                 <ExperienceLogo image={job.image} title={job.title} width={job.width} height={job.height} size="lg" />
                 <h2 className="title-l min-w-0 flex-1 text-balance text-site-cream-fg">{job.title}</h2>
               </div>
-              <JobBody job={job} openProjectIndex={openProjectIndex} onProjectToggle={handleProjectToggle} idPrefix="split-" />
+              <JobBody
+                job={job}
+                openProjectIndex={openProjectIndex}
+                onProjectToggle={handleProjectToggle}
+                idPrefix="split-"
+                locale={locale}
+              />
             </div>
           </div>
         </div>

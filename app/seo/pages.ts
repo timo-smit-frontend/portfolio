@@ -1,5 +1,6 @@
-import { SITE_IMAGE_ALT } from '../services/imageCopy'
-import { LINKEDIN_URL, SITE_DESCRIPTION, SITE_IMAGE, SITE_NAME, SITE_URL, canonicalUrl, normalizePath, toAbsoluteUrl } from './site'
+import { LOCALES, LOCALE_META, localeFromPath, seoPath, stripLocale, type Locale } from '../i18n/locale'
+import { messages } from '../i18n/messages'
+import { LINKEDIN_URL, SITE_IMAGE, SITE_NAME, SITE_URL, canonicalUrl, normalizePath, toAbsoluteUrl } from './site'
 
 export type LcpImage = {
   src: string
@@ -7,8 +8,16 @@ export type LcpImage = {
   sizes: string
 }
 
+export type SeoAlternate = {
+  hrefLang: string
+  href: string
+}
+
 export type SeoPage = {
   path: string
+  locale: Locale
+  htmlLang: string
+  ogLocale: string
   title: string
   description: string
   image: string
@@ -16,12 +25,14 @@ export type SeoPage = {
   type: 'website' | 'product'
   robots: string
   canonical: string | null
+  alternates: SeoAlternate[]
   jsonLd: Record<string, unknown>
   lcp?: LcpImage
 }
 
 const PERSON_ID = `${SITE_URL}/#person`
 const WEBSITE_ID = `${SITE_URL}/#website`
+const INDEXABLE_PAGES = ['/', '/experience', '/education', '/contact'] as const
 
 function titleWithBrand(pageTitle: string): string {
   return `${pageTitle} | ${SITE_NAME}`
@@ -34,12 +45,12 @@ function serializeJsonLdGraph(graph: Array<Record<string, unknown>>): Record<str
   }
 }
 
-function personNode(): Record<string, unknown> {
+function personNode(jobTitle: string): Record<string, unknown> {
   return {
     '@type': 'Person',
     '@id': PERSON_ID,
     name: SITE_NAME,
-    jobTitle: 'Front-end Developer',
+    jobTitle,
     url: SITE_URL,
     image: toAbsoluteUrl(SITE_IMAGE),
     sameAs: [LINKEDIN_URL]
@@ -52,7 +63,7 @@ function websiteNode(): Record<string, unknown> {
     '@id': WEBSITE_ID,
     name: SITE_NAME,
     url: SITE_URL,
-    inLanguage: 'en-GB',
+    inLanguage: LOCALES.map((locale) => LOCALE_META[locale].html),
     publisher: { '@id': PERSON_ID }
   }
 }
@@ -61,12 +72,14 @@ function webPageNode({
   path,
   title,
   description,
+  inLanguage,
   type = 'WebPage',
   dateModified
 }: {
   path: string
   title: string
   description: string
+  inLanguage: string
   type?: string
   dateModified?: string
 }): Record<string, unknown> {
@@ -78,18 +91,28 @@ function webPageNode({
     url,
     name: title,
     description,
+    inLanguage,
     isPartOf: { '@id': WEBSITE_ID },
     about: { '@id': PERSON_ID },
     ...(dateModified ? { dateModified } : {})
   }
 }
 
+function alternateLinks(page: string): SeoAlternate[] {
+  const locales = LOCALES.map((locale) => ({
+    hrefLang: LOCALE_META[locale].hrefLang,
+    href: canonicalUrl(seoPath(page, locale))
+  }))
+
+  return [...locales, { hrefLang: 'x-default', href: canonicalUrl(seoPath(page, 'en')) }]
+}
+
 function page({
   path,
+  locale,
   title,
   description,
   image = SITE_IMAGE,
-  imageAlt = SITE_IMAGE_ALT,
   type = 'website',
   robots = 'index, follow',
   extraGraph = [],
@@ -98,10 +121,10 @@ function page({
   lcp
 }: {
   path: string
+  locale: Locale
   title: string
   description: string
   image?: string
-  imageAlt?: string
   type?: 'website' | 'product'
   robots?: string
   extraGraph?: Array<Record<string, unknown>>
@@ -109,26 +132,35 @@ function page({
   dateModified?: string
   lcp?: LcpImage
 }): SeoPage {
+  const meta = LOCALE_META[locale]
+  const t = messages[locale]
+  const noindex = robots.includes('noindex')
+
   return {
     path,
+    locale,
+    htmlLang: meta.html,
+    ogLocale: meta.og,
     title,
     description,
     image: toAbsoluteUrl(image),
-    imageAlt,
+    imageAlt: t.image.alt,
     type,
     robots,
-    canonical: robots.includes('noindex') ? null : canonicalUrl(path),
+    canonical: noindex ? null : canonicalUrl(path),
+    alternates: noindex ? [] : alternateLinks(stripLocale(path)),
     lcp,
     jsonLd: serializeJsonLdGraph(
-      robots.includes('noindex')
-        ? [personNode(), websiteNode()]
+      noindex
+        ? [personNode(t.seo.jobTitle), websiteNode()]
         : [
-            personNode(),
+            personNode(t.seo.jobTitle),
             websiteNode(),
             webPageNode({
               path,
               title,
               description,
+              inLanguage: meta.html,
               type: webPageType ?? (type === 'product' ? 'ItemPage' : 'WebPage'),
               dateModified
             }),
@@ -138,56 +170,65 @@ function page({
   }
 }
 
-function notFoundPage(path: string): SeoPage {
+function notFoundPage(path: string, locale: Locale): SeoPage {
+  const t = messages[locale]
   return page({
     path,
-    title: titleWithBrand('Page not found'),
-    description: 'This page does not exist or has been moved.',
+    locale,
+    title: titleWithBrand(t.seo.notFoundTitle),
+    description: t.seo.notFoundDescription,
     robots: 'noindex, nofollow'
   })
 }
 
 export function getSeoForPath(pathname: string): SeoPage {
   const path = normalizePath(pathname)
+  const locale = localeFromPath(path)
+  const pageKey = stripLocale(path)
+  const localizedPath = seoPath(pageKey, locale)
+  const t = messages[locale]
 
-  if (path === '/') {
+  if (pageKey === '/') {
     return page({
-      path,
-      title: `${SITE_NAME} | Front-end Developer`,
-      description: SITE_DESCRIPTION
+      path: localizedPath,
+      locale,
+      title: t.seo.homeTitle,
+      description: t.seo.homeDescription
     })
   }
 
-  if (path === '/experience') {
+  if (pageKey === '/experience') {
     return page({
-      path,
-      title: titleWithBrand('Experience'),
-      description: 'Front-end work at UBO Agency, Capgemini, Accent Interactive, and SmartHOTEL.',
-      webPageType: 'WebPage'
+      path: localizedPath,
+      locale,
+      title: titleWithBrand(t.seo.experienceTitle),
+      description: t.seo.experienceDescription
     })
   }
 
-  if (path === '/education') {
+  if (pageKey === '/education') {
     return page({
-      path,
-      title: titleWithBrand('Education'),
-      description: 'Accessibility, React / Next.js, Artificial Intelligence, Communication and Multimedia Design, and consultancy.',
-      webPageType: 'WebPage'
+      path: localizedPath,
+      locale,
+      title: titleWithBrand(t.seo.educationTitle),
+      description: t.seo.educationDescription
     })
   }
 
-  if (path === '/contact') {
+  if (pageKey === '/contact') {
     return page({
-      path,
-      title: titleWithBrand('Contact'),
-      description: 'Send Timo Smit a message about work, accessibility, or a project.',
+      path: localizedPath,
+      locale,
+      title: titleWithBrand(t.seo.contactTitle),
+      description: t.seo.contactDescription,
       webPageType: 'ContactPage'
     })
   }
 
-  return notFoundPage(path)
+  return notFoundPage(path, locale)
 }
 
-export function getIndexableSeoPages(): SeoPage[] {
-  return [getSeoForPath('/'), getSeoForPath('/experience'), getSeoForPath('/education'), getSeoForPath('/contact')]
+export function getIndexableSeoPages(locale?: Locale): SeoPage[] {
+  const pages = LOCALES.flatMap((item) => INDEXABLE_PAGES.map((pageKey) => getSeoForPath(seoPath(pageKey, item))))
+  return locale ? pages.filter((item) => item.locale === locale) : pages
 }

@@ -1,26 +1,29 @@
 import { Link, useLocation } from 'react-router'
 import Logo from '~/components/elements/Logo'
-import { FOOTER_NAV } from '~/components/layout/nav'
+import { footerNav, homePath } from '~/components/layout/nav'
+import { useLocale } from '~/i18n/useLocale'
 import { SITE_NAME, isCurrentPath } from '~/seo/site'
 import { LINKEDIN_URL } from '~/services/contact'
 
 export default function Footer() {
   const location = useLocation()
+  const { locale, t } = useLocale()
+  const nav = footerNav(locale)
 
   return (
     <footer className="pb-2 text-site-cream-fg">
       <div className="container-full">
         <div className="overflow-clip rounded-2xl bg-site-cream px-6 py-12 sm:rounded-4xl sm:px-10 lg:px-16 lg:py-16">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-24">
-            <Link to="/" className="block w-fit transition-opacity hover:opacity-80" aria-label={SITE_NAME}>
+            <Link to={homePath(locale)} className="block w-fit transition-opacity hover:opacity-80" aria-label={SITE_NAME}>
               <Logo className="h-12 w-auto" tone="cream" />
             </Link>
 
             <div className="grid gap-10 sm:grid-cols-2 sm:gap-16">
-              <nav aria-label="Footer menu">
-                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/55">Menu</h2>
+              <nav aria-label={t.footer.menu}>
+                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/55">{t.footer.menu}</h2>
                 <ul className="mt-4 flex flex-col gap-3 text-base font-medium leading-7">
-                  {FOOTER_NAV.map((item) => (
+                  {nav.map((item) => (
                     <li key={item.to}>
                       <Link
                         to={item.to}
@@ -35,7 +38,7 @@ export default function Footer() {
               </nav>
 
               <div>
-                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/55">Follow me</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/55">{t.footer.follow}</h2>
                 <ul className="mt-4 flex flex-col gap-3 text-base font-medium leading-7">
                   <li>
                     <a
@@ -50,7 +53,7 @@ export default function Footer() {
                         <circle cx="4" cy="4" r="2" />
                       </svg>
                       <span className="link-underline">LinkedIn</span>
-                      <span className="sr-only"> (opens in a new tab)</span>
+                      <span className="sr-only">{t.footer.linkedInNewTab}</span>
                     </a>
                   </li>
                 </ul>

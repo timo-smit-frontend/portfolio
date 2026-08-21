@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import type { Locale } from '../app/i18n/locale'
 import { applySeoHead } from '../app/seo/head'
 import { buildLlmsFullTxt, buildLlmsTxt } from '../app/seo/llms'
 import { getIndexableSeoPages, getSeoForPath } from '../app/seo/pages'
@@ -43,22 +44,33 @@ export async function writePrerenderedApp(distDir: string, render: (url: string)
   }
 }
 
-export function buildSitemapXml(): string {
-  const urls = getIndexableSeoPages()
+function xhtmlLinks(page: { alternates: Array<{ hrefLang: string; href: string }> }): string {
+  return page.alternates
+    .map((alternate) => `    <xhtml:link rel="alternate" hreflang="${alternate.hrefLang}" href="${alternate.href}" />`)
+    .join('\n')
+}
+
+export function buildSitemapXml(locale: Locale = 'en'): string {
+  const urls = getIndexableSeoPages(locale)
     .map((page) => {
       const loc = page.canonical ?? canonicalUrl(page.path)
-      return `  <url>\n    <loc>${loc}</loc>\n  </url>`
+      return `  <url>\n    <loc>${loc}</loc>\n${xhtmlLinks(page)}\n  </url>`
     })
     .join('\n')
 
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`
 }
 
-export function writeSitemap(dir: string): string {
-  const sitemapPath = path.join(dir, 'sitemap.xml')
-  fs.mkdirSync(dir, { recursive: true })
-  fs.writeFileSync(sitemapPath, buildSitemapXml())
+export function writeSitemap(dir: string, locale: Locale = 'en'): string {
+  const sitemapPath = locale === 'nl' ? path.join(dir, 'nl', 'sitemap.xml') : path.join(dir, 'sitemap.xml')
+  fs.mkdirSync(path.dirname(sitemapPath), { recursive: true })
+  fs.writeFileSync(sitemapPath, buildSitemapXml(locale))
   return sitemapPath
+}
+
+export function writeSitemaps(dir: string): void {
+  writeSitemap(dir, 'en')
+  writeSitemap(dir, 'nl')
 }
 
 export function writeLlms(dir: string): void {
@@ -68,7 +80,7 @@ export function writeLlms(dir: string): void {
 }
 
 export function writeSeoPublic(dir: string): void {
-  writeSitemap(dir)
+  writeSitemaps(dir)
   writeLlms(dir)
 }
 

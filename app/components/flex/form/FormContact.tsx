@@ -3,6 +3,7 @@ import { Animated } from '~/components/elements/Animated'
 import Breadcrumbs from '~/components/elements/Breadcrumbs'
 import SectionCard from '~/components/elements/SectionCard'
 import useLocationFinder from '~/hooks/useLocationFinder'
+import { useLocale } from '~/i18n/useLocale'
 import { LINKEDIN_URL, sendContactMessage } from '~/services/contact'
 import { cn, isValidEmail } from '~/services/utils'
 
@@ -19,21 +20,24 @@ function LinkedInIcon() {
 }
 
 function ContactLinkedInLink() {
+  const { t } = useLocale()
+
   return (
     <a href={LINKEDIN_URL} target="_blank" rel="noreferrer noopener" className={contactLinkClass}>
       <LinkedInIcon />
       <span className="link-underline">LinkedIn</span>
-      <span className="sr-only"> (opens in a new tab)</span>
+      <span className="sr-only">{t.footer.linkedInNewTab}</span>
     </a>
   )
 }
 
 export function FormContactLinks({ variant = 'stacked' }: { variant?: 'stacked' | 'split' }) {
+  const { t } = useLocale()
   const listClass = cn('mt-4 flex flex-col text-base font-medium leading-7', variant === 'split' ? 'sm:gap-2 gap-6' : 'gap-2')
 
   return (
     <div>
-      <h2 className="text-lg font-bold leading-7">Contact</h2>
+      <h2 className="text-lg font-bold leading-7">{t.contact.heading}</h2>
       <ul className={listClass}>
         <li>
           <ContactLinkedInLink />
@@ -45,28 +49,12 @@ export function FormContactLinks({ variant = 'stacked' }: { variant?: 'stacked' 
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
-const NAME_HINT = "Don't forget to add your name."
-const EMAIL_HINT = "Don't forget to add your email."
-const EMAIL_INVALID_HINT = "That doesn't look like a valid email, try name@example.com."
-const MESSAGE_HINT = "Don't forget to add your message."
-
-function emailHint(value: string) {
-  if (value.trim() === '') {
-    return EMAIL_HINT
-  }
-
-  return isValidEmail(value) ? '' : EMAIL_INVALID_HINT
-}
-
 function applyRequiredValidity(input: HTMLInputElement | HTMLTextAreaElement, value: string, hint: string) {
   input.setCustomValidity(value.trim() === '' ? hint : '')
 }
 
-function applyEmailValidity(input: HTMLInputElement, value: string) {
-  input.setCustomValidity(emailHint(value))
-}
-
 function ContactForm() {
+  const { t } = useLocale()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
@@ -85,6 +73,15 @@ function ContactForm() {
   const showNameError = nameTouched && !nameIsValid
   const showEmailError = emailTouched && !emailIsValid
   const showMessageError = messageTouched && !messageIsValid
+
+  function currentEmailHint(value: string) {
+    if (value.trim() === '') return t.contact.emailHint
+    return isValidEmail(value) ? '' : t.contact.emailInvalidHint
+  }
+
+  function applyEmailValidity(input: HTMLInputElement, value: string) {
+    input.setCustomValidity(currentEmailHint(value))
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -113,7 +110,7 @@ function ContactForm() {
     setStatus('submitting')
 
     try {
-      await sendContactMessage({ name, email: email.trim(), message })
+      await sendContactMessage({ name, email: email.trim(), message, subject: t.contact.subject(name) })
       setName('')
       setEmail('')
       setMessage('')
@@ -129,7 +126,7 @@ function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 text-site-cream-fg">
       <div className="hidden" aria-hidden>
-        <label htmlFor="contact-company">Company</label>
+        <label htmlFor="contact-company">{t.contact.company}</label>
         <input
           id="contact-company"
           name="company"
@@ -142,7 +139,7 @@ function ContactForm() {
 
       <div className="flex flex-col gap-2">
         <label htmlFor="contact-name" className="text-sm font-medium leading-7">
-          Name <span aria-hidden>*</span>
+          {t.contact.name} <span aria-hidden>*</span>
         </label>
         <input
           id="contact-name"
@@ -156,24 +153,24 @@ function ContactForm() {
           value={name}
           onChange={(event) => {
             setName(event.target.value)
-            applyRequiredValidity(event.target, event.target.value, NAME_HINT)
+            applyRequiredValidity(event.target, event.target.value, t.contact.nameHint)
           }}
           onBlur={(event) => {
             setNameTouched(true)
-            applyRequiredValidity(event.target, event.target.value, NAME_HINT)
+            applyRequiredValidity(event.target, event.target.value, t.contact.nameHint)
           }}
           className="field"
         />
         {showNameError && (
           <p id="contact-name-error" className="content-s text-site-cream-fg/70">
-            {NAME_HINT}
+            {t.contact.nameHint}
           </p>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
         <label htmlFor="contact-email" className="text-sm font-medium leading-7">
-          Email <span aria-hidden>*</span>
+          {t.contact.email} <span aria-hidden>*</span>
         </label>
         <input
           id="contact-email"
@@ -202,14 +199,14 @@ function ContactForm() {
         />
         {showEmailError && (
           <p id="contact-email-error" className="content-s text-site-cream-fg/70">
-            {emailHint(email)}
+            {currentEmailHint(email)}
           </p>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
         <label htmlFor="contact-message" className="text-sm font-medium leading-7">
-          Message <span aria-hidden>*</span>
+          {t.contact.message} <span aria-hidden>*</span>
         </label>
         <textarea
           id="contact-message"
@@ -222,17 +219,17 @@ function ContactForm() {
           value={message}
           onChange={(event) => {
             setMessage(event.target.value)
-            applyRequiredValidity(event.target, event.target.value, MESSAGE_HINT)
+            applyRequiredValidity(event.target, event.target.value, t.contact.messageHint)
           }}
           onBlur={(event) => {
             setMessageTouched(true)
-            applyRequiredValidity(event.target, event.target.value, MESSAGE_HINT)
+            applyRequiredValidity(event.target, event.target.value, t.contact.messageHint)
           }}
           className="field min-h-40"
         />
         {showMessageError && (
           <p id="contact-message-error" className="content-s text-site-cream-fg/70">
-            {MESSAGE_HINT}
+            {t.contact.messageHint}
           </p>
         )}
       </div>
@@ -242,19 +239,22 @@ function ContactForm() {
         className="button-gold cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
         disabled={status === 'submitting'}
       >
-        {status === 'submitting' ? 'Sending…' : 'Send message'}
+        {status === 'submitting' ? t.contact.sending : t.contact.send}
       </button>
 
       <div aria-live="polite">
-        {status === 'success' && <p className="content-s text-site-cyan">Thanks! I will get back to you soon.</p>}
-        {status === 'error' && <p className="content-s text-site-cream-fg/70">Something went wrong. Try again later.</p>}
+        {status === 'success' && <p className="content-s text-site-cyan">{t.contact.success}</p>}
+        {status === 'error' && <p className="content-s text-site-cream-fg/70">{t.contact.error}</p>}
       </div>
     </form>
   )
 }
 
 export default function FormContact({ title, description }: { title?: string; description?: string }) {
+  const { t } = useLocale()
   const { ref } = useLocationFinder()
+  const heading = title ?? t.contact.title
+  const lead = description ?? t.contact.description
 
   return (
     <SectionCard
@@ -266,23 +266,17 @@ export default function FormContact({ title, description }: { title?: string; de
     >
       <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
         <div className="flex flex-col gap-12">
-          {(title || description) && (
-            <div className="flex max-w-xl flex-col gap-8">
-              <Breadcrumbs className="text-site-cream-fg/70" />
-              <div className="flex flex-col gap-2 lg:gap-4">
-                {title && (
-                  <Animated delay={100}>
-                    <h1 className="title-section">{title}</h1>
-                  </Animated>
-                )}
-                {description && (
-                  <Animated delay={200}>
-                    <p className="content-l text-site-cream-fg/80">{description}</p>
-                  </Animated>
-                )}
-              </div>
+          <div className="flex max-w-xl flex-col gap-8">
+            <Breadcrumbs className="text-site-cream-fg/70" />
+            <div className="flex flex-col gap-2 lg:gap-4">
+              <Animated delay={100}>
+                <h1 className="title-section">{heading}</h1>
+              </Animated>
+              <Animated delay={200}>
+                <p className="content-l text-site-cream-fg/80">{lead}</p>
+              </Animated>
             </div>
-          )}
+          </div>
 
           <Animated delay={300}>
             <div>

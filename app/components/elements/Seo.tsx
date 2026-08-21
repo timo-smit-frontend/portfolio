@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router'
 import { getSeoForPath } from '~/seo/pages'
-import { SITE_LOCALE, SITE_NAME, SITE_THEME_COLOR } from '~/seo/site'
+import { SITE_NAME, SITE_THEME_COLOR } from '~/seo/site'
 
 function upsertMeta(attribute: 'name' | 'property', key: string, content: string) {
   const selector = `meta[${attribute}="${key}"]`
@@ -17,7 +17,7 @@ function upsertMeta(attribute: 'name' | 'property', key: string, content: string
 }
 
 function upsertLink(rel: string, href: string | null) {
-  const selector = `link[rel="${rel}"]`
+  const selector = `link[rel="${rel}"]:not([hreflang])`
   let element = document.head.querySelector<HTMLLinkElement>(selector)
 
   if (!href) {
@@ -32,6 +32,29 @@ function upsertLink(rel: string, href: string | null) {
   }
 
   element.setAttribute('href', href)
+}
+
+function upsertHreflang(alternates: Array<{ hrefLang: string; href: string }>) {
+  document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((element) => element.remove())
+
+  for (const alternate of alternates) {
+    const link = document.createElement('link')
+    link.rel = 'alternate'
+    link.hreflang = alternate.hrefLang
+    link.href = alternate.href
+    document.head.appendChild(link)
+  }
+}
+
+function upsertOgLocaleAlternates(values: string[]) {
+  document.head.querySelectorAll('meta[property="og:locale:alternate"]').forEach((element) => element.remove())
+
+  for (const content of values) {
+    const meta = document.createElement('meta')
+    meta.setAttribute('property', 'og:locale:alternate')
+    meta.setAttribute('content', content)
+    document.head.appendChild(meta)
+  }
 }
 
 function upsertJsonLd(data: Record<string, unknown>) {
@@ -54,13 +77,20 @@ export default function Seo() {
   useEffect(() => {
     const seo = getSeoForPath(pathname)
 
+    document.documentElement.lang = seo.htmlLang
     document.title = seo.title
     upsertMeta('name', 'description', seo.description)
     upsertMeta('name', 'robots', seo.robots)
     upsertMeta('name', 'theme-color', SITE_THEME_COLOR)
     upsertLink('canonical', seo.canonical)
+    upsertHreflang(seo.alternates)
     upsertMeta('property', 'og:site_name', SITE_NAME)
-    upsertMeta('property', 'og:locale', SITE_LOCALE)
+    upsertMeta('property', 'og:locale', seo.ogLocale)
+    upsertOgLocaleAlternates(
+      seo.alternates
+        .filter((alternate) => alternate.hrefLang !== 'x-default' && alternate.hrefLang !== seo.htmlLang)
+        .map((alternate) => alternate.hrefLang.replace('-', '_'))
+    )
     upsertMeta('property', 'og:type', seo.type)
     upsertMeta('property', 'og:title', seo.title)
     upsertMeta('property', 'og:description', seo.description)

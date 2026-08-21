@@ -1,7 +1,5 @@
 export const SITE_URL = 'https://www.timosmit.dev'
 export const SITE_NAME = 'Timo Smit'
-export const SITE_LOCALE = 'en_GB'
-export const SITE_DESCRIPTION = 'The portfolio of Timo Smit, a front-end developer working at UBO Agency.'
 export const SITE_IMAGE = '/images/timosmit.webp'
 export const SITE_THEME_COLOR = '#061A1E'
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/timo-smit-09983b14a/'
@@ -18,7 +16,7 @@ export function isCurrentPath(pathname: string, href: string): boolean {
   const current = normalizePath(pathname)
   const target = normalizePath(href)
 
-  if (target === '/') return current === '/'
+  if (target === '/' || target === '/nl') return current === target
   return current === target || current.startsWith(`${target}/`)
 }
 

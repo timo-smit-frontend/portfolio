@@ -5,7 +5,17 @@ export { LINKEDIN_URL }
 
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit'
 
-export async function sendContactMessage({ name, email, message }: { name: string; email: string; message: string }) {
+export async function sendContactMessage({
+  name,
+  email,
+  message,
+  subject
+}: {
+  name: string
+  email: string
+  message: string
+  subject?: string
+}) {
   if (!isValidEmail(email)) {
     throw new Error('Invalid email address')
   }
@@ -26,7 +36,7 @@ export async function sendContactMessage({ name, email, message }: { name: strin
       name,
       email,
       message,
-      subject: `Portfolio message from ${name}`
+      subject: subject ?? `Portfolio message from ${name}`
     })
   })
 

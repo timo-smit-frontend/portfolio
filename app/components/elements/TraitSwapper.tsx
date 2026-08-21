@@ -1,47 +1,10 @@
 import { useEffect, useState } from 'react'
+import { messages } from '~/i18n/messages'
 
-const characterTraits = [
-  'creative',
-  'proactive',
-  'cool',
-  'motivated',
-  'social',
-  'enthusiastic',
-  'happy',
-  'nerdy',
-  'respectable',
-  'weird',
-  'funny',
-  'adventurous',
-  'surprising',
-  'badass',
-  'fashionable',
-  'inventive',
-  'playful',
-  'daring',
-  'charismatic',
-  'eccentric',
-  'optimistic',
-  'lively',
-  'spirited',
-  'humorous',
-  'imaginative',
-  'bold',
-  'artistic',
-  'dreamy',
-  'intuitive',
-  'spontaneous',
-  'compassionate',
-  'kind-hearted',
-  'energetic',
-  'dynamic',
-  'sympathetic'
-]
-
-const TraitSwapper = () => {
+const TraitSwapper = ({ traits = messages.en.traits }: { traits?: readonly string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)
-  const [currentTrait, setCurrentTrait] = useState(characterTraits[0])
+  const [currentTrait, setCurrentTrait] = useState(traits[0] ?? '')
   const [isErasing, setIsErasing] = useState(false)
   const [isSmallScreen, setIsSmallScreen] = useState(false)
   const [randomTrait, setRandomTrait] = useState('')
@@ -76,20 +39,20 @@ const TraitSwapper = () => {
       }, 3000)
     } else {
       setIsErasing(false)
-      const nextIndex = currentIndex === characterTraits.length - 1 ? 0 : currentIndex + 1
+      const nextIndex = currentIndex === traits.length - 1 ? 0 : currentIndex + 1
       setCurrentIndex(nextIndex)
-      setCurrentTrait(characterTraits[nextIndex])
+      setCurrentTrait(traits[nextIndex] ?? '')
     }
 
     return () => clearTimeout(timeoutId)
-  }, [currentIndex, charIndex, currentTrait, isErasing])
+  }, [currentIndex, charIndex, currentTrait, isErasing, traits])
 
   useEffect(() => {
     if (isSmallScreen) {
-      const randomIndex = Math.floor(Math.random() * characterTraits.length)
-      setRandomTrait(characterTraits[randomIndex])
+      const randomIndex = Math.floor(Math.random() * traits.length)
+      setRandomTrait(traits[randomIndex] ?? '')
     }
-  }, [isSmallScreen])
+  }, [isSmallScreen, traits])
 
   const traitToDisplay = isSmallScreen ? randomTrait || '' : currentTrait.substring(0, charIndex) + '_'
 

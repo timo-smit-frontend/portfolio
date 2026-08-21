@@ -4,6 +4,7 @@ import { Animated } from '~/components/elements/Animated'
 import { Carousel, CarouselContent, CarouselItem } from '~/components/elements/Carousel'
 import Image from '~/components/elements/Image'
 import SectionCard from '~/components/elements/SectionCard'
+import { useLocale } from '~/i18n/useLocale'
 
 const LOGOS = [
   { src: '/images/logo/ubo.png', title: 'UBO Agency', width: 310, height: 163 },
@@ -52,6 +53,7 @@ function LogoSlide({ logo, decorative = false }: { logo: (typeof LOGOS)[number];
 }
 
 export default function ContentLogos() {
+  const { t } = useLocale()
   const prefersReducedMotion = useSyncExternalStore(subscribeReducedMotion, getReducedMotionSnapshot, () => true)
   const autoScroll = useMemo(
     () =>
@@ -71,7 +73,7 @@ export default function ContentLogos() {
       <div className="flex flex-col items-center gap-8">
         <Animated delay={100}>
           <p className="px-6 text-center text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/60 sm:px-10 lg:px-16">
-            Projects and collaborations.
+            {t.logos.label}
           </p>
         </Animated>
         {prefersReducedMotion ? (
@@ -92,7 +94,7 @@ export default function ContentLogos() {
           <Carousel
             opts={{ loop: true, align: 'start', dragFree: true }}
             plugins={[autoScroll]}
-            aria-label="Projects and collaborations."
+            aria-label={t.logos.label}
             className="w-full [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
           >
             <CarouselContent>

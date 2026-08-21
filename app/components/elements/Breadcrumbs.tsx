@@ -1,4 +1,6 @@
 import { Link, useLocation } from 'react-router'
+import { stripLocale } from '~/i18n/locale'
+import { useLocale } from '~/i18n/useLocale'
 import { cn } from '~/services/utils'
 
 export type BreadcrumbItem = {
@@ -6,23 +8,22 @@ export type BreadcrumbItem = {
   url?: string
 }
 
-const PAGE_TITLES: Record<string, string> = {
-  experience: 'Experience',
-  education: 'Education',
-  contact: 'Contact'
-}
+function crumbsFromPath(
+  pathname: string,
+  homeTitle: string,
+  pageTitles: Record<string, string>,
+  localize: (path: string) => string
+): BreadcrumbItem[] {
+  const page = stripLocale(pathname)
+  if (page === '/') return []
 
-function crumbsFromPath(pathname: string): BreadcrumbItem[] {
-  const path = pathname.replace(/\/+$/, '') || '/'
-  if (path === '/') return []
-
-  const crumbs: BreadcrumbItem[] = [{ title: 'Home', url: '/' }]
-  const segments = path.split('/').filter(Boolean)
+  const crumbs: BreadcrumbItem[] = [{ title: homeTitle, url: localize('/') }]
+  const segments = page.split('/').filter(Boolean)
 
   segments.forEach((segment, index) => {
     const isLast = index === segments.length - 1
-    const url = `/${segments.slice(0, index + 1).join('/')}/`
-    const title = PAGE_TITLES[segment] ?? segment
+    const url = localize(`/${segments.slice(0, index + 1).join('/')}/`)
+    const title = pageTitles[segment] ?? segment
     crumbs.push(isLast ? { title } : { title, url })
   })
 
@@ -31,7 +32,19 @@ function crumbsFromPath(pathname: string): BreadcrumbItem[] {
 
 export default function Breadcrumbs({ items, className }: { items?: BreadcrumbItem[]; className?: string }) {
   const { pathname } = useLocation()
-  const crumbs = items ?? crumbsFromPath(pathname)
+  const { t, localize } = useLocale()
+  const crumbs =
+    items ??
+    crumbsFromPath(
+      pathname,
+      t.nav.home,
+      {
+        experience: t.nav.experience,
+        education: t.nav.education,
+        contact: t.nav.contact
+      },
+      localize
+    )
 
   if (crumbs.length === 0) {
     return null
