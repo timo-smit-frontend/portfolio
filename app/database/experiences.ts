@@ -34,7 +34,7 @@ export const EXPERIENCES: Experience[] = [
         width: 177,
         height: 32,
         description:
-          "I worked on Casio's learning platform, focusing on accessibility in the React frontend and the login theme. Contrast, focus outlines, and making the LMS usable for more people. Same accessibility thread I picked up at the Tweede Kamer."
+          "I brought accessibility into Casio's learning platform, sitting between developers and designers so those choices actually made it into the React frontend. Contrast, focus, and the login theme on a live LMS people use to learn. A household name, and the same specialist work I did for the Tweede Kamer."
       },
       {
         image: '/images/logo/fairbanks.svg',
@@ -43,7 +43,7 @@ export const EXPERIENCES: Experience[] = [
         width: 158,
         height: 31,
         description:
-          'I spent a large part of my time on Fairbanks, a Dutch IT consultancy. I built and iterated on their multilingual Remix site: knowledge base, keynotes, language switching, and motion on forms.'
+          "I built Fairbanks' multilingual Remix site: knowledge base, keynotes, language switching, and motion on the forms. A full content platform for a Dutch IT consultancy, not a brochure. Frontend that has to look considered and still work when the content keeps moving."
       },
       {
         image: '/images/logo/movimento.svg',
@@ -52,7 +52,7 @@ export const EXPERIENCES: Experience[] = [
         width: 178,
         height: 34,
         description:
-          'For Movimento, a healthcare recruitment agency, I worked on their Remix site and the job application flow, including how candidates get assigned from vacancies, plus accessibility and animation polish.'
+          'For Movimento I built the healthcare recruitment site and the path from vacancy to application, including how candidates get assigned. Accessibility and motion were part of that journey, not a polish pass. Real candidate-facing product work, for people looking for a job in care.'
       },
       {
         image: '/images/logo/brouwer-metaal.svg',
@@ -61,7 +61,7 @@ export const EXPERIENCES: Experience[] = [
         width: 294,
         height: 35,
         description:
-          "I developed Brouwer Metaal's international site, including interactive 3D product models, quote requests, and translations across English, French, German, Portuguese, and Spanish."
+          "I developed Brouwer Metaal's international site, with interactive 3D product models, quote requests, and translations in English, French, German, Portuguese, and Spanish. Visual and technical in one build. Manufacturing products you can turn around in the browser, for a brand that sells across Europe."
       },
       {
         image: '/images/logo/im-duurzaam.svg',
@@ -70,7 +70,16 @@ export const EXPERIENCES: Experience[] = [
         width: 473,
         height: 380,
         description:
-          "I shipped IM Duurzaam's Remix site with GSAP-driven motion, sliders, and an English translation, for a sustainability brand where animation and content structure had to work together."
+          "I built IM Duurzaam's Remix site with motion that carries the story, not decoration on top. GSAP, sliders, and an English version, for a sustainability brand that needed the frontend to feel as considered as the work. Creative development in the open, not only in the design file."
+      },
+      {
+        image: '/images/logo/profield.svg',
+        title: 'Profield',
+        role: 'Front-end developer',
+        width: 845,
+        height: 178,
+        description:
+          'For Profield I built vacancy search, the application flow, and an internal meetings dashboard on live data. Closer to a product than a brochure. Frontend recruiters and candidates depend on during a working day, including forms that have to submit and a dashboard that has to stay in sync.'
       }
     ]
   },
@@ -89,7 +98,7 @@ export const EXPERIENCES: Experience[] = [
         width: 1200,
         height: 339,
         description:
-          'I took on a project for the Tweede Kamer focused solely on accessibility. This was motivated by my desire to stay connected to my creative background while also expanding my skill set and expertise. By researching WCAG, creating an accessibility plan and implementing the changes in React/Next.js.'
+          'I took on a project for the Tweede Kamer focused solely on accessibility. I researched WCAG, wrote an improvement plan, and implemented the changes in React and Next.js. Specialist work for the Dutch House of Representatives, on a site that has to work for everyone who wants to follow Dutch democracy.'
       },
       {
         image: '/images/logo/wfp.webp',
@@ -98,7 +107,7 @@ export const EXPERIENCES: Experience[] = [
         width: 360,
         height: 167,
         description:
-          'I had the pleasure of being part of project Enhance. Working together with the World Food Program, I mainly focused on optimizing the website, increasing efficiency and improving the user experience.'
+          'I was part of Project Enhance with the World Food Programme, focused on performance and user experience. Making a UN platform faster and easier to use, on a large React site, for an organisation that operates worldwide.'
       }
     ]
   },

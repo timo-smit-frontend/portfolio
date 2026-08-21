@@ -1,11 +1,19 @@
-import { useState, type MouseEvent } from 'react'
+import { Fragment, useState, type MouseEvent } from 'react'
 import { Animated } from '~/components/elements/Animated'
 import Image from '~/components/elements/Image'
 import Accordion from '~/components/flex/content/Accordion'
-import { EXPERIENCES, type Experience, type ExperienceProject } from '~/database/experiences'
+import { EXPERIENCES, type ExperienceProject } from '~/database/experiences'
 import { cn } from '~/services/utils'
 
-const ENTRY_DELAYS = [100, 200, 300, 400] as const
+const LOGO_FRAME = {
+  sm: 'h-6 w-20',
+  lg: 'h-16 w-44'
+} as const
+
+const LOGO_IMAGE = {
+  sm: 'h-4',
+  lg: 'h-12 sm:h-16'
+} as const
 
 function padIndex(index: number) {
   return String(index + 1).padStart(2, '0')
@@ -16,46 +24,28 @@ function ExperienceLogo({
   title,
   width,
   height,
-  className
+  size = 'sm'
 }: {
   image: string
   title: string
   width: number
   height: number
-  className?: string
+  size?: keyof typeof LOGO_FRAME
 }) {
   return (
-    <span
-      className={cn('flex aspect-2/1 h-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white py-4 px-3', className)}
-    >
-      <Image src={image} width={width} height={height} alt={title} className="h-8 w-full object-contain" />
+    <span className={cn('flex shrink-0 items-center justify-start', LOGO_FRAME[size])}>
+      <Image
+        src={image}
+        width={width}
+        height={height}
+        alt={title}
+        className={cn(LOGO_IMAGE[size], 'w-full h-auto max-w-full object-contain object-left')}
+      />
     </span>
   )
 }
 
-function ToggleMark({ open }: { open: boolean }) {
-  return (
-    <span
-      className={cn(
-        'flex size-10 shrink-0 items-center justify-center rounded-full bg-site-gold text-xl font-medium leading-none text-site-gold-fg smooth',
-        open && 'rotate-45'
-      )}
-      aria-hidden
-    >
-      +
-    </span>
-  )
-}
-
-function VisitLink({ href }: { href: string }) {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="button-gold-outline mt-2 w-fit text-site-cream-fg">
-      Visit website →<span className="sr-only"> (opens in a new tab)</span>
-    </a>
-  )
-}
-
-function ProjectRows({
+function ProjectTiles({
   projects,
   openProjectIndex,
   onToggle
@@ -65,87 +55,71 @@ function ProjectRows({
   onToggle: (index: number, event: MouseEvent<HTMLButtonElement>) => void
 }) {
   return (
-    <div className="flex flex-col">
+    <ul className="grid gap-3 sm:grid-cols-2">
       {projects.map((project, index) => {
         const open = openProjectIndex === index
+        const isRowEnd = index % 2 === 1 || index === projects.length - 1
+        const rowStart = index % 2 === 0 ? index : index - 1
+        const rowEnd = Math.min(rowStart + 1, projects.length - 1)
+        const openInRow = openProjectIndex !== null && openProjectIndex >= rowStart && openProjectIndex <= rowEnd
+        const rowProject = openInRow ? projects[openProjectIndex] : null
+        const rowPanelId = `project-row-${rowStart}`
+        const tilePanelId = `project-${index}`
 
         return (
-          <div key={project.title} className="border-t border-site-chrome/8">
-            <button
-              type="button"
-              className="flex w-full items-center gap-3 py-3 text-left smooth hover:text-site-cyan"
-              onClick={(event) => onToggle(index, event)}
-              aria-expanded={open}
+          <Fragment key={project.title}>
+            <li
+              className={cn(
+                'overflow-hidden rounded-2xl ring-1 ring-site-chrome/8 smooth',
+                open ? 'bg-site-chrome/5' : 'hover:bg-site-chrome/5'
+              )}
             >
-              <ExperienceLogo
-                image={project.image}
-                title={project.title}
-                width={project.width}
-                height={project.height}
-                className="h-12 w-24 rounded-lg py-3 px-2"
-              />
-              <span className="min-w-0 flex-1">
-                <span className="block font-semibold tracking-tight">{project.title}</span>
-                {project.role ? <span className="mt-0.5 block text-sm text-site-cream-fg/60">{project.role}</span> : null}
-              </span>
-            </button>
-            <Accordion open={open}>
-              <p className="content-m pb-3 pl-[4.75rem] text-site-cream-fg/80">{project.description}</p>
-            </Accordion>
-          </div>
+              <button
+                type="button"
+                className="flex w-full cursor-pointer flex-col items-start gap-3 p-4 text-left"
+                onClick={(event) => onToggle(index, event)}
+                aria-expanded={open}
+                aria-controls={`${tilePanelId} ${rowPanelId}`}
+              >
+                <Image
+                  src={project.image}
+                  width={project.width}
+                  height={project.height}
+                  alt={project.title}
+                  className="h-10 w-full max-w-32 object-contain object-left"
+                />
+                <span className="min-w-0">
+                  <span className="block font-semibold tracking-tight text-site-cream-fg">{project.title}</span>
+                  {project.role ? <span className="mt-0.5 block text-sm text-site-cream-fg/60">{project.role}</span> : null}
+                </span>
+              </button>
+              <div id={tilePanelId} className="sm:hidden">
+                <Accordion open={open}>
+                  <p className="content-m px-4 pb-4 text-site-cream-fg/80">{project.description}</p>
+                </Accordion>
+              </div>
+            </li>
+            {isRowEnd ? (
+              <li id={rowPanelId} className="col-span-full hidden sm:block">
+                <Accordion open={Boolean(rowProject)}>
+                  <p className="content-m rounded-2xl bg-site-chrome/5 px-5 py-4 text-site-cream-fg/80 ring-1 ring-site-chrome/8">
+                    {rowProject?.description}
+                  </p>
+                </Accordion>
+              </li>
+            ) : null}
+          </Fragment>
         )
       })}
-    </div>
-  )
-}
-
-function JobCard({
-  job,
-  index,
-  open,
-  openProjectIndex,
-  onToggle,
-  onProjectToggle
-}: {
-  job: Experience
-  index: number
-  open: boolean
-  openProjectIndex: number | null
-  onToggle: () => void
-  onProjectToggle: (projectIndex: number, event: MouseEvent<HTMLButtonElement>) => void
-}) {
-  const panelId = `experience-panel-${index}`
-
-  return (
-    <article className="overflow-hidden rounded-3xl bg-site-cream text-site-cream-fg ring-1 ring-site-chrome/8">
-      <button
-        type="button"
-        className={cn('flex w-full items-center gap-4 p-5 text-left sm:gap-6 sm:p-7 lg:p-8', !open && 'hover:bg-site-chrome/5 smooth')}
-        onClick={onToggle}
-        aria-expanded={open}
-        aria-controls={panelId}
-      >
-        <span className="font-site-outfit text-sm font-semibold tracking-[0.16em] text-site-gold">{padIndex(index)}</span>
-        <ExperienceLogo image={job.image} title={job.title} width={job.width} height={job.height} />
-        <h2 className="title-xs min-w-0 flex-1 text-balance">{job.title}</h2>
-        <ToggleMark open={open} />
-      </button>
-      <Accordion open={open}>
-        <div id={panelId} className="flex flex-col gap-6 px-5 pb-6 sm:px-7 sm:pb-8 lg:px-8">
-          <p className="content-l text-site-cream-fg/80">{job.description}</p>
-          {job.link ? <VisitLink href={job.link} /> : null}
-          {job.projects?.length ? (
-            <ProjectRows projects={job.projects} openProjectIndex={openProjectIndex} onToggle={onProjectToggle} />
-          ) : null}
-        </div>
-      </Accordion>
-    </article>
+    </ul>
   )
 }
 
 export default function ContentExperiences() {
   const [openIndex, setOpenIndex] = useState(0)
   const [openProjectIndex, setOpenProjectIndex] = useState<number | null>(null)
+  const job = EXPERIENCES[openIndex]
+  const panelId = 'experience-split-panel'
 
   const handleToggle = (index: number) => {
     if (openIndex === index) return
@@ -158,24 +132,50 @@ export default function ContentExperiences() {
     setOpenProjectIndex(openProjectIndex === projectIndex ? null : projectIndex)
   }
 
+  if (!job) return null
+
   return (
     <section id="content-experiences" className="px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
-      <ul className="flex flex-col gap-4 lg:mx-auto lg:max-w-4xl">
-        {EXPERIENCES.map((job, index) => (
-          <li key={job.title}>
-            <Animated delay={ENTRY_DELAYS[index] ?? 400}>
-              <JobCard
-                job={job}
-                index={index}
-                open={openIndex === index}
-                openProjectIndex={openIndex === index ? openProjectIndex : null}
-                onToggle={() => handleToggle(index)}
-                onProjectToggle={handleProjectToggle}
-              />
-            </Animated>
-          </li>
-        ))}
-      </ul>
+      <Animated delay={100}>
+        <div className="grid gap-10 lg:grid-cols-[minmax(16rem,20rem)_1fr] lg:gap-14">
+          <nav aria-label="Employers" className="flex flex-col gap-2 lg:sticky lg:top-28 lg:self-start bg-site-cream rounded-2xl p-4">
+            {EXPERIENCES.map((item, index) => {
+              const selected = openIndex === index
+
+              return (
+                <button
+                  key={item.title}
+                  type="button"
+                  aria-pressed={selected}
+                  aria-controls={panelId}
+                  className={cn(
+                    'flex w-full items-center gap-4 rounded-2xl p-3 text-left smooth',
+                    selected ? 'cursor-default bg-site-gold text-site-gold-fg' : 'cursor-pointer hover:bg-site-chrome/5'
+                  )}
+                  onClick={() => handleToggle(index)}
+                >
+                  <ExperienceLogo image={item.image} title={item.title} width={item.width} height={item.height} size="sm" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-xs font-semibold tracking-[0.16em] text-site-cream-fg opacity-70">{padIndex(index)}</span>
+                    <span className="mt-0.5 block font-semibold tracking-tight text-site-cream-fg">{item.title}</span>
+                  </span>
+                </button>
+              )
+            })}
+          </nav>
+
+          <div id={panelId} className="flex flex-col gap-6 bg-site-cream p-8 rounded-2xl">
+            <div className="flex flex-col gap-4 sm:gap-10 ">
+              <ExperienceLogo image={job.image} title={job.title} width={job.width} height={job.height} size="lg" />
+              <h2 className="title-l min-w-0 flex-1 text-balance text-site-cream-fg">{job.title}</h2>
+            </div>
+            <p className="content-l text-site-cream-fg/80">{job.description}</p>
+            {job.projects?.length ? (
+              <ProjectTiles projects={job.projects} openProjectIndex={openProjectIndex} onToggle={handleProjectToggle} />
+            ) : null}
+          </div>
+        </div>
+      </Animated>
     </section>
   )
 }

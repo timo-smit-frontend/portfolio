@@ -10,7 +10,7 @@ export const EDUCATIONS = {
   },
   consultancy: {
     title: 'Consultancy & Client Work',
-    description: `<p>At <strong>Capgemini</strong> I learned consultancy on real client work: talking to stakeholders, reading complex requirements, and shipping. That included <strong>Project Enhance</strong> with the <strong>United Nations World Food Programme</strong>, focused on performance and user experience, and the Tweede Kamer accessibility project.</p>
+    description: `<p>At <strong>Capgemini</strong> I learned consultancy on real client work: talking to stakeholders, reading complex requirements, and getting the work live. That included <strong>Project Enhance</strong> with the <strong>United Nations World Food Programme</strong>, focused on performance and user experience, and the Tweede Kamer accessibility project.</p>
       <p>At <strong>UBO Agency</strong> the client mix is wide. Featured work includes <strong>Fairbanks</strong> (multilingual Remix), <strong>Movimento</strong> (healthcare recruitment and job applications), <strong>Casio</strong> (accessibility), <strong>Brouwer Metaal</strong> (international site with 3D product models), and <strong>IM Duurzaam</strong> (GSAP motion). I have also worked with tech companies like NTT DATA and Worldstream, and notaries such as Van Eeten and Hak en Rein Vos.</p>
       <p>I took Coursera courses in <strong>Giving Helpful Feedback</strong>, <strong>High-Impact Business Writing</strong>, and <strong>Teamwork Skills</strong>. Clear communication is part of the job, not extra.</p>`,
     image: PLACEHOLDER

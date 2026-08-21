@@ -17,8 +17,63 @@
   @apply mx-auto w-full max-w-500 px-5 sm:px-7 lg:px-8;
 }
 
+@utility button-shine {
+  --mx: 50%;
+  --my: 50%;
+
+  @apply relative isolate overflow-hidden;
+
+  &::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+      120px circle at var(--mx) var(--my),
+      rgb(255 255 255 / 0.45),
+      rgb(228 184 74 / 0.28) 38%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease-out;
+  }
+
+  &::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(160px circle at var(--mx) var(--my), rgb(255 255 255 / 0.9), rgb(228 184 74 / 0.85), transparent 48%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease-out;
+  }
+
+  @variant hover {
+    &::before,
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    &::after {
+      @apply hidden;
+    }
+  }
+}
+
 @utility button-base {
-  @apply inline-flex w-full items-center justify-center rounded-full px-6 py-2 text-base font-medium smooth lg:text-lg sm:w-fit;
+  @apply button-shine inline-flex w-full items-center justify-center rounded-full px-6 py-2 text-base font-medium smooth lg:text-lg sm:w-fit;
 }
 
 @utility button-gold {
@@ -194,7 +249,7 @@
 }
 
 @custom-variant hover {
-  @variant lg {
+  @media (hover: hover) {
     &:hover {
       @slot;
     }

@@ -12,6 +12,7 @@ const LOGOS = [
   { src: '/images/logo/movimento.svg', title: 'Movimento', width: 178, height: 34 },
   { src: '/images/logo/brouwer-metaal.svg', title: 'Brouwer Metaal', width: 294, height: 35 },
   { src: '/images/logo/im-duurzaam.svg', title: 'IM Duurzaam', width: 473, height: 380 },
+  { src: '/images/logo/profield.svg', title: 'Profield', width: 845, height: 178 },
   { src: '/images/logo/capgemini.svg', title: 'Capgemini', width: 1024, height: 239 },
   { src: '/images/logo/wfp.webp', title: 'World Food Programme', width: 360, height: 167 },
   { src: '/images/logo/tweede-kamer.png', title: 'Tweede Kamer der Staten-Generaal', width: 1200, height: 339 },
@@ -70,7 +71,7 @@ export default function ContentLogos() {
       <div className="flex flex-col items-center gap-8">
         <Animated delay={100}>
           <p className="px-6 text-center text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/60 sm:px-10 lg:px-16">
-            Places I’ve shipped for.
+            Places I’ve worked for.
           </p>
         </Animated>
         {prefersReducedMotion ? (
@@ -91,7 +92,7 @@ export default function ContentLogos() {
           <Carousel
             opts={{ loop: true, align: 'start', dragFree: true }}
             plugins={[autoScroll]}
-            aria-label="Places I’ve shipped for"
+            aria-label="Places I’ve worked for"
             className="w-full [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
           >
             <CarouselContent>

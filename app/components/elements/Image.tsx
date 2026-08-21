@@ -84,7 +84,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
   }
 
   return (
-    <picture className="flex w-full min-w-0 items-center justify-center">
+    <picture className="flex w-full min-w-0 items-center justify-center has-[.object-left]:justify-start">
       {ready && <source type="image/avif" srcSet={rasterSrcSet(resolved, maxWidth, 'avif')} sizes={resolvedSizes} />}
       {ready && <source type="image/webp" srcSet={rasterSrcSet(resolved, maxWidth, 'webp')} sizes={resolvedSizes} />}
       {/* eslint-disable-next-line no-restricted-syntax -- Image is the allowed primitive wrapper */}
