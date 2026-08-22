@@ -81,6 +81,7 @@ function MobileMenuSheet({ open, onOpenChange, pathname }: { open: boolean; onOp
                   {item.title}
                 </MobileNavLink>
               ))}
+              <LanguageSwitch tone="cyan" className="mt-2" />
               <Link to={contact} className="button-gold mt-6 w-fit" onClick={() => onOpenChange(false)}>
                 {t.nav.getInTouch}
               </Link>
@@ -142,7 +143,7 @@ export default function Header() {
           </nav>
 
           <div className="z-10 flex items-center justify-self-end gap-2 lg:gap-3">
-            <LanguageSwitch />
+            <LanguageSwitch className="hidden lg:block" />
             <Link to={contact} className="button-gold hidden whitespace-nowrap lg:inline-flex">
               {t.nav.getInTouch}
             </Link>
