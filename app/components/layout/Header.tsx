@@ -62,7 +62,7 @@ function MobileMenuSheet({ open, onOpenChange, pathname }: { open: boolean; onOp
         >
           <SheetPrimitive.Title className="sr-only">{t.nav.menu}</SheetPrimitive.Title>
           <SheetPrimitive.Description className="sr-only">{t.nav.siteNavigation}</SheetPrimitive.Description>
-          <div className="container-full">
+          <div className="container-full flex min-h-0 flex-1 flex-col">
             <div className="flex items-center justify-between py-3">
               <Link to={home} className="shrink-0 transition-opacity hover:opacity-80" onClick={() => onOpenChange(false)}>
                 <span className="sr-only">{SITE_NAME}</span>
@@ -81,11 +81,11 @@ function MobileMenuSheet({ open, onOpenChange, pathname }: { open: boolean; onOp
                   {item.title}
                 </MobileNavLink>
               ))}
-              <LanguageSwitch tone="cyan" className="mt-2" />
               <Link to={contact} className="button-gold mt-6 w-fit" onClick={() => onOpenChange(false)}>
                 {t.nav.getInTouch}
               </Link>
             </nav>
+            <LanguageSwitch tone="cyan" className="mt-auto pb-10" />
           </div>
         </SheetPrimitive.Content>
       </SheetPrimitive.Portal>
@@ -142,7 +142,7 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="z-10 flex items-center justify-self-end gap-2 lg:gap-3">
+          <div className="z-10 col-start-3 flex items-center justify-self-end gap-2 lg:gap-3">
             <LanguageSwitch className="hidden lg:block" />
             <Link to={contact} className="button-gold hidden whitespace-nowrap lg:inline-flex">
               {t.nav.getInTouch}
