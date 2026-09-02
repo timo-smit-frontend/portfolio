@@ -11,10 +11,10 @@ export default function BannerPage({ title, description }: { title: string; desc
       <div className="flex flex-col gap-8">
         <Breadcrumbs className="text-site-cream-fg/70" />
         <div className="flex max-w-3xl flex-col gap-4">
-          <Animated delay={100}>
+          <Animated reveal="load" delay={100}>
             <h1 className="title-section text-balance">{title}</h1>
           </Animated>
-          <Animated delay={200}>
+          <Animated reveal="load" delay={200}>
             <p className="content-l text-site-cream-fg/80">{description}</p>
           </Animated>
         </div>

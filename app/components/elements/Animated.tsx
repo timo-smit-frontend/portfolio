@@ -102,7 +102,8 @@ export function Animated({
         'motion-reduce:animate-none',
         'opacity-100'
       ],
-    !shown && '!opacity-0'
+    // 0.001 (not 0): Chrome skips LCP for opacity:0 / fade-from-0, which yields PSI NO_LCP
+    !shown && 'opacity-[0.001]'
   )
 
   if (!isValidElement(children)) {

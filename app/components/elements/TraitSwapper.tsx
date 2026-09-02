@@ -7,7 +7,7 @@ const TraitSwapper = ({ traits = messages.en.traits }: { traits?: readonly strin
   const [currentTrait, setCurrentTrait] = useState(traits[0] ?? '')
   const [isErasing, setIsErasing] = useState(false)
   const [isSmallScreen, setIsSmallScreen] = useState(false)
-  const [randomTrait, setRandomTrait] = useState('')
+  const [randomTrait, setRandomTrait] = useState(traits[0] ?? '')
 
   useEffect(() => {
     function handleResize() {
