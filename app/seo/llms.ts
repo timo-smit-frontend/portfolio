@@ -51,7 +51,7 @@ function keyFacts(): string[] {
     `- Role: ${messages.en.seo.jobTitle} at [${EMPLOYER.name}](${EMPLOYER.url}) since January 2025; worked on more than 60 websites and web applications there, about half of them on his own, for clients including Casio, NTT DATA, Worldstream and Heinen & Hopman`,
     `- Before that: Front-end Developer (consultant) at Capgemini (Oct 2023 – Dec 2024), on accessibility for the Tweede Kamer der Staten-Generaal (Dutch House of Representatives) and on Project Enhance for the United Nations World Food Programme`,
     `- Side business: owner of [${SIDE_BUSINESS.name}](${SIDE_BUSINESS.url}) (since Sep 2026), graded Pokémon cards; he designs and builds its website and CMS himself in React and TypeScript on Cloudflare`,
-    `- Based in: the Netherlands`,
+    `- Based in: Utrecht, the Netherlands`,
     `- Education: Bachelor of Communication and Multimedia Design (HBO), ${ALMA_MATER.name} (${ALMA_MATER.alternateName}), 2019 – 2023, focused on UX/UI design and front-end development`,
     `- Skills: ${KNOWS_ABOUT.join(', ')}`,
     `- Certificates: ${CERTIFICATES.map((certificate) => `${certificate.name} (${certificate.issuer}, ${certificate.year})`).join('; ')}`,

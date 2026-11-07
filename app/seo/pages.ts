@@ -116,7 +116,12 @@ function personNode(locale: Locale): Record<string, unknown> {
       { '@type': 'Language', name: 'English', alternateName: 'en' }
     ],
     nationality: { '@type': 'Country', name: 'Netherlands' },
-    address: { '@type': 'PostalAddress', addressCountry: 'NL' },
+    address: { '@type': 'PostalAddress', addressLocality: 'Utrecht', addressRegion: 'Utrecht', addressCountry: 'NL' },
+    homeLocation: {
+      '@type': 'Place',
+      name: 'Utrecht, the Netherlands',
+      address: { '@type': 'PostalAddress', addressLocality: 'Utrecht', addressCountry: 'NL' }
+    },
     sameAs: [LINKEDIN_URL]
   }
 }
