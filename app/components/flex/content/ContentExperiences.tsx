@@ -21,15 +21,15 @@ function padIndex(index: number) {
   return String(index + 1).padStart(2, '0')
 }
 
+// Logos always sit next to the employer/project name as text, so they are decorative (alt="") to avoid
+// screen readers announcing the name twice.
 function ExperienceLogo({
   image,
-  title,
   width,
   height,
   size = 'sm'
 }: {
   image: string
-  title: string
   width: number
   height: number
   size?: keyof typeof LOGO_FRAME
@@ -40,7 +40,7 @@ function ExperienceLogo({
         src={image}
         width={width}
         height={height}
-        alt={title}
+        alt=""
         className={cn(LOGO_IMAGE[size], 'w-full h-auto max-w-full object-contain object-left')}
       />
     </span>
@@ -74,12 +74,7 @@ function ProjectTiles({
 
         return (
           <Fragment key={project.title}>
-            <li
-              className={cn(
-                'overflow-hidden rounded-2xl ring-1 ring-site-chrome/8 smooth',
-                open ? 'bg-site-chrome/5' : 'hover:bg-site-chrome/5'
-              )}
-            >
+            <li className={cn('rounded-2xl ring-1 ring-site-chrome/8 smooth', open ? 'bg-site-chrome/5' : 'hover:bg-site-chrome/5')}>
               <button
                 type="button"
                 className="flex w-full cursor-pointer flex-col items-start gap-3 p-4 text-left"
@@ -91,12 +86,12 @@ function ProjectTiles({
                   src={project.image}
                   width={project.width}
                   height={project.height}
-                  alt={project.title}
+                  alt=""
                   className="h-10 w-full max-w-32 object-contain object-left"
                 />
                 <span className="min-w-0">
                   <span className="block font-semibold tracking-tight text-site-cream-fg">{project.title}</span>
-                  {project.role ? <span className="mt-0.5 block text-sm text-site-cream-fg/60">{project.role[locale]}</span> : null}
+                  {project.role ? <span className="mt-0.5 block text-sm text-site-cream-fg/70">{project.role[locale]}</span> : null}
                 </span>
               </button>
               <div id={tilePanelId} className="sm:hidden">
@@ -141,7 +136,8 @@ function EmployerButton({
   return (
     <button
       type="button"
-      aria-pressed={selected}
+      // Accordion headers (mobile) expose aria-expanded only; the desktop list is a set of toggle buttons.
+      aria-pressed={expanded === undefined ? selected : undefined}
       aria-expanded={expanded}
       aria-controls={panelId}
       className={cn(
@@ -154,11 +150,26 @@ function EmployerButton({
       )}
       onClick={onSelect}
     >
-      <ExperienceLogo image={item.image} title={item.title} width={item.width} height={item.height} size="sm" />
+      <ExperienceLogo image={item.image} width={item.width} height={item.height} size="sm" />
       <span className="min-w-0 flex-1">
         <span className="block text-xs font-semibold tracking-[0.16em] text-site-cream-fg opacity-70">{padIndex(index)}</span>
         <span className="mt-0.5 block font-semibold tracking-tight text-site-cream-fg">{item.title}</span>
       </span>
+      {selected && accent ? (
+        // Non-colour cue for the selected employer: gold on cream alone is only 1.68:1 (WCAG 1.4.1 / 1.4.11).
+        <svg
+          viewBox="0 0 24 24"
+          className="size-5 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+        >
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      ) : null}
     </button>
   )
 }
@@ -248,7 +259,8 @@ export default function ContentExperiences() {
           </div>
 
           <div className="hidden gap-10 lg:grid lg:grid-cols-[minmax(16rem,20rem)_1fr] lg:gap-14">
-            <nav
+            <div
+              role="group"
               aria-label={t.experience.employers}
               className="flex flex-col gap-2 rounded-2xl bg-site-cream p-4 lg:sticky lg:top-28 lg:self-start"
             >
@@ -263,11 +275,11 @@ export default function ContentExperiences() {
                   onSelect={() => handleToggle(index)}
                 />
               ))}
-            </nav>
+            </div>
 
             <div id={splitPanelId} className="flex flex-col gap-4 rounded-2xl bg-site-cream p-8 lg:gap-6">
               <div className="flex flex-col gap-10">
-                <ExperienceLogo image={job.image} title={job.title} width={job.width} height={job.height} size="lg" />
+                <ExperienceLogo image={job.image} width={job.width} height={job.height} size="lg" />
                 <h2 className="title-l min-w-0 flex-1 text-balance text-site-cream-fg">{job.title}</h2>
               </div>
               <JobBody

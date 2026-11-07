@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import type { Locale } from '../app/i18n/locale.ts'
@@ -50,11 +51,31 @@ function xhtmlLinks(page: { alternates: Array<{ hrefLang: string; href: string }
     .join('\n')
 }
 
+const CONTENT_PATHS = ['app/database', 'app/i18n/messages.ts', 'app/components', 'app/routes', 'public/images']
+let cachedLastModified: string | undefined
+
+/** Date of the last commit that touched the site content; falls back to today outside a git checkout. */
+export function contentLastModified(): string {
+  if (cachedLastModified) return cachedLastModified
+  try {
+    const stamp = execFileSync('git', ['log', '-1', '--format=%cs', '--', ...CONTENT_PATHS], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore']
+    }).trim()
+    cachedLastModified = /^\d{4}-\d{2}-\d{2}$/.test(stamp) ? stamp : undefined
+  } catch {
+    cachedLastModified = undefined
+  }
+  cachedLastModified ??= new Date().toISOString().slice(0, 10)
+  return cachedLastModified
+}
+
 export function buildSitemapXml(locale: Locale = 'en'): string {
+  const lastmod = contentLastModified()
   const urls = getIndexableSeoPages(locale)
     .map((page) => {
       const loc = page.canonical ?? canonicalUrl(page.path)
-      return `  <url>\n    <loc>${loc}</loc>\n${xhtmlLinks(page)}\n  </url>`
+      return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${xhtmlLinks(page)}\n  </url>`
     })
     .join('\n')
 

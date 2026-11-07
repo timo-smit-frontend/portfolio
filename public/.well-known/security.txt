@@ -1,0 +1,5 @@
+Contact: https://www.timosmit.dev/contact/
+Contact: https://www.linkedin.com/in/timo-smit-09983b14a/
+Expires: 2027-11-07T00:00:00.000Z
+Preferred-Languages: en, nl
+Canonical: https://www.timosmit.dev/.well-known/security.txt

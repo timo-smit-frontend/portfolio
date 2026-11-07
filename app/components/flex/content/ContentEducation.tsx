@@ -8,7 +8,7 @@ import { cn } from '~/services/utils'
 type EducationKey = keyof typeof EDUCATIONS
 type Education = (typeof EDUCATIONS)[EducationKey]
 
-function EducationCard({ education, locale }: { education: Education; locale: Locale }) {
+function EducationCard({ education, locale, imageAlt }: { education: Education; locale: Locale; imageAlt: string }) {
   return (
     <div className="grid w-full gap-10 rounded-2xl bg-site-cream p-8 text-site-cream-fg ring-1 ring-site-chrome/8 md:grid-cols-2">
       <div className="relative flex h-fit flex-col justify-between">
@@ -22,20 +22,22 @@ function EducationCard({ education, locale }: { education: Education; locale: Lo
       </div>
 
       {education.image && (
-        <Image src={education.image} alt="" width={1200} height={800} className="h-auto w-full rounded-xl object-contain" />
+        <Image src={education.image} alt={imageAlt} width={1200} height={800} className="h-auto w-full rounded-xl object-contain" />
       )}
     </div>
   )
 }
 
 export default function ContentEducation() {
-  const { locale } = useLocale()
+  const { locale, t } = useLocale()
   const [activeTopic, setActiveTopic] = useState<EducationKey>('accessibility')
   const education = EDUCATIONS[activeTopic]
+  // The accessibility photo carries content (a WCAG presentation); the other topics use a decorative placeholder.
+  const imageAlt = (key: EducationKey) => (key === 'accessibility' ? t.education.accessibilityImageAlt : '')
 
   return (
     <section className="container-full flex flex-col gap-8 py-16 lg:py-20">
-      <nav className="hidden flex-wrap gap-2 p-0 sm:flex">
+      <div role="group" aria-label={t.education.topics} className="hidden flex-wrap gap-2 p-0 sm:flex">
         {Object.entries(EDUCATIONS).map(([key, edu]) => (
           <button
             key={key}
@@ -47,17 +49,17 @@ export default function ContentEducation() {
             {edu.title[locale]}
           </button>
         ))}
-      </nav>
+      </div>
 
       <div className="flex flex-col gap-8 sm:hidden">
-        {Object.values(EDUCATIONS).map((item) => (
-          <EducationCard key={item.title.en} education={item} locale={locale} />
+        {(Object.entries(EDUCATIONS) as [EducationKey, Education][]).map(([key, item]) => (
+          <EducationCard key={key} education={item} locale={locale} imageAlt={imageAlt(key)} />
         ))}
       </div>
 
       {education && (
         <div id="tab-content" className="hidden sm:block">
-          <EducationCard education={education} locale={locale} />
+          <EducationCard education={education} locale={locale} imageAlt={imageAlt(activeTopic)} />
         </div>
       )}
     </section>

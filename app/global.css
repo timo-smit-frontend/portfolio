@@ -153,7 +153,8 @@
 }
 
 @utility field {
-  @apply w-full resize-none rounded-xl border border-site-cyan/20 bg-white px-4 py-3 text-base text-site-cream-fg placeholder:text-site-cream-fg/50 smooth;
+  /* border cyan/70: >= 3:1 against both the white field and the cream card (WCAG 1.4.11) */
+  @apply w-full resize-none rounded-xl border border-site-cyan/70 bg-white px-4 py-3 text-base text-site-cream-fg placeholder:text-site-cream-fg/70 smooth;
 }
 
 @utility smooth {
@@ -230,12 +231,13 @@
     @apply bg-site-gold text-site-chrome;
   }
 
-  button:focus-visible,
-  a:focus-visible,
-  input:focus-visible,
-  textarea:focus-visible,
-  [role='option']:focus-visible {
-    @apply outline-3 outline-offset-2 outline-site-gold;
+  /*
+   * Two-tone focus indicator (WCAG 2.4.7 / 1.4.11): a 2px dark ring fills the outline offset,
+   * surrounded by the 3px gold outline. Dark ring vs cream 13.6:1, gold vs dark frame 8.1:1,
+   * gold vs cyan 4.21:1, dark ring vs gold buttons 8.1:1, so it stays visible on every surface.
+   */
+  :where(a[href], button, input, textarea, select, summary, [tabindex]:not([tabindex='-1']), [role='option']):focus-visible {
+    @apply outline-3 outline-offset-2 outline-site-gold ring-2 ring-site-chrome;
   }
 
   #main:focus,

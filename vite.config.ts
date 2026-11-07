@@ -39,18 +39,24 @@ function outfitLatinHref(ctx: IndexHtmlTransformContext, base: string): string |
   return `${normalizedBase}${font.fileName}`
 }
 
+/**
+ * The page is prerendered, so JavaScript is only needed for hydration. Moving the entry script and its
+ * modulepreload links to the end of <body> with a low fetch priority keeps them from competing with the
+ * stylesheet, font and hero content that the first paint depends on.
+ */
 function moveModuleScriptsToBody(html: string): string {
   const scripts = [...html.matchAll(/<script type="module"[^>]*><\/script>\n?/g)].map((match) => match[0].trim())
-  if (scripts.length === 0) return html
+  const preloads = [...html.matchAll(/<link rel="modulepreload"[^>]*>\n?/g)].map((match) => match[0].trim())
+  if (scripts.length === 0 && preloads.length === 0) return html
 
   let next = html
-  for (const script of scripts) {
-    next = next.replace(script, '')
+  for (const tag of [...scripts, ...preloads]) {
+    next = next.replace(new RegExp(`[ \\t]*${tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\n?`), '')
   }
 
-  const deferred = scripts.map((script) =>
-    script.includes('fetchpriority=') ? script : script.replace('<script ', '<script fetchpriority="low" ')
-  )
+  const lowPriority = (tag: string, element: 'script' | 'link') =>
+    tag.includes('fetchpriority=') ? tag : tag.replace(`<${element} `, `<${element} fetchpriority="low" `)
+  const deferred = [...preloads.map((tag) => lowPriority(tag, 'link')), ...scripts.map((tag) => lowPriority(tag, 'script'))]
 
   return next.replace('</body>', `    ${deferred.join('\n    ')}\n  </body>`)
 }

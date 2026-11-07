@@ -1,4 +1,4 @@
-import type { LocalizedCopy } from './experiences'
+import type { LocalizedCopy } from './experiences.ts'
 
 const PLACEHOLDER = '/images/education/placeholder.svg'
 

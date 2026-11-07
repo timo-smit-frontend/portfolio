@@ -1,66 +1,83 @@
 import { useEffect, useState } from 'react'
+import { useMediaQuery } from '~/components/elements/useMediaQuery'
 import { messages } from '~/i18n/messages'
+import { cn } from '~/services/utils'
 
-const TraitSwapper = ({ traits = messages.en.traits }: { traits?: readonly string[] }) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [charIndex, setCharIndex] = useState(0)
-  const [currentTrait, setCurrentTrait] = useState(traits[0] ?? '')
-  const [isErasing, setIsErasing] = useState(false)
-  const [isSmallScreen, setIsSmallScreen] = useState(false)
-  const [randomTrait, setRandomTrait] = useState(traits[0] ?? '')
+/** The typing animation only runs from this width; keep in sync with the `min-[800px]:` classes below and in BannerHero. */
+export const TRAIT_ANIMATION_QUERY = '(min-width: 800px)'
+
+const TYPE_MS = 300
+const ERASE_MS = 75
+const HOLD_MS = 3000
+
+type Phase = 'typing' | 'holding' | 'erasing'
+
+/**
+ * Types and erases the traits one by one on wide screens. The first render (server and hydration)
+ * always shows the complete first trait without a visible cursor, so the prerendered hero text is
+ * complete and hydration is deterministic. `paused` (user toggle or prefers-reduced-motion) shows the
+ * full current word without the cursor (WCAG 2.2.2).
+ */
+const TraitSwapper = ({ traits = messages.en.traits, paused = false }: { traits?: readonly string[]; paused?: boolean }) => {
+  // Server/hydration snapshot is `false`: render the static word first, animate after hydration.
+  const isWide = useMediaQuery(TRAIT_ANIMATION_QUERY, false)
+  const [index, setIndex] = useState(0)
+  const [chars, setChars] = useState(() => traits[0]?.length ?? 0)
+  const [phase, setPhase] = useState<Phase>('holding')
+  const [smallScreenTrait, setSmallScreenTrait] = useState<string | null>(null)
+
+  const word = traits[index] ?? ''
+  const animating = isWide && !paused && traits.length > 1
 
   useEffect(() => {
-    function handleResize() {
-      setIsSmallScreen(window.innerWidth < 800)
+    if (!animating) {
+      // Paused or not animating: rest on the complete current word, resume from there.
+      setChars(word.length)
+      setPhase('holding')
+      return
     }
 
-    handleResize()
-    window.addEventListener('resize', handleResize)
+    let delay: number
+    let next: () => void
 
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>
-
-    if (!isErasing && charIndex < currentTrait.length) {
-      timeoutId = setTimeout(() => {
-        setCharIndex(charIndex + 1)
-      }, 300)
-    } else if (isErasing && charIndex > 0) {
-      timeoutId = setTimeout(() => {
-        setCharIndex(charIndex - 1)
-      }, 75)
-    } else if (!isErasing && charIndex >= currentTrait.length) {
-      timeoutId = setTimeout(() => {
-        setIsErasing(true)
-      }, 3000)
+    if (phase === 'typing') {
+      if (chars < word.length) {
+        delay = TYPE_MS
+        next = () => setChars(chars + 1)
+      } else {
+        delay = 0
+        next = () => setPhase('holding')
+      }
+    } else if (phase === 'holding') {
+      delay = HOLD_MS
+      next = () => setPhase('erasing')
+    } else if (chars > 0) {
+      delay = ERASE_MS
+      next = () => setChars(chars - 1)
     } else {
-      setIsErasing(false)
-      const nextIndex = currentIndex === traits.length - 1 ? 0 : currentIndex + 1
-      setCurrentIndex(nextIndex)
-      setCurrentTrait(traits[nextIndex] ?? '')
+      delay = 0
+      next = () => {
+        setIndex((index + 1) % traits.length)
+        setPhase('typing')
+      }
     }
 
-    return () => clearTimeout(timeoutId)
-  }, [currentIndex, charIndex, currentTrait, isErasing, traits])
+    const timeoutId = window.setTimeout(next, delay)
+    return () => window.clearTimeout(timeoutId)
+  }, [animating, phase, chars, index, word, traits.length])
 
   useEffect(() => {
-    if (isSmallScreen) {
-      const randomIndex = Math.floor(Math.random() * traits.length)
-      setRandomTrait(traits[randomIndex] ?? '')
-    }
-  }, [isSmallScreen, traits])
+    if (isWide) return
+    setSmallScreenTrait(traits[Math.floor(Math.random() * traits.length)] ?? null)
+  }, [isWide, traits])
 
-  const traitToDisplay = isSmallScreen ? randomTrait || '' : currentTrait.substring(0, charIndex) + '_'
-
-  const displayedTrait = traitToDisplay
+  const displayedTrait = isWide ? (animating ? word.slice(0, chars) : word) : (smallScreenTrait ?? word)
 
   return (
-    <span id="trait-styling" className="text-site-gold" aria-hidden="true">
+    <span className="text-site-gold-display" aria-hidden="true">
       {displayedTrait}
+      {/* The cursor slot always takes space on wide screens, so toggling it never shifts the layout. */}
+      <span className={cn('hidden min-[800px]:inline', !animating && 'invisible')}>_</span>
     </span>
   )
 }

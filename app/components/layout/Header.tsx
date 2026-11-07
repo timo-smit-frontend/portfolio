@@ -1,5 +1,5 @@
 import * as SheetPrimitive from '@radix-ui/react-dialog'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import BurgerMenu from '~/components/elements/BurgerMenu'
 import Logo from '~/components/elements/Logo'
@@ -9,9 +9,12 @@ import { useLocale } from '~/i18n/useLocale'
 import { SITE_NAME, isCurrentPath } from '~/seo/site'
 import { cn } from '~/services/utils'
 
+// Current page: the tinted pill is only ~1.4:1, so an underline carries the state too (WCAG 1.4.1 / 1.4.11).
 const navLinkClass =
-  'inline-flex items-center rounded-full px-3 py-1.5 text-base font-medium smooth hover:bg-site-cream-fg/10 aria-[current=page]:bg-site-cream-fg/15'
-const mobileNavLinkClass = 'mobile-menu-hover title-base flex w-full items-center px-0 py-2 text-2xl sm:text-3xl lg:text-4xl'
+  'inline-flex items-center rounded-full px-3 py-1.5 text-base font-medium smooth hover:bg-site-cream-fg/10 aria-[current=page]:bg-site-cream-fg/15 aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-4'
+// Current page: gold text plus the gold underline (not colour alone).
+const mobileNavLinkClass =
+  'mobile-menu-hover title-base flex w-full items-center px-0 py-2 text-2xl sm:text-3xl lg:text-4xl aria-[current=page]:after:w-full'
 
 function MobileNavLink({ to, pathname, onNavigate, children }: { to: string; pathname: string; onNavigate: () => void; children: string }) {
   const current = isCurrentPath(pathname, to)
@@ -34,6 +37,13 @@ function MobileMenuSheet({ open, onOpenChange, pathname }: { open: boolean; onOp
   const nav = primaryNav(locale)
   const home = homePath(locale)
   const contact = contactPath(locale)
+  // Closing because a link was followed: move focus to <main> (as Layout does after a route change) instead of
+  // back to the menu button. Otherwise (Escape, close button) Radix returns focus to the menu button (WCAG 2.4.3).
+  const navigatingRef = useRef(false)
+  const navigate = () => {
+    navigatingRef.current = true
+    onOpenChange(false)
+  }
 
   useEffect(() => {
     if (!open) {
@@ -57,14 +67,19 @@ function MobileMenuSheet({ open, onOpenChange, pathname }: { open: boolean; onOp
         <SheetPrimitive.Overlay className="fixed inset-0 z-50 bg-site-chrome/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:duration-200 data-[state=open]:duration-300" />
         <SheetPrimitive.Content
           aria-modal="true"
-          onCloseAutoFocus={(event) => event.preventDefault()}
-          className="fixed inset-0 z-50 flex h-full flex-col bg-site-chrome text-site-cyan-fg shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:duration-200 data-[state=open]:duration-300"
+          onCloseAutoFocus={(event) => {
+            if (!navigatingRef.current) return
+            navigatingRef.current = false
+            event.preventDefault()
+            document.getElementById('main')?.focus({ preventScroll: true })
+          }}
+          className="fixed inset-0 z-50 flex h-full flex-col overflow-y-auto bg-site-chrome text-site-cyan-fg shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:duration-200 data-[state=open]:duration-300"
         >
           <SheetPrimitive.Title className="sr-only">{t.nav.menu}</SheetPrimitive.Title>
           <SheetPrimitive.Description className="sr-only">{t.nav.siteNavigation}</SheetPrimitive.Description>
-          <div className="container-full flex min-h-0 flex-1 flex-col">
+          <div className="container-full flex flex-1 flex-col">
             <div className="flex items-center justify-between py-3">
-              <Link to={home} className="shrink-0 transition-opacity hover:opacity-80" onClick={() => onOpenChange(false)}>
+              <Link to={home} className="shrink-0 transition-opacity hover:opacity-80" onClick={navigate}>
                 <span className="sr-only">{SITE_NAME}</span>
                 <Logo className="h-10 w-auto" tone="cyan" />
               </Link>
@@ -77,14 +92,15 @@ function MobileMenuSheet({ open, onOpenChange, pathname }: { open: boolean; onOp
             </div>
             <nav aria-label={t.nav.primary} className="flex flex-col gap-4 py-10">
               {nav.map((item) => (
-                <MobileNavLink key={item.to} to={item.to} pathname={pathname} onNavigate={() => onOpenChange(false)}>
+                <MobileNavLink key={item.to} to={item.to} pathname={pathname} onNavigate={navigate}>
                   {item.title}
                 </MobileNavLink>
               ))}
-              <Link to={contact} className="button-gold mt-6 w-fit" onClick={() => onOpenChange(false)}>
+              <Link to={contact} className="button-gold mt-6 w-fit" onClick={navigate}>
                 {t.nav.getInTouch}
               </Link>
             </nav>
+            {/* A language switch closes the menu via the pathname effect in Header; focus then returns to the menu button. */}
             <LanguageSwitch tone="cyan" className="mt-auto pb-10" />
           </div>
         </SheetPrimitive.Content>

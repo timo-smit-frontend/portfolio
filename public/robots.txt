@@ -1,4 +1,7 @@
-# AI agents: https://www.timosmit.dev/llms.txt
+# Timo Smit, www.timosmit.dev
+# All crawlers, including search engines and AI assistants, are welcome.
+# AI agents and LLMs: a summary is at https://www.timosmit.dev/llms.txt
+# and the full profile at https://www.timosmit.dev/llms-full.txt
 
 User-agent: *
 Allow: /

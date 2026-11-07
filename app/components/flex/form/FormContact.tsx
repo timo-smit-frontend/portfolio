@@ -7,7 +7,7 @@ import { useLocale } from '~/i18n/useLocale'
 import { LINKEDIN_URL, sendContactMessage } from '~/services/contact'
 import { cn, isValidEmail } from '~/services/utils'
 
-const contactLinkClass = 'group flex w-fit items-center gap-2 transition-colors hover:text-site-gold'
+const contactLinkClass = 'group flex w-fit items-center gap-2 transition-colors hover:text-site-gold-ink'
 
 function LinkedInIcon() {
   return (
@@ -86,6 +86,8 @@ function ContactForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
+    if (status === 'submitting') return
+
     if (honeypot) {
       setStatus('success')
       return
@@ -124,7 +126,11 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5 text-site-cream-fg">
+    // noValidate: the inline, persistent error messages below (linked via aria-describedby) replace the
+    // transient native validation bubbles; focus moves to the first invalid field (WCAG 3.3.1 / 3.3.3).
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5 text-site-cream-fg">
+      <p className="text-sm leading-7 text-site-cream-fg/70">{t.contact.requiredNote}</p>
+
       <div className="hidden" aria-hidden>
         <label htmlFor="contact-company">{t.contact.company}</label>
         <input
@@ -234,10 +240,11 @@ function ContactForm() {
         )}
       </div>
 
+      {/* aria-disabled (not disabled) while sending, so a keyboard-focused button keeps focus. */}
       <button
         type="submit"
-        className="button-gold cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
-        disabled={status === 'submitting'}
+        className="button-gold cursor-pointer aria-disabled:cursor-not-allowed aria-disabled:opacity-60"
+        aria-disabled={status === 'submitting' || undefined}
       >
         {status === 'submitting' ? t.contact.sending : t.contact.send}
       </button>

@@ -51,9 +51,10 @@ export default function ContentSelectedWork() {
                   to={localize(PATHS.experience)}
                   className="flex h-full flex-col gap-4 rounded-2xl bg-site-cream p-6 text-site-cream-fg smooth hover:ring-2 hover:ring-site-gold"
                 >
+                  {/* decorative: the title is the next element inside the same link */}
                   <Image
                     src={item.image}
-                    alt={item.title}
+                    alt=""
                     width={item.width}
                     height={item.height}
                     className="h-16 w-auto max-w-40 object-contain object-left"

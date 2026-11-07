@@ -22,7 +22,11 @@ export default {
         'site-cream-fg': '#061A1E',
         'site-gold': '#E4B84A',
         'site-gold-fg': '#061A1E',
-        'site-gold-hover': '#C99A2E'
+        'site-gold-hover': '#C99A2E',
+        // Gold for large display text (>= 24px) on cream: 3.13:1 on #F4F3EE (WCAG 1.4.3 large text)
+        'site-gold-display': '#AD831A',
+        // Gold for normal-size text on light backgrounds: 5.61:1 on cream, 4.64:1 on the translucent sticky header over the dark frame
+        'site-gold-ink': '#7A5C12'
       },
       fontFamily: {
         'site-outfit': ['Outfit Variable', ...defaultTheme.fontFamily.sans]

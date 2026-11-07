@@ -1,4 +1,6 @@
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
+import { useLocation } from 'react-router'
+import { stripLocale } from '~/i18n/locale'
 import SkipToMainContent from '~/components/elements/SkipToMainContent'
 import Footer from '~/components/layout/Footer'
 import Header from '~/components/layout/Header'
@@ -12,6 +14,19 @@ function setButtonGlowPoint(el: HTMLElement, x: string, y: string) {
 }
 
 export default function Layout({ children, className }: { children: ReactNode; className?: string }) {
+  const { pathname } = useLocation()
+  const previousPathname = useRef(pathname)
+
+  // Client-side navigation to another page: move focus to <main> so keyboard and screen reader users start
+  // at the new content instead of on the link they activated (WCAG 2.4.3). A language switch keeps focus
+  // on the language link, which stays in place.
+  useEffect(() => {
+    const previous = previousPathname.current
+    previousPathname.current = pathname
+    if (stripLocale(previous) === stripLocale(pathname)) return
+    document.getElementById('main')?.focus({ preventScroll: true })
+  }, [pathname])
+
   useEffect(() => {
     const onMove = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse') return

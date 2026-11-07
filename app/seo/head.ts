@@ -15,6 +15,16 @@ function serializeJsonLd(data: Record<string, unknown>): string {
   return JSON.stringify(data).replace(/</g, '\\u003c')
 }
 
+/** Open Graph `profile` properties, only for pages with og:type profile. */
+export function profileMeta(seo: Pick<SeoPage, 'type'>): Record<string, string> {
+  if (seo.type !== 'profile') return {}
+  return {
+    'profile:first_name': 'Timo',
+    'profile:last_name': 'Smit',
+    'profile:username': 'timosmit'
+  }
+}
+
 export function buildSeoHead(seo: SeoPage): string {
   const tags = [
     `<title>${escapeHtml(seo.title)}</title>`,
@@ -26,6 +36,9 @@ export function buildSeoHead(seo: SeoPage): string {
     `<meta property="og:title" content="${escapeHtml(seo.title)}" />`,
     `<meta property="og:description" content="${escapeHtml(seo.description)}" />`,
     `<meta property="og:image" content="${escapeHtml(seo.image)}" />`,
+    `<meta property="og:image:type" content="${escapeHtml(seo.imageType)}" />`,
+    `<meta property="og:image:width" content="${seo.imageWidth}" />`,
+    `<meta property="og:image:height" content="${seo.imageHeight}" />`,
     `<meta property="og:image:alt" content="${escapeHtml(seo.imageAlt)}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${escapeHtml(seo.title)}" />`,
@@ -46,6 +59,10 @@ export function buildSeoHead(seo: SeoPage): string {
   const otherLocales = seo.alternates.filter((alternate) => alternate.hrefLang !== 'x-default' && alternate.hrefLang !== seo.htmlLang)
   for (const alternate of otherLocales) {
     tags.push(`<meta property="og:locale:alternate" content="${alternate.hrefLang.replace('-', '_')}" />`)
+  }
+
+  for (const [property, content] of Object.entries(profileMeta(seo))) {
+    tags.push(`<meta property="${property}" content="${escapeHtml(content)}" />`)
   }
 
   tags.push(`<meta name="theme-color" content="${SITE_THEME_COLOR}" />`)

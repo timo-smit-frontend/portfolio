@@ -1,12 +1,27 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { Animated } from '~/components/elements/Animated'
+import MotionToggle from '~/components/elements/MotionToggle'
 import SectionCard from '~/components/elements/SectionCard'
 import TraitSwapper from '~/components/elements/TraitSwapper'
+import { usePrefersReducedMotion } from '~/components/elements/useMediaQuery'
 import { contactPath, PATHS } from '~/components/layout/nav'
 import { useLocale } from '~/i18n/useLocale'
 
+// Remembers the visitor's pause/play choice across client-side navigations (never set during SSR).
+let rememberedPause: boolean | null = null
+
 export default function BannerHero() {
   const { locale, t, localize } = useLocale()
+  const prefersReducedMotion = usePrefersReducedMotion(false)
+  const [userPaused, setUserPaused] = useState<boolean | null>(rememberedPause)
+  // prefers-reduced-motion starts paused; the visitor can still choose to play it.
+  const paused = userPaused ?? prefersReducedMotion
+
+  const togglePaused = () => {
+    rememberedPause = !paused
+    setUserPaused(!paused)
+  }
 
   return (
     <SectionCard
@@ -21,9 +36,9 @@ export default function BannerHero() {
         </Animated>
         <h1 className="sr-only">{t.hero.srTitle}</h1>
         <Animated reveal="load" delay={200}>
-          <p className="title-landing mt-5 max-w-5xl" aria-hidden="true">
+          <p className="title-landing mt-5 max-w-5xl wrap-anywhere max-[359px]:text-4xl" aria-hidden="true">
             {t.hero.beforeTrait}
-            <TraitSwapper key={locale} traits={t.traits} />
+            <TraitSwapper key={locale} traits={t.traits} paused={paused} />
             <br />
             {t.hero.afterTrait}
           </p>
@@ -39,6 +54,14 @@ export default function BannerHero() {
           </div>
         </Animated>
       </div>
+      {/* Only shown where the typing animation runs (see TRAIT_ANIMATION_QUERY in TraitSwapper). */}
+      <MotionToggle
+        paused={paused}
+        onToggle={togglePaused}
+        pauseLabel={t.motion.pauseTraits}
+        playLabel={t.motion.playTraits}
+        className="absolute bottom-4 right-4 hidden min-[800px]:inline-flex sm:bottom-6 sm:right-6"
+      />
     </SectionCard>
   )
 }

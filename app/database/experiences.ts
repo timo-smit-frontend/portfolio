@@ -1,4 +1,4 @@
-import type { Locale } from '~/i18n/locale'
+import type { Locale } from '../i18n/locale.ts'
 
 export type LocalizedCopy = Record<Locale, string>
 
@@ -6,10 +6,14 @@ export type ExperienceProject = {
   image: string
   title: string
   role?: LocalizedCopy
+  period?: { start: string; end?: string }
   width: number
   height: number
   description: LocalizedCopy
 }
+
+/** ISO year-month, e.g. '2025-01'. Used for structured data and llms-full.txt. */
+export type Period = { start: string; end?: string }
 
 export type Experience = {
   image: string
@@ -17,6 +21,11 @@ export type Experience = {
   width: number
   height: number
   description: LocalizedCopy
+  /** Job title held there (from the CV). */
+  role?: LocalizedCopy
+  period?: Period
+  /** One-line description of the organisation. */
+  kind?: LocalizedCopy
   link?: string
   projects?: ExperienceProject[]
 }
@@ -25,6 +34,9 @@ export const EXPERIENCES: Experience[] = [
   {
     image: '/images/logo/ubo.png',
     title: 'UBO Agency',
+    role: { en: 'Front-end Developer', nl: 'Front-end developer' },
+    period: { start: '2025-01' },
+    kind: { en: 'Full-service marketing agency', nl: 'Full-service marketingbureau' },
     width: 310,
     height: 163,
     description: {
@@ -102,7 +114,24 @@ export const EXPERIENCES: Experience[] = [
     ]
   },
   {
+    image: '/images/logo/hello-world-cards.png',
+    title: 'Hello World Cards',
+    role: { en: 'Owner', nl: 'Eigenaar' },
+    period: { start: '2026-09' },
+    kind: { en: 'Side business in graded Pokémon cards', nl: 'Eigen bedrijf in gegradeerde Pokémonkaarten' },
+    width: 620,
+    height: 239,
+    description: {
+      en: 'Alongside my job I run Hello World Cards, my own one-person business in graded Pokémon cards, sold online and at Pokémon events in the Netherlands and Belgium. I design and build the website and its CMS myself, in React and TypeScript on Cloudflare, with my own components, design tokens, and tests in Vitest. Designer, developer, and shop owner in one.',
+      nl: 'Naast mijn werk run ik Hello World Cards, mijn eigen eenmanszaak in gegradeerde Pokémonkaarten, online en op Pokémonevents in Nederland en België. De website en het CMS ontwerp en bouw ik zelf, in React en TypeScript op Cloudflare, met eigen componenten, design tokens en tests in Vitest. Designer, developer en winkeleigenaar ineen.'
+    },
+    link: 'https://helloworldcards.com'
+  },
+  {
     title: 'Capgemini',
+    role: { en: 'Front-end Developer (consultant)', nl: 'Front-end developer (consultant)' },
+    period: { start: '2023-10', end: '2024-12' },
+    kind: { en: 'Digital Customer Experience', nl: 'Digital Customer Experience' },
     image: '/images/logo/capgemini.svg',
     width: 1024,
     height: 239,
@@ -114,6 +143,7 @@ export const EXPERIENCES: Experience[] = [
       {
         image: '/images/logo/tweede-kamer.png',
         title: 'Tweede Kamer der Staten-Generaal',
+        period: { start: '2024-03', end: '2024-07' },
         role: { en: 'Next Developer (Accessibility)', nl: 'Next-developer (toegankelijkheid)' },
         width: 1200,
         height: 339,
@@ -125,6 +155,7 @@ export const EXPERIENCES: Experience[] = [
       {
         image: '/images/logo/wfp.webp',
         title: 'Project Enhance',
+        period: { start: '2023-10', end: '2024-03' },
         role: { en: 'React Developer', nl: 'React-developer' },
         width: 360,
         height: 167,
@@ -138,6 +169,9 @@ export const EXPERIENCES: Experience[] = [
   {
     image: '/images/logo/accent-interactive.png',
     title: 'Accent Interactive',
+    role: { en: 'Front-end Developer & UX/UI Designer (internship)', nl: 'Front-end developer & UX/UI-designer (stage)' },
+    period: { start: '2022-09', end: '2023-02' },
+    kind: { en: 'E-commerce agency', nl: 'E-commercebureau' },
     width: 4500,
     height: 1458,
     description: {
@@ -149,6 +183,9 @@ export const EXPERIENCES: Experience[] = [
   {
     image: '/images/logo/smart-hotel.png',
     title: 'SmartHOTEL',
+    role: { en: 'UX/UI Designer & Visual Storyteller (internship)', nl: 'UX/UI-designer & visual storyteller (stage)' },
+    period: { start: '2021-04', end: '2021-06' },
+    kind: { en: 'Hotel software', nl: 'Hotelsoftware' },
     width: 1000,
     height: 215,
     description: {

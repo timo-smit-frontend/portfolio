@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router'
+import { profileMeta } from '~/seo/head'
 import { getSeoForPath } from '~/seo/pages'
 import { SITE_NAME, SITE_THEME_COLOR } from '~/seo/site'
 
@@ -95,7 +96,14 @@ export default function Seo() {
     upsertMeta('property', 'og:title', seo.title)
     upsertMeta('property', 'og:description', seo.description)
     upsertMeta('property', 'og:image', seo.image)
+    upsertMeta('property', 'og:image:type', seo.imageType)
+    upsertMeta('property', 'og:image:width', String(seo.imageWidth))
+    upsertMeta('property', 'og:image:height', String(seo.imageHeight))
     upsertMeta('property', 'og:image:alt', seo.imageAlt)
+    document.head.querySelectorAll('meta[property^="profile:"]').forEach((element) => element.remove())
+    for (const [property, content] of Object.entries(profileMeta(seo))) {
+      upsertMeta('property', property, content)
+    }
     upsertMeta('name', 'twitter:card', 'summary_large_image')
     upsertMeta('name', 'twitter:title', seo.title)
     upsertMeta('name', 'twitter:description', seo.description)

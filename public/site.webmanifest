@@ -1,0 +1,16 @@
+{
+  "name": "Timo Smit | Front-end Developer",
+  "short_name": "Timo Smit",
+  "description": "Portfolio of Timo Smit, front-end developer focused on web accessibility, React, Next.js and Remix.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#F4F3EE",
+  "theme_color": "#061A1E",
+  "icons": [
+    { "src": "/images/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

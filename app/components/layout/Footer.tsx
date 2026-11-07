@@ -21,13 +21,13 @@ export default function Footer() {
 
             <div className="grid gap-10 sm:grid-cols-2 sm:gap-16">
               <nav aria-label={t.footer.menu}>
-                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/55">{t.footer.menu}</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/70">{t.footer.menu}</h2>
                 <ul className="mt-4 flex flex-col gap-3 text-base font-medium leading-7">
                   {nav.map((item) => (
                     <li key={item.to}>
                       <Link
                         to={item.to}
-                        className="link-underline transition-colors hover:text-site-gold aria-[current=page]:text-site-gold"
+                        className="link-underline transition-colors hover:text-site-gold-ink aria-[current=page]:text-site-gold-ink aria-[current=page]:after:scale-x-100"
                         aria-current={isCurrentPath(location.pathname, item.to) ? 'page' : undefined}
                       >
                         {item.title}
@@ -38,14 +38,14 @@ export default function Footer() {
               </nav>
 
               <div>
-                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/55">{t.footer.follow}</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/70">{t.footer.follow}</h2>
                 <ul className="mt-4 flex flex-col gap-3 text-base font-medium leading-7">
                   <li>
                     <a
                       href={LINKEDIN_URL}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="group flex w-fit items-center gap-2 transition-colors hover:text-site-gold"
+                      className="group flex w-fit items-center gap-2 transition-colors hover:text-site-gold-ink"
                     >
                       <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="currentColor" aria-hidden>
                         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />

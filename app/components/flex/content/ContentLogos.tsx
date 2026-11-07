@@ -1,9 +1,11 @@
 import AutoScroll from 'embla-carousel-auto-scroll'
-import { useMemo, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Animated } from '~/components/elements/Animated'
-import { Carousel, CarouselContent, CarouselItem } from '~/components/elements/Carousel'
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '~/components/elements/Carousel'
 import Image from '~/components/elements/Image'
+import MotionToggle from '~/components/elements/MotionToggle'
 import SectionCard from '~/components/elements/SectionCard'
+import { usePrefersReducedMotion } from '~/components/elements/useMediaQuery'
 import { useLocale } from '~/i18n/useLocale'
 
 const LOGOS = [
@@ -20,18 +22,6 @@ const LOGOS = [
   { src: '/images/logo/accent-interactive.png', title: 'Accent Interactive', width: 4500, height: 1458 },
   { src: '/images/logo/smart-hotel.png', title: 'SmartHOTEL', width: 1000, height: 215 }
 ]
-
-const reduceMotionQuery = '(prefers-reduced-motion: reduce)'
-
-function subscribeReducedMotion(onStoreChange: () => void) {
-  const media = window.matchMedia(reduceMotionQuery)
-  media.addEventListener('change', onStoreChange)
-  return () => media.removeEventListener('change', onStoreChange)
-}
-
-function getReducedMotionSnapshot() {
-  return window.matchMedia(reduceMotionQuery).matches
-}
 
 const LOGO_SIZES = '(min-width: 640px) 11rem, 9rem'
 
@@ -52,29 +42,80 @@ function LogoSlide({ logo, decorative = false }: { logo: (typeof LOGOS)[number];
   )
 }
 
+const TITLE_ID = 'content-logos-title'
+
+// Remembers the visitor's pause/play choice across client-side navigations (never set during SSR).
+let rememberedPause = false
+
 export default function ContentLogos() {
   const { t } = useLocale()
-  const prefersReducedMotion = useSyncExternalStore(subscribeReducedMotion, getReducedMotionSnapshot, () => true)
+  // Server and hydration render the static list (true); the moving strip only mounts on clients that allow motion.
+  const prefersReducedMotion = usePrefersReducedMotion(true)
+  const [api, setApi] = useState<CarouselApi>()
+  const [paused, setPaused] = useState(rememberedPause)
+  const [hovered, setHovered] = useState(false)
+  const [resumeSignal, setResumeSignal] = useState(0)
   const autoScroll = useMemo(
     () =>
       AutoScroll({
         speed: 0.5,
         startDelay: 0,
-        stopOnInteraction: false,
-        stopOnMouseEnter: true,
-        stopOnFocusIn: true,
-        rootNode: (emblaRoot) => emblaRoot.parentElement
+        // Play/stop is driven by the effect below so the pause button always wins over hover/drag resumes.
+        playOnInit: false,
+        stopOnInteraction: true,
+        stopOnMouseEnter: false,
+        stopOnFocusIn: false
       }),
     []
   )
 
+  useEffect(() => {
+    if (!api) return
+
+    const root = api.rootNode().parentElement ?? api.rootNode()
+    const onEnter = (event: PointerEvent) => {
+      if (event.pointerType === 'mouse') setHovered(true)
+    }
+    const onLeave = (event: PointerEvent) => {
+      if (event.pointerType === 'mouse') setHovered(false)
+    }
+    // A drag stops the plugin; resume once it has settled, and after embla re-inits on resize.
+    const onResume = () => setResumeSignal((count) => count + 1)
+
+    root.addEventListener('pointerenter', onEnter)
+    root.addEventListener('pointerleave', onLeave)
+    api.on('settle', onResume).on('reInit', onResume)
+
+    return () => {
+      root.removeEventListener('pointerenter', onEnter)
+      root.removeEventListener('pointerleave', onLeave)
+      api.off('settle', onResume).off('reInit', onResume)
+    }
+  }, [api])
+
+  useEffect(() => {
+    const plugin = api?.plugins().autoScroll
+    if (!plugin) return
+
+    if (paused || hovered) plugin.stop()
+    else if (!plugin.isPlaying()) plugin.play()
+  }, [api, paused, hovered, resumeSignal])
+
+  const togglePaused = () => {
+    rememberedPause = !paused
+    setPaused(!paused)
+  }
+
   return (
-    <SectionCard tone="cream" id="content-logos" innerClassName="py-12 lg:py-16">
+    <SectionCard tone="cream" id="content-logos" innerClassName="relative py-12 lg:py-16">
       <div className="flex flex-col items-center gap-8">
         <Animated delay={100}>
-          <p className="px-6 text-center text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/60 sm:px-10 lg:px-16">
+          <h2
+            id={TITLE_ID}
+            className="px-6 text-center text-sm font-semibold uppercase tracking-[0.16em] text-site-cream-fg/70 sm:px-10 lg:px-16"
+          >
             {t.logos.label}
-          </p>
+          </h2>
         </Animated>
         {prefersReducedMotion ? (
           <ul className="flex w-full flex-wrap items-center justify-center gap-12 px-6 sm:gap-16 sm:px-10 lg:px-16">
@@ -94,7 +135,8 @@ export default function ContentLogos() {
           <Carousel
             opts={{ loop: true, align: 'start', dragFree: true }}
             plugins={[autoScroll]}
-            aria-label={t.logos.label}
+            setApi={setApi}
+            aria-labelledby={TITLE_ID}
             className="w-full [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
           >
             <CarouselContent>
@@ -108,6 +150,15 @@ export default function ContentLogos() {
           </Carousel>
         )}
       </div>
+      {prefersReducedMotion ? null : (
+        <MotionToggle
+          paused={paused}
+          onToggle={togglePaused}
+          pauseLabel={t.motion.pauseLogos}
+          playLabel={t.motion.playLogos}
+          className="absolute bottom-2 right-2 size-8 sm:bottom-3 sm:right-3 lg:bottom-4 lg:right-4 lg:size-10"
+        />
+      )}
     </SectionCard>
   )
 }

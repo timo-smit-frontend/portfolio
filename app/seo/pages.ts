@@ -1,6 +1,21 @@
 import { LOCALES, LOCALE_META, localeFromPath, seoPath, stripLocale, type Locale } from '../i18n/locale.ts'
 import { messages } from '../i18n/messages.ts'
-import { LINKEDIN_URL, SITE_IMAGE, SITE_NAME, SITE_URL, canonicalUrl, normalizePath, toAbsoluteUrl } from './site.ts'
+import {
+  ALMA_MATER,
+  CERTIFICATES,
+  EMPLOYER,
+  SIDE_BUSINESS,
+  KNOWS_ABOUT,
+  LINKEDIN_URL,
+  OG_IMAGE,
+  PERSON_IMAGE,
+  ROBOTS_INDEX,
+  SITE_NAME,
+  SITE_URL,
+  canonicalUrl,
+  normalizePath,
+  toAbsoluteUrl
+} from './site.ts'
 
 export type LcpImage = {
   src: string
@@ -21,8 +36,11 @@ export type SeoPage = {
   title: string
   description: string
   image: string
+  imageWidth: number
+  imageHeight: number
+  imageType: string
   imageAlt: string
-  type: 'website' | 'product'
+  type: 'website' | 'product' | 'profile'
   robots: string
   canonical: string | null
   alternates: SeoAlternate[]
@@ -32,6 +50,7 @@ export type SeoPage = {
 
 const PERSON_ID = `${SITE_URL}/#person`
 const WEBSITE_ID = `${SITE_URL}/#website`
+const SIDE_BUSINESS_ID = `${SITE_URL}/#hello-world-cards`
 const INDEXABLE_PAGES = ['/', '/experience', '/education', '/contact'] as const
 
 function titleWithBrand(pageTitle: string): string {
@@ -45,26 +64,103 @@ function serializeJsonLdGraph(graph: Array<Record<string, unknown>>): Record<str
   }
 }
 
-function personNode(jobTitle: string): Record<string, unknown> {
+function personNode(locale: Locale): Record<string, unknown> {
+  const t = messages[locale]
+
   return {
     '@type': 'Person',
     '@id': PERSON_ID,
     name: SITE_NAME,
-    jobTitle,
-    url: SITE_URL,
-    image: toAbsoluteUrl(SITE_IMAGE),
+    givenName: 'Timo',
+    familyName: 'Smit',
+    jobTitle: t.seo.jobTitle,
+    description: t.seo.homeDescription,
+    url: `${SITE_URL}/`,
+    image: {
+      '@type': 'ImageObject',
+      url: toAbsoluteUrl(PERSON_IMAGE),
+      width: 400,
+      height: 400
+    },
+    worksFor: {
+      '@type': 'Organization',
+      name: EMPLOYER.name,
+      url: EMPLOYER.url
+    },
+    alumniOf: {
+      '@type': 'CollegeOrUniversity',
+      name: ALMA_MATER.name,
+      alternateName: ALMA_MATER.alternateName,
+      url: ALMA_MATER.url
+    },
+    hasCredential: [
+      {
+        '@type': 'EducationalOccupationalCredential',
+        name: 'Bachelor of Communication and Multimedia Design',
+        credentialCategory: 'degree',
+        educationalLevel: 'Bachelor (HBO)',
+        recognizedBy: { '@type': 'CollegeOrUniversity', name: ALMA_MATER.name },
+        dateCreated: '2023'
+      },
+      ...CERTIFICATES.map((certificate) => ({
+        '@type': 'EducationalOccupationalCredential',
+        name: certificate.name,
+        credentialCategory: 'certificate',
+        recognizedBy: { '@type': 'Organization', name: certificate.issuer },
+        dateCreated: certificate.year
+      }))
+    ],
+    knowsAbout: [...KNOWS_ABOUT],
+    knowsLanguage: [
+      { '@type': 'Language', name: 'Dutch', alternateName: 'nl' },
+      { '@type': 'Language', name: 'English', alternateName: 'en' }
+    ],
+    nationality: { '@type': 'Country', name: 'Netherlands' },
+    address: { '@type': 'PostalAddress', addressCountry: 'NL' },
     sameAs: [LINKEDIN_URL]
   }
 }
 
-function websiteNode(): Record<string, unknown> {
+function sideBusinessNode(): Record<string, unknown> {
+  return {
+    '@type': 'Organization',
+    '@id': SIDE_BUSINESS_ID,
+    name: SIDE_BUSINESS.name,
+    url: SIDE_BUSINESS.url,
+    description: SIDE_BUSINESS.description,
+    founder: { '@id': PERSON_ID },
+    foundingDate: '2026-09'
+  }
+}
+
+function websiteNode(locale: Locale): Record<string, unknown> {
   return {
     '@type': 'WebSite',
     '@id': WEBSITE_ID,
     name: SITE_NAME,
-    url: SITE_URL,
-    inLanguage: LOCALES.map((locale) => LOCALE_META[locale].html),
-    publisher: { '@id': PERSON_ID }
+    url: `${SITE_URL}/`,
+    description: messages[locale].seo.homeDescription,
+    inLanguage: LOCALES.map((item) => LOCALE_META[item].html),
+    publisher: { '@id': PERSON_ID },
+    author: { '@id': PERSON_ID }
+  }
+}
+
+function breadcrumbNode(path: string, locale: Locale, pageName: string): Record<string, unknown> {
+  const url = canonicalUrl(path)
+
+  return {
+    '@type': 'BreadcrumbList',
+    '@id': `${url}#breadcrumb`,
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: messages[locale].nav.home,
+        item: canonicalUrl(seoPath('/', locale))
+      },
+      { '@type': 'ListItem', position: 2, name: pageName, item: url }
+    ]
   }
 }
 
@@ -74,7 +170,8 @@ function webPageNode({
   description,
   inLanguage,
   type = 'WebPage',
-  dateModified
+  dateModified,
+  hasBreadcrumb
 }: {
   path: string
   title: string
@@ -82,6 +179,7 @@ function webPageNode({
   inLanguage: string
   type?: string
   dateModified?: string
+  hasBreadcrumb: boolean
 }): Record<string, unknown> {
   const url = canonicalUrl(path)
 
@@ -94,6 +192,14 @@ function webPageNode({
     inLanguage,
     isPartOf: { '@id': WEBSITE_ID },
     about: { '@id': PERSON_ID },
+    ...(type === 'ProfilePage' ? { mainEntity: { '@id': PERSON_ID } } : {}),
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: toAbsoluteUrl(OG_IMAGE.src),
+      width: OG_IMAGE.width,
+      height: OG_IMAGE.height
+    },
+    ...(hasBreadcrumb ? { breadcrumb: { '@id': `${url}#breadcrumb` } } : {}),
     ...(dateModified ? { dateModified } : {})
   }
 }
@@ -112,11 +218,11 @@ function page({
   locale,
   title,
   description,
-  image = SITE_IMAGE,
   type = 'website',
-  robots = 'index, follow',
+  robots = ROBOTS_INDEX,
   extraGraph = [],
   webPageType,
+  breadcrumbName,
   dateModified,
   lcp
 }: {
@@ -124,11 +230,12 @@ function page({
   locale: Locale
   title: string
   description: string
-  image?: string
-  type?: 'website' | 'product'
+  type?: SeoPage['type']
   robots?: string
   extraGraph?: Array<Record<string, unknown>>
   webPageType?: string
+  /** Name of the page in the breadcrumb trail; omit for the homepage. */
+  breadcrumbName?: string
   dateModified?: string
   lcp?: LcpImage
 }): SeoPage {
@@ -143,8 +250,11 @@ function page({
     ogLocale: meta.og,
     title,
     description,
-    image: toAbsoluteUrl(image),
-    imageAlt: t.image.alt,
+    image: toAbsoluteUrl(OG_IMAGE.src),
+    imageWidth: OG_IMAGE.width,
+    imageHeight: OG_IMAGE.height,
+    imageType: OG_IMAGE.type,
+    imageAlt: t.seo.ogImageAlt,
     type,
     robots,
     canonical: noindex ? null : canonicalUrl(path),
@@ -152,18 +262,21 @@ function page({
     lcp,
     jsonLd: serializeJsonLdGraph(
       noindex
-        ? [personNode(t.seo.jobTitle), websiteNode()]
+        ? [personNode(locale), websiteNode(locale)]
         : [
-            personNode(t.seo.jobTitle),
-            websiteNode(),
+            personNode(locale),
+            websiteNode(locale),
+            sideBusinessNode(),
             webPageNode({
               path,
               title,
               description,
               inLanguage: meta.html,
               type: webPageType ?? (type === 'product' ? 'ItemPage' : 'WebPage'),
-              dateModified
+              dateModified,
+              hasBreadcrumb: Boolean(breadcrumbName)
             }),
+            ...(breadcrumbName ? [breadcrumbNode(path, locale, breadcrumbName)] : []),
             ...extraGraph
           ]
     )
@@ -193,7 +306,9 @@ export function getSeoForPath(pathname: string): SeoPage {
       path: localizedPath,
       locale,
       title: t.seo.homeTitle,
-      description: t.seo.homeDescription
+      description: t.seo.homeDescription,
+      type: 'profile',
+      webPageType: 'ProfilePage'
     })
   }
 
@@ -202,7 +317,8 @@ export function getSeoForPath(pathname: string): SeoPage {
       path: localizedPath,
       locale,
       title: titleWithBrand(t.seo.experienceTitle),
-      description: t.seo.experienceDescription
+      description: t.seo.experienceDescription,
+      breadcrumbName: t.nav.experience
     })
   }
 
@@ -211,7 +327,8 @@ export function getSeoForPath(pathname: string): SeoPage {
       path: localizedPath,
       locale,
       title: titleWithBrand(t.seo.educationTitle),
-      description: t.seo.educationDescription
+      description: t.seo.educationDescription,
+      breadcrumbName: t.nav.education
     })
   }
 
@@ -221,7 +338,8 @@ export function getSeoForPath(pathname: string): SeoPage {
       locale,
       title: titleWithBrand(t.seo.contactTitle),
       description: t.seo.contactDescription,
-      webPageType: 'ContactPage'
+      webPageType: 'ContactPage',
+      breadcrumbName: t.nav.contact
     })
   }
 

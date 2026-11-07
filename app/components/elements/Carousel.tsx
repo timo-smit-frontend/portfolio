@@ -1,8 +1,8 @@
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react'
-import { createContext, useCallback, useContext, type ComponentProps, type KeyboardEvent } from 'react'
+import { createContext, useCallback, useContext, useEffect, type ComponentProps, type KeyboardEvent } from 'react'
 import { cn } from '~/services/utils'
 
-type CarouselApi = UseEmblaCarouselType[1]
+export type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 
 type CarouselContextProps = {
@@ -25,12 +25,14 @@ function useCarousel() {
 function Carousel({
   opts,
   plugins,
+  setApi,
   className,
   children,
   ...props
 }: ComponentProps<'div'> & {
   opts?: UseCarouselParameters[0]
   plugins?: UseCarouselParameters[1]
+  setApi?: (api: CarouselApi) => void
 }) {
   const [carouselRef, api] = useEmblaCarousel(
     {
@@ -39,6 +41,10 @@ function Carousel({
     },
     plugins
   )
+
+  useEffect(() => {
+    if (api && setApi) setApi(api)
+  }, [api, setApi])
 
   const scrollPrev = useCallback(() => {
     api?.scrollPrev()

@@ -18,7 +18,8 @@ const en = {
     primary: 'Primary',
     siteNavigation: 'Site navigation',
     open: 'Open menu',
-    close: 'Close menu'
+    close: 'Close menu',
+    breadcrumb: 'Breadcrumb'
   },
   footer: {
     menu: 'Menu',
@@ -30,6 +31,12 @@ const en = {
     srTitle: 'Timo Smit is a creative Front-end Developer',
     beforeTrait: 'Timo Smit is a ',
     afterTrait: 'Front-end Developer!'
+  },
+  motion: {
+    pauseTraits: 'Pause typing animation',
+    playTraits: 'Play typing animation',
+    pauseLogos: 'Pause scrolling logos',
+    playLogos: 'Play scrolling logos'
   },
   logos: {
     label: 'Projects and collaborations.'
@@ -47,12 +54,14 @@ const en = {
   },
   experience: {
     title: 'My professional front-end experiences',
-    description: 'UBO Agency, Capgemini, Accent Interactive, and SmartHOTEL.',
+    description: 'UBO Agency, Hello World Cards, Capgemini, Accent Interactive, and SmartHOTEL.',
     employers: 'Employers'
   },
   education: {
     title: 'Education',
-    description: 'Accessibility, React / Next.js, Artificial Intelligence, Communication and Multimedia Design, and consultancy.'
+    description: 'Accessibility, React / Next.js, Artificial Intelligence, Communication and Multimedia Design, and consultancy.',
+    topics: 'Topics',
+    accessibilityImageAlt: 'A presentation on the Web Content Accessibility Guidelines in a meeting room at Capgemini'
   },
   contact: {
     title: 'Get in touch',
@@ -70,6 +79,7 @@ const en = {
     emailHint: "Don't forget to add your email.",
     emailInvalidHint: "That doesn't look like a valid email, try name@example.com.",
     messageHint: "Don't forget to add your message.",
+    requiredNote: 'Fields marked with * are required.',
     subject: (name: string) => `Portfolio message from ${name}`
   },
   error: {
@@ -82,17 +92,22 @@ const en = {
     view: 'View experience →'
   },
   seo: {
-    homeTitle: 'Timo Smit | Front-end Developer',
-    homeDescription: 'The portfolio of Timo Smit, a front-end developer working at UBO Agency.',
+    homeTitle: 'Timo Smit | Front-end Developer, Accessibility & React',
+    homeDescription:
+      'Timo Smit is a front-end developer at UBO Agency in the Netherlands, focused on web accessibility (WCAG), React, Next.js and Remix.',
     experienceTitle: 'Experience',
-    experienceDescription: 'Front-end work at UBO Agency, Capgemini, Accent Interactive, and SmartHOTEL.',
+    experienceDescription:
+      'Front-end work at UBO Agency, Capgemini, Accent Interactive and SmartHOTEL, for Casio, Fairbanks, the Tweede Kamer and the World Food Programme.',
     educationTitle: 'Education',
-    educationDescription: 'Accessibility, React / Next.js, Artificial Intelligence, Communication and Multimedia Design, and consultancy.',
+    educationDescription:
+      'How Timo Smit learned accessibility, React and Next.js, AI-assisted development and consultancy, starting with Communication and Multimedia Design.',
     contactTitle: 'Contact',
-    contactDescription: 'Send Timo Smit a message about work, accessibility, or a project.',
+    contactDescription:
+      'Get in touch with Timo Smit about front-end development, web accessibility or a new project. Send a message or connect on LinkedIn.',
     notFoundTitle: 'Page not found',
     notFoundDescription: 'This page does not exist or has been moved.',
-    jobTitle: 'Front-end Developer'
+    jobTitle: 'Front-end Developer',
+    ogImageAlt: 'Timo Smit, front-end developer at UBO Agency: accessibility, React and Remix'
   },
   traits: [
     'creative',
@@ -151,7 +166,8 @@ const nl: typeof en = {
     primary: 'Hoofdmenu',
     siteNavigation: 'Sitenavigatie',
     open: 'Menu openen',
-    close: 'Menu sluiten'
+    close: 'Menu sluiten',
+    breadcrumb: 'Kruimelpad'
   },
   footer: {
     menu: 'Menu',
@@ -163,6 +179,12 @@ const nl: typeof en = {
     srTitle: 'Timo Smit is een creatieve front-end developer',
     beforeTrait: 'Timo Smit is een ',
     afterTrait: 'front-end developer!'
+  },
+  motion: {
+    pauseTraits: 'Typanimatie pauzeren',
+    playTraits: 'Typanimatie afspelen',
+    pauseLogos: "Scrollende logo's pauzeren",
+    playLogos: "Scrollende logo's afspelen"
   },
   logos: {
     label: 'Projecten en samenwerkingen.'
@@ -180,12 +202,14 @@ const nl: typeof en = {
   },
   experience: {
     title: 'Mijn professionele front-end ervaringen',
-    description: 'UBO Agency, Capgemini, Accent Interactive en SmartHOTEL.',
+    description: 'UBO Agency, Hello World Cards, Capgemini, Accent Interactive en SmartHOTEL.',
     employers: 'Werkgevers'
   },
   education: {
     title: 'Opleiding',
-    description: 'Toegankelijkheid, React / Next.js, kunstmatige intelligentie, Communication and Multimedia Design en consultancy.'
+    description: 'Toegankelijkheid, React / Next.js, kunstmatige intelligentie, Communication and Multimedia Design en consultancy.',
+    topics: 'Onderwerpen',
+    accessibilityImageAlt: 'Een presentatie over de Web Content Accessibility Guidelines in een vergaderruimte bij Capgemini'
   },
   contact: {
     title: 'Neem contact op',
@@ -203,6 +227,7 @@ const nl: typeof en = {
     emailHint: 'Vergeet niet je e-mailadres in te vullen.',
     emailInvalidHint: 'Dat lijkt geen geldig e-mailadres, probeer naam@voorbeeld.com.',
     messageHint: 'Vergeet niet je bericht in te vullen.',
+    requiredNote: 'Velden met * zijn verplicht.',
     subject: (name: string) => `Portfoliobericht van ${name}`
   },
   error: {
@@ -215,18 +240,22 @@ const nl: typeof en = {
     view: 'Bekijk ervaring →'
   },
   seo: {
-    homeTitle: 'Timo Smit | Front-end Developer',
-    homeDescription: 'Het portfolio van Timo Smit, front-end developer bij UBO Agency.',
+    homeTitle: 'Timo Smit | Front-end developer, toegankelijkheid & React',
+    homeDescription:
+      'Timo Smit is front-end developer bij UBO Agency, met focus op digitale toegankelijkheid (WCAG), React, Next.js en Remix.',
     experienceTitle: 'Ervaring',
-    experienceDescription: 'Front-endwerk bij UBO Agency, Capgemini, Accent Interactive en SmartHOTEL.',
+    experienceDescription:
+      'Front-endwerk bij UBO Agency, Capgemini, Accent Interactive en SmartHOTEL, voor onder meer Casio, Fairbanks, de Tweede Kamer en het World Food Programme.',
     educationTitle: 'Opleiding',
     educationDescription:
-      'Toegankelijkheid, React / Next.js, kunstmatige intelligentie, Communication and Multimedia Design en consultancy.',
+      'Hoe Timo Smit toegankelijkheid, React en Next.js, werken met AI en consultancy leerde, te beginnen bij Communication and Multimedia Design.',
     contactTitle: 'Contact',
-    contactDescription: 'Stuur Timo Smit een bericht over werk, toegankelijkheid of een project.',
+    contactDescription:
+      'Neem contact op met Timo Smit over front-end development, digitale toegankelijkheid of een nieuw project. Stuur een bericht of verbind via LinkedIn.',
     notFoundTitle: 'Pagina niet gevonden',
     notFoundDescription: 'Deze pagina bestaat niet of is verplaatst.',
-    jobTitle: 'Front-end developer'
+    jobTitle: 'Front-end developer',
+    ogImageAlt: 'Timo Smit, front-end developer bij UBO Agency: toegankelijkheid, React en Remix'
   },
   traits: [
     'creatieve',

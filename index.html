@@ -2,20 +2,30 @@
 <html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Google Tag Manager -->
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="author" content="Timo Smit" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- Google Tag Manager: queued now, loaded once the page has finished loading so it never delays first paint -->
     <script>
-      ;(function (w, d, s, l, i) {
+      ;(function (w, d, l, i) {
         w[l] = w[l] || []
         w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != 'dataLayer' ? '&l=' + l : ''
-        j.async = true
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
-        f.parentNode.insertBefore(j, f)
-      })(window, document, 'script', 'dataLayer', 'GTM-W982R4ZM')
+        function load() {
+          var j = d.createElement('script')
+          j.async = true
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i
+          d.head.appendChild(j)
+        }
+        function schedule() {
+          if ('requestIdleCallback' in w) w.requestIdleCallback(load, { timeout: 2000 })
+          else setTimeout(load, 1)
+        }
+        if (d.readyState === 'complete') schedule()
+        else w.addEventListener('load', schedule, { once: true })
+      })(window, document, 'dataLayer', 'GTM-W982R4ZM')
     </script>
     <!-- End Google Tag Manager -->
     <!--app-font-start-->
