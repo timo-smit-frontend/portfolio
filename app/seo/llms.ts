@@ -1,7 +1,7 @@
-import { LOCALES, seoPath } from '../i18n/locale'
-import { messages } from '../i18n/messages'
-import { getSeoForPath } from './pages'
-import { SITE_NAME, canonicalUrl } from './site'
+import { LOCALES, seoPath } from '../i18n/locale.ts'
+import { messages } from '../i18n/messages.ts'
+import { getSeoForPath } from './pages.ts'
+import { SITE_NAME, canonicalUrl } from './site.ts'
 
 const PAGE_PATHS = ['/', '/experience', '/education', '/contact'] as const
 

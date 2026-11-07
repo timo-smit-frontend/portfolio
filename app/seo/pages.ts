@@ -1,6 +1,6 @@
-import { LOCALES, LOCALE_META, localeFromPath, seoPath, stripLocale, type Locale } from '../i18n/locale'
-import { messages } from '../i18n/messages'
-import { LINKEDIN_URL, SITE_IMAGE, SITE_NAME, SITE_URL, canonicalUrl, normalizePath, toAbsoluteUrl } from './site'
+import { LOCALES, LOCALE_META, localeFromPath, seoPath, stripLocale, type Locale } from '../i18n/locale.ts'
+import { messages } from '../i18n/messages.ts'
+import { LINKEDIN_URL, SITE_IMAGE, SITE_NAME, SITE_URL, canonicalUrl, normalizePath, toAbsoluteUrl } from './site.ts'
 
 export type LcpImage = {
   src: string

@@ -1,6 +1,6 @@
-import { buildLcpPreloadTag, isLocalRasterSrc } from '../services/responsiveImage'
-import type { SeoPage } from './pages'
-import { SITE_NAME, SITE_THEME_COLOR } from './site'
+import { buildLcpPreloadTag, isLocalRasterSrc } from '../services/responsiveImage.ts'
+import type { SeoPage } from './pages.ts'
+import { SITE_NAME, SITE_THEME_COLOR } from './site.ts'
 
 const SEO_START = '<!--app-seo-start-->'
 const SEO_END = '<!--app-seo-end-->'

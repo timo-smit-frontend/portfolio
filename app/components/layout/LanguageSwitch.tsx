@@ -3,13 +3,7 @@ import { LOCALES, LOCALE_META } from '~/i18n/locale'
 import { useLocale } from '~/i18n/useLocale'
 import { cn } from '~/services/utils'
 
-export default function LanguageSwitch({
-  className,
-  tone = 'cream'
-}: {
-  className?: string
-  tone?: 'cream' | 'cyan'
-}) {
+export default function LanguageSwitch({ className, tone = 'cream' }: { className?: string; tone?: 'cream' | 'cyan' }) {
   const { locale, t, switchTo } = useLocale()
 
   return (
@@ -32,10 +26,7 @@ export default function LanguageSwitch({
                 lang={meta.html}
                 hrefLang={meta.hrefLang}
                 aria-current={current ? 'true' : undefined}
-                className={cn(
-                  'rounded-full px-1.5 py-1 smooth hover:text-site-gold',
-                  current ? fg : `${fg}/50`
-                )}
+                className={cn('rounded-full px-1.5 py-1 smooth hover:text-site-gold', current ? fg : `${fg}/50`)}
               >
                 {meta.label}
               </Link>

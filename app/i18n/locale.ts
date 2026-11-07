@@ -1,4 +1,4 @@
-import { normalizePath } from '../seo/site'
+import { normalizePath } from '../seo/site.ts'
 
 export const LOCALES = ['en', 'nl'] as const
 export type Locale = (typeof LOCALES)[number]

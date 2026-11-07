@@ -2,11 +2,11 @@ import path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, type IndexHtmlTransformContext, type Plugin } from 'vite'
-import { applySeoHead } from './app/seo/head'
-import { buildLlmsFullTxt, buildLlmsTxt } from './app/seo/llms'
-import { getSeoForPath } from './app/seo/pages'
-import { buildSitemapXml, writePrerenderedApp, writeSeoBuild, writeSeoPublic } from './vite/seo-prerender'
-import { responsiveImagesPlugin } from './vite/responsive-images'
+import { applySeoHead } from './app/seo/head.ts'
+import { buildLlmsFullTxt, buildLlmsTxt } from './app/seo/llms.ts'
+import { getSeoForPath } from './app/seo/pages.ts'
+import { buildSitemapXml, writePrerenderedApp, writeSeoBuild, writeSeoPublic } from './vite/seo-prerender.ts'
+import { responsiveImagesPlugin } from './vite/responsive-images.ts'
 
 const FONT_START = '<!--app-font-start-->'
 const FONT_END = '<!--app-font-end-->'
@@ -154,7 +154,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), responsiveImagesPlugin(), seoPlugin(), fontPreloadPlugin()],
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, 'app')
+      '~': path.resolve(import.meta.dirname, 'app')
     }
   }
 })

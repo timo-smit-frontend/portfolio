@@ -1,10 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import type { Locale } from '../app/i18n/locale'
-import { applySeoHead } from '../app/seo/head'
-import { buildLlmsFullTxt, buildLlmsTxt } from '../app/seo/llms'
-import { getIndexableSeoPages, getSeoForPath } from '../app/seo/pages'
-import { canonicalUrl } from '../app/seo/site'
+import type { Locale } from '../app/i18n/locale.ts'
+import { applySeoHead } from '../app/seo/head.ts'
+import { buildLlmsFullTxt, buildLlmsTxt } from '../app/seo/llms.ts'
+import { getIndexableSeoPages, getSeoForPath } from '../app/seo/pages.ts'
+import { canonicalUrl } from '../app/seo/site.ts'
 
 function toDistFile(distDir: string, pagePath: string): string {
   if (pagePath === '/') {
