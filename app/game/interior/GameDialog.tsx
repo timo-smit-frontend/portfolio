@@ -119,35 +119,43 @@ export default function GameDialog({
   )
 }
 
-/** Previous / next buttons for browsing a set of dialogs (desks, bookcases). */
-export function DialogPager({
-  onPrevious,
-  onNext,
-  previousLabel,
-  nextLabel
-}: {
-  onPrevious: () => void
-  onNext: () => void
-  previousLabel: string
-  nextLabel: string
-}) {
+type PagerStep = { label: string; onClick: () => void }
+
+/**
+ * Previous / next buttons for browsing a set of dialogs (desks, bookcases). No wrapping around: the first item
+ * has no previous and the last no next, so with two items found the buttons never both point at the other one.
+ */
+export function DialogPager({ previous, next }: { previous?: PagerStep; next?: PagerStep }) {
   const { t } = useLocale()
   return (
     <>
-      <button type="button" onClick={onPrevious} className="tile arcade inline-flex min-h-11 items-center gap-2 px-3 text-[0.55rem]">
-        <PixelArrow dir="left" />
-        <span>
-          <span className="sr-only">{t.game.previous}: </span>
-          {previousLabel}
-        </span>
-      </button>
-      <button type="button" onClick={onNext} className="tile arcade inline-flex min-h-11 items-center gap-2 px-3 text-right text-[0.55rem]">
-        <span>
-          <span className="sr-only">{t.game.nextItem}: </span>
-          {nextLabel}
-        </span>
-        <PixelArrow dir="right" />
-      </button>
+      {previous ? (
+        <button
+          type="button"
+          onClick={previous.onClick}
+          className="tile arcade inline-flex min-h-11 items-center gap-2 px-3 text-[0.55rem]"
+        >
+          <PixelArrow dir="left" />
+          <span>
+            <span className="sr-only">{t.game.previous}: </span>
+            {previous.label}
+          </span>
+        </button>
+      ) : null}
+      {next ? (
+        // ml-auto: on its own (first item), it still sits on the right, where "next" belongs.
+        <button
+          type="button"
+          onClick={next.onClick}
+          className="tile arcade ml-auto inline-flex min-h-11 items-center gap-2 px-3 text-right text-[0.55rem]"
+        >
+          <span>
+            <span className="sr-only">{t.game.nextItem}: </span>
+            {next.label}
+          </span>
+          <PixelArrow dir="right" />
+        </button>
+      ) : null}
     </>
   )
 }

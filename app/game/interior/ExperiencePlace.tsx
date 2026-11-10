@@ -177,8 +177,9 @@ export default function ExperiencePlace() {
     >
       {EXPERIENCES.map((job, index) => {
         const at = reachable.indexOf(index)
-        const previous = reachable[(at - 1 + reachable.length) % reachable.length] ?? index
-        const next = reachable[(at + 1) % reachable.length] ?? index
+        // Neighbours among the ones you have found, without wrapping around (see DialogPager).
+        const previous = at > 0 ? reachable[at - 1] : undefined
+        const next = at >= 0 ? reachable[at + 1] : undefined
         return (
           <GameDialog
             key={job.title}
@@ -189,10 +190,8 @@ export default function ExperiencePlace() {
             footer={
               reachable.length > 1 && at >= 0 ? (
                 <DialogPager
-                  onPrevious={() => setOpen(previous)}
-                  onNext={() => setOpen(next)}
-                  previousLabel={EXPERIENCES[previous]!.title}
-                  nextLabel={EXPERIENCES[next]!.title}
+                  previous={previous === undefined ? undefined : { label: EXPERIENCES[previous]!.title, onClick: () => setOpen(previous) }}
+                  next={next === undefined ? undefined : { label: EXPERIENCES[next]!.title, onClick: () => setOpen(next) }}
                 />
               ) : undefined
             }

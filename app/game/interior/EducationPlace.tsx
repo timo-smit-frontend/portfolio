@@ -98,8 +98,9 @@ export default function EducationPlace() {
       {KEYS.map((key, index) => {
         const education = EDUCATIONS[key]
         const at = reachable.indexOf(key)
-        const previous = reachable[(at - 1 + reachable.length) % reachable.length] ?? key
-        const next = reachable[(at + 1) % reachable.length] ?? key
+        // Neighbours among the ones you have found, without wrapping around (see DialogPager).
+        const previous = at > 0 ? reachable[at - 1] : undefined
+        const next = at >= 0 ? reachable[at + 1] : undefined
         // Only the accessibility topic has a photo (a WCAG presentation).
         const image = 'image' in education ? education.image : undefined
         return (
@@ -112,10 +113,10 @@ export default function EducationPlace() {
             footer={
               reachable.length > 1 && at >= 0 ? (
                 <DialogPager
-                  onPrevious={() => setOpen(previous)}
-                  onNext={() => setOpen(next)}
-                  previousLabel={EDUCATIONS[previous].title[locale]}
-                  nextLabel={EDUCATIONS[next].title[locale]}
+                  previous={
+                    previous === undefined ? undefined : { label: EDUCATIONS[previous].title[locale], onClick: () => setOpen(previous) }
+                  }
+                  next={next === undefined ? undefined : { label: EDUCATIONS[next].title[locale], onClick: () => setOpen(next) }}
                 />
               ) : undefined
             }
