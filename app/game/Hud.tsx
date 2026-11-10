@@ -29,7 +29,7 @@ export function TopBar({ shortcuts, onToggleShortcuts }: { shortcuts: boolean; o
   return (
     // Small screens: logo and settings share one full-width bar (tighter still under 352px, so it fits a
     // 320px phone). From sm up they float as two panels.
-    <header className="pointer-events-none absolute inset-x-0 top-0 z-40 p-3 max-[352px]:p-2 sm:p-4 stage:fixed">
+    <header className="pointer-events-none absolute inset-x-0 top-0 z-40 px-safe-3 pt-safe-3 max-[352px]:px-safe-2 max-[352px]:pt-safe-2 sm:px-safe-4 sm:pt-safe-4 stage:fixed">
       <div className="max-sm:pixel-drop max-sm:pointer-events-auto">
         <div className="flex items-center justify-between gap-2 max-sm:panel max-sm:py-2 max-sm:pr-2 max-sm:pl-3 max-[352px]:pr-1.5 max-[352px]:pl-2 sm:items-start sm:gap-3">
           <Link to={localize(PLACE_PATH.town)} className="pointer-events-auto sm:pixel-drop">
@@ -76,7 +76,10 @@ export function Hotbar({ current }: { current: PlaceId }) {
   const label = (place: PlaceId) => (place === 'town' ? t.nav.home : t.nav[place])
 
   return (
-    <nav aria-label={t.game.placesNav} className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center p-2 sm:p-4">
+    <nav
+      aria-label={t.game.placesNav}
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-safe-2 pt-2 pb-safe-2 sm:px-safe-4 sm:pt-4 sm:pb-safe-4"
+    >
       <div className="pixel-drop pointer-events-auto w-full sm:w-auto">
         <ul className="panel grid grid-cols-5 gap-1 p-1.5 sm:gap-1.5 sm:p-2">
           {PLACES.map((place, index) => {

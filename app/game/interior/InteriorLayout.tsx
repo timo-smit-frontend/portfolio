@@ -124,7 +124,7 @@ export default function InteriorLayout({
   return (
     <section
       aria-labelledby={PLACE_TITLE_ID}
-      className="relative flex flex-col gap-3 px-3 pt-20 pb-28 sm:px-6 stage:h-dvh stage:gap-4 stage:px-8 stage:pt-4 stage:pb-28"
+      className="relative flex flex-col gap-3 px-safe-3 pt-safe-20 pb-28 sm:px-safe-6 stage:h-dvh stage:gap-4 stage:px-safe-8 stage:pt-safe-4 stage:pb-28"
     >
       {/* Area sign. */}
       <div className="pixel-drop z-10 self-center short:absolute short:top-3 short:left-1/2 short:origin-top short:-translate-x-1/2 short:scale-75 stage:fixed stage:top-4 stage:left-1/2 stage:-translate-x-1/2">

@@ -65,7 +65,7 @@ function Welcome({ onStart }: { onStart: () => void }) {
     // Scrolls rather than clips when the card is taller than a small phone; m-auto centres it when it fits.
     // index.html marks <html data-welcome="seen"> before first paint for a returning visitor, so the
     // prerendered card never flashes while the app hydrates and then removes it.
-    <div className="absolute inset-0 z-20 flex overflow-y-auto bg-[#04141a]/55 p-4 pt-20 pb-6 sm:pb-28 in-data-[welcome=seen]:hidden">
+    <div className="absolute inset-0 z-20 flex overflow-y-auto bg-[#04141a]/55 px-safe-4 pt-safe-20 pb-6 sm:pb-28 in-data-[welcome=seen]:hidden">
       <div className="pixel-drop m-auto w-full max-w-xl">
         <div className="panel enter-window flex flex-col items-center gap-4 px-6 py-7 text-center sm:gap-5 sm:px-10 sm:py-10">
           <p className="eyebrow">{t.hero.kicker}</p>
@@ -331,13 +331,17 @@ export default function GameShell() {
       <TopBar shortcuts={shortcuts} onToggleShortcuts={toggleShortcuts} />
 
       {/* Town: always mounted, so the player keeps their spot; hidden while inside a building. */}
-      <div hidden={!inTown} className="relative h-svh min-h-96 stage:h-dvh">
+      {/* dvh, not svh: Safari on iOS 26 leaves a strip of page background between svh and its toolbar. */}
+      <div hidden={!inTown} className="relative h-dvh min-h-96">
         {inTown ? <h1 className="sr-only">{t.hero.srTitle}</h1> : null}
         <Town active={inTown} intro={welcome} spawn={spawn} onEnter={onEnter} />
         {inTown && welcome ? <Welcome onStart={start} /> : null}
       </div>
       {inTown ? <KeysLegend shortcuts={shortcuts} /> : null}
 
+      {/* Inside a building the page scrolls: back the status bar so text never runs under the clock. The town
+          stays edge to edge, it does not scroll on a phone. */}
+      {!inTown ? <div aria-hidden className="fixed inset-x-0 top-0 z-30 h-[env(safe-area-inset-top)] bg-site-chrome" /> : null}
       {!inTown ? (
         <Suspense fallback={<div className="h-dvh" />}>
           <PlaceView key={shown} place={shown} />

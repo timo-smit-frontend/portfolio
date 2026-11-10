@@ -111,6 +111,28 @@
   }
 }
 
+/*
+ * Edge spacing that also clears the notch, Dynamic Island and home indicator: the page draws edge to edge
+ * (viewport-fit=cover in index.html), so the town fills the whole phone screen. On screens without safe areas
+ * these are the same as px-*, pt-* and pb-*.
+ */
+@utility px-safe-* {
+  padding-left: max(--spacing(--value(number)), env(safe-area-inset-left));
+  padding-right: max(--spacing(--value(number)), env(safe-area-inset-right));
+}
+
+@utility pt-safe-* {
+  padding-top: calc(--spacing(--value(number)) + env(safe-area-inset-top));
+}
+
+@utility pb-safe-* {
+  padding-bottom: max(--spacing(--value(number)), env(safe-area-inset-bottom));
+}
+
+@utility top-safe-* {
+  top: calc(--spacing(--value(number)) + env(safe-area-inset-top));
+}
+
 /* Hard drop shadow that follows the stepped corners. */
 @utility pixel-drop {
   filter: drop-shadow(0 6px 0 rgb(2 12 16 / 0.55));
@@ -351,8 +373,8 @@
 
   html {
     /* Keeps keyboard-focused items clear of the fixed hotbar on small screens (WCAG 2.4.11). */
-    scroll-padding-bottom: 6.5rem;
-    scroll-padding-top: 1rem;
+    scroll-padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+    scroll-padding-top: calc(1rem + env(safe-area-inset-top));
   }
 
   ::selection {

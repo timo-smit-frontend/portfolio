@@ -163,7 +163,7 @@ export function QuestToast() {
     <div
       role="status"
       // At the top, under the HUD: at the bottom it would cover the speech box's Next button on small screens.
-      className="pointer-events-none fixed inset-x-0 top-20 z-50 flex justify-center px-3 stage:top-28"
+      className="pointer-events-none fixed inset-x-0 top-safe-20 z-50 flex justify-center px-safe-3 stage:top-safe-28"
     >
       {toast ? (
         <div key={toast.id} className="pixel-drop enter-rise">
