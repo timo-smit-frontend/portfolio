@@ -27,37 +27,43 @@ export function TopBar({ shortcuts, onToggleShortcuts }: { shortcuts: boolean; o
   const { t, localize } = useLocale()
 
   return (
-    <header className="pointer-events-none absolute inset-x-0 top-0 z-40 flex items-start justify-between gap-3 p-3 sm:p-4 stage:fixed">
-      <Link to={localize(PLACE_PATH.town)} className="pixel-drop pointer-events-auto">
-        <span className="panel flex items-center gap-3 py-2 pr-4 pl-2.5">
-          <span className="sr-only">{SITE_NAME}</span>
-          <Logo className="h-9 w-auto text-site-gold" />
-          <span aria-hidden className="hidden flex-col sm:flex">
-            <span className="font-site-pixel text-base leading-tight font-semibold">Timo Smit</span>
-            <span className="text-xs leading-tight text-ui-muted">{t.seo.jobTitle}</span>
-          </span>
-        </span>
-      </Link>
-      <div className="pixel-drop pointer-events-auto">
-        <div className="panel flex items-center gap-2 p-2">
-          <QuestJournal />
-          <StoryModeToggle />
-          {/* Keyboard shortcut switch (WCAG 2.1.4): only useful with a keyboard, so hidden on small touch screens. */}
-          <span className="hidden sm:inline-flex">
-            <Tooltip label={t.game.quickTravel} hint={t.game.quickTravelHint}>
-              <button
-                type="button"
-                aria-pressed={shortcuts}
-                onClick={onToggleShortcuts}
-                className="tile inline-flex min-h-10 min-w-10 items-center justify-center"
-              >
-                <KeyboardIcon />
-                <span className="sr-only">{t.game.shortcuts}</span>
-              </button>
-            </Tooltip>
-          </span>
-          <MotionToggle />
-          <LanguageSwitch />
+    // Small screens: logo and settings share one full-width bar (tighter still under 352px, so it fits a
+    // 320px phone). From sm up they float as two panels.
+    <header className="pointer-events-none absolute inset-x-0 top-0 z-40 p-3 max-[352px]:p-2 sm:p-4 stage:fixed">
+      <div className="max-sm:pixel-drop max-sm:pointer-events-auto">
+        <div className="flex items-center justify-between gap-2 max-sm:panel max-sm:py-2 max-sm:pr-2 max-sm:pl-3 max-[352px]:pr-1.5 max-[352px]:pl-2 sm:items-start sm:gap-3">
+          <Link to={localize(PLACE_PATH.town)} className="pointer-events-auto sm:pixel-drop">
+            <span className="flex items-center gap-3 sm:panel sm:py-2 sm:pr-4 sm:pl-2.5">
+              <span className="sr-only">{SITE_NAME}</span>
+              <Logo className="h-9 w-auto text-site-gold max-[352px]:h-8" />
+              <span aria-hidden className="hidden flex-col sm:flex">
+                <span className="font-site-pixel text-base leading-tight font-semibold">Timo Smit</span>
+                <span className="text-xs leading-tight text-ui-muted">{t.seo.jobTitle}</span>
+              </span>
+            </span>
+          </Link>
+          <div className="pointer-events-auto sm:pixel-drop">
+            <div className="flex items-center gap-1.5 max-[352px]:gap-1 sm:panel sm:gap-2 sm:p-2">
+              <QuestJournal />
+              <StoryModeToggle />
+              {/* Keyboard shortcut switch (WCAG 2.1.4): only useful with a keyboard, so hidden on small touch screens. */}
+              <span className="hidden sm:inline-flex">
+                <Tooltip label={t.game.quickTravel} hint={t.game.quickTravelHint}>
+                  <button
+                    type="button"
+                    aria-pressed={shortcuts}
+                    onClick={onToggleShortcuts}
+                    className="tile inline-flex min-h-10 min-w-10 items-center justify-center"
+                  >
+                    <KeyboardIcon />
+                    <span className="sr-only">{t.game.shortcuts}</span>
+                  </button>
+                </Tooltip>
+              </span>
+              <MotionToggle />
+              <LanguageSwitch />
+            </div>
+          </div>
         </div>
       </div>
     </header>
