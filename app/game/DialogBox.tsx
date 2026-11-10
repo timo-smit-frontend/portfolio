@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type KeyboardEvent } from 'react'
 import { useMotionPreference } from '~/components/motion/MotionPreference'
+import { PixelCursor } from '~/game/PixelArrow'
 import { cn } from '~/services/utils'
 
 export type DialogHandle = {
@@ -113,11 +114,7 @@ const DialogBox = forwardRef<
           ) : (
             <button type="button" onClick={advance} className="menu-row arcade w-auto text-[0.6rem] before:text-px-red">
               {last && !typing ? closeLabel : nextLabel}
-              {!typing && !last ? (
-                <span aria-hidden className="animate-px-bob inline-block text-px-red">
-                  ▼
-                </span>
-              ) : null}
+              {!typing && !last ? <PixelCursor dir="down" className="animate-px-bob h-[5px] w-[8.75px] text-px-red" /> : null}
             </button>
           )}
         </div>

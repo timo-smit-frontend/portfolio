@@ -295,13 +295,19 @@
   }
 }
 
-/* List row with a ▶ cursor on hover, focus and for the current/selected item. */
+/*
+ * List row with a ▶ cursor on hover, focus and for the current/selected item. The cursor is PixelCursor's
+ * triangle as a mask in the text colour: the arcade font has no ▶, and a fallback glyph sits off-centre.
+ */
 @utility menu-row {
   @apply relative flex w-full cursor-pointer items-center gap-3 py-2.5 pr-3 pl-8 text-left;
 
   &::before {
-    content: '▶';
-    @apply absolute left-2.5 text-[0.6rem] text-site-gold opacity-0;
+    content: '';
+    @apply absolute top-1/2 left-3 h-[8.75px] w-[5px] -translate-y-1/2 text-site-gold opacity-0;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 7'%3E%3Cpath d='M0 0h1v1h1v1h1v1h1v1H3v1H2v1H1v1H0z'/%3E%3C/svg%3E")
+      center / 100% 100% no-repeat;
   }
 
   @variant hover {

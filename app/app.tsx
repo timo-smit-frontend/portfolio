@@ -13,6 +13,7 @@ function usePreloadPlaces() {
   useEffect(() => {
     const preload = () =>
       void Promise.all([
+        import('~/game/interior/AboutPlace'),
         import('~/game/interior/ExperiencePlace'),
         import('~/game/interior/EducationPlace'),
         import('~/game/interior/ContactPlace')

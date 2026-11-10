@@ -10,14 +10,24 @@ import { responsiveImagesPlugin } from './vite/responsive-images.ts'
 
 const FONT_START = '<!--app-font-start-->'
 const FONT_END = '<!--app-font-end-->'
-const BODY_FONT = /outfit-latin-wght-normal.*\.woff2$/
+/**
+ * Every font the first screen uses: the body font and the two pixel fonts of the welcome card, top bar and town
+ * signs. Each is small (12 to 32 kB); preloaded, they usually arrive before the first paint, so the text does
+ * not reflow (a layout shift) when they swap in.
+ */
+const FIRST_SCREEN_FONTS = [
+  /outfit-latin-wght-normal.*\.woff2$/,
+  /pixelify-sans-latin-wght-normal.*\.woff2$/,
+  /press-start-2p-latin-400-normal.*\.woff2$/
+]
 
-function buildFontPreloadTag(href: string): string {
-  return `${FONT_START}\n    <link rel="preload" href="${href}" as="font" type="font/woff2" crossorigin />\n    ${FONT_END}`
+function buildFontPreloadTags(hrefs: string[]): string {
+  const links = hrefs.map((href) => `<link rel="preload" href="${href}" as="font" type="font/woff2" crossorigin />`)
+  return [FONT_START, ...links, FONT_END].join('\n    ')
 }
 
-function applyFontPreload(html: string, href: string | null): string {
-  const block = href ? buildFontPreloadTag(href) : `${FONT_START}\n    ${FONT_END}`
+function applyFontPreload(html: string, hrefs: string[]): string {
+  const block = buildFontPreloadTags(hrefs)
 
   if (html.includes(FONT_START) && html.includes(FONT_END)) {
     return html.replace(new RegExp(`${FONT_START}[\\s\\S]*?${FONT_END}`), block)
@@ -26,15 +36,15 @@ function applyFontPreload(html: string, href: string | null): string {
   return html
 }
 
-function bodyFontHref(ctx: IndexHtmlTransformContext, base: string): string | null {
-  const font = ctx.bundle ? Object.values(ctx.bundle).find((item) => item.type === 'asset' && BODY_FONT.test(item.fileName)) : undefined
-
-  if (!font || font.type !== 'asset') {
-    return null
-  }
-
+function firstScreenFontHrefs(ctx: IndexHtmlTransformContext, base: string): string[] {
+  if (!ctx.bundle) return []
   const normalizedBase = base.endsWith('/') ? base : `${base}/`
-  return `${normalizedBase}${font.fileName}`
+  const assets = Object.values(ctx.bundle).filter((item) => item.type === 'asset')
+
+  return FIRST_SCREEN_FONTS.flatMap((pattern) => {
+    const font = assets.find((item) => pattern.test(item.fileName))
+    return font ? [`${normalizedBase}${font.fileName}`] : []
+  })
 }
 
 /**
@@ -70,7 +80,7 @@ function fontPreloadPlugin(): Plugin {
     transformIndexHtml: {
       order: 'post',
       handler(html, ctx) {
-        return moveModuleScriptsToBody(applyFontPreload(html, bodyFontHref(ctx, base)))
+        return moveModuleScriptsToBody(applyFontPreload(html, firstScreenFontHrefs(ctx, base)))
       }
     }
   }

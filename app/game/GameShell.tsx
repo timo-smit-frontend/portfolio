@@ -11,8 +11,10 @@ import Town, { type Spawn } from '~/game/Town'
 import { BLACK_MS, CLOSE_MS, closeOn, closeRadius, door, doorBusy, fullRadius, OPEN_MS, openRadius, smallRadius } from '~/game/transition'
 import { doorstep, SPAWN, type BuildingId, type Point } from '~/game/world'
 import { useLocale } from '~/i18n/useLocale'
-import AboutPlace from '~/game/interior/AboutPlace'
+import { PixelCursor } from '~/game/PixelArrow'
 
+// Every building is its own chunk (with the room engine), so the town loads and hydrates with less script.
+const AboutPlace = lazy(() => import('~/game/interior/AboutPlace'))
 const ExperiencePlace = lazy(() => import('~/game/interior/ExperiencePlace'))
 const EducationPlace = lazy(() => import('~/game/interior/EducationPlace'))
 const ContactPlace = lazy(() => import('~/game/interior/ContactPlace'))
@@ -59,9 +61,10 @@ function Welcome({ onStart }: { onStart: () => void }) {
   const { paused } = useMotionPreference()
 
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#04141a]/55 p-4 pt-20 pb-28">
-      <div className="pixel-drop w-full max-w-xl">
-        <div className="panel enter-window flex flex-col items-center gap-5 px-6 py-8 text-center sm:px-10 sm:py-10">
+    // Scrolls rather than clips when the card is taller than a small phone; m-auto centres it when it fits.
+    <div className="absolute inset-0 z-20 flex overflow-y-auto bg-[#04141a]/55 p-4 pt-20 pb-6 sm:pb-28">
+      <div className="pixel-drop m-auto w-full max-w-xl">
+        <div className="panel enter-window flex flex-col items-center gap-4 px-6 py-7 text-center sm:gap-5 sm:px-10 sm:py-10">
           <p className="eyebrow">{t.hero.kicker}</p>
           <p aria-hidden className="heading text-5xl text-ui-text [text-shadow:0_4px_0_var(--color-px-ink)] sm:text-6xl">
             Timo Smit
@@ -75,12 +78,14 @@ function Welcome({ onStart }: { onStart: () => void }) {
           <p className="max-w-md text-base leading-relaxed text-ui-muted">
             {t.game.intro} {t.game.quests.intro}
           </p>
+          {/* Touch screens only, chosen in CSS (not after hydrating), so the card never changes height. */}
+          <p className="panel-soft hidden max-w-md px-4 py-2 font-site-pixel text-base leading-snug pointer-coarse:block">
+            {t.game.touchHint}
+          </p>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <button type="button" onClick={onStart} className="button-gold">
               {t.game.start}
-              <span aria-hidden className="animate-px-blink">
-                ▶
-              </span>
+              <PixelCursor dir="right" className="animate-px-blink h-[10.5px] w-1.5" />
             </button>
             <Link to={localize(PLACE_PATH.about)} className="button-ghost">
               {t.nav.about}

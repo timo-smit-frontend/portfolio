@@ -1,8 +1,11 @@
 import { ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
 
+/**
+ * Joins class names. No tailwind-merge (about 27 kB of script): no caller passes a class that has to override
+ * one of the component's own, so keep it that way rather than relying on a merge.
+ */
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return clsx(inputs)
 }
 
 export function slugify(value: string): string {

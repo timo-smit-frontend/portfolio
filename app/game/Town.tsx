@@ -1052,7 +1052,13 @@ export default function Town({
       }
       ctx.restore()
 
-      if (overlayRef.current) overlayRef.current.style.transform = `translate(${-camX * s}px, ${-camY * s}px) scale(${zoom})`
+      const plates = overlayRef.current
+      if (plates) {
+        plates.style.transform = `translate(${-camX * s}px, ${-camY * s}px) scale(${zoom})`
+        // The server renders the plates without a camera: show them only once they sit at this scale, so they
+        // never jump into place (a layout shift) after hydrating.
+        if (plates.style.visibility !== 'visible' && Number(plates.dataset.scale) === view.current.base) plates.style.visibility = 'visible'
+      }
 
       if (running && activeRef.current) raf = requestAnimationFrame(frame)
     }
@@ -1220,7 +1226,12 @@ export default function Town({
         />
 
         {/* Name plates over the doors, in world space, moved with the camera. */}
-        <div ref={overlayRef} aria-hidden className="pointer-events-none absolute top-0 left-0 origin-top-left">
+        <div
+          ref={overlayRef}
+          aria-hidden
+          data-scale={scale}
+          className="pointer-events-none invisible absolute top-0 left-0 origin-top-left"
+        >
           {BUILDINGS.map((b) => (
             <span
               key={b.id}
