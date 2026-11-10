@@ -28,7 +28,7 @@ const en = {
     linkedInNewTab: ' (opens in a new tab)'
   },
   hero: {
-    kicker: 'Front-end developer at UBO Agency',
+    kicker: 'Front-end developer',
     srTitle: 'Timo Smit is a creative Front-end Developer',
     beforeTrait: 'Timo Smit is a ',
     afterTrait: 'Front-end Developer!'
@@ -248,7 +248,7 @@ const en = {
   seo: {
     homeTitle: 'Timo Smit | Front-end Developer, Accessibility & React',
     homeDescription:
-      'Timo Smit is a front-end developer at UBO Agency in the Netherlands, focused on web accessibility (WCAG), React, Next.js and Remix.',
+      'Timo Smit is a front-end developer in the Netherlands, focused on web accessibility (WCAG), React, Next.js and Remix.',
     aboutTitle: 'About',
     aboutDescription:
       'About Timo Smit: a creative front-end developer from Utrecht with user experience and accessibility at the core, and the brands he has built for.',
@@ -264,7 +264,7 @@ const en = {
     notFoundTitle: 'Page not found',
     notFoundDescription: 'This page does not exist or has been moved.',
     jobTitle: 'Front-end Developer',
-    ogImageAlt: 'Timo Smit, front-end developer at UBO Agency: accessibility, React and Remix'
+    ogImageAlt: 'Timo Smit, front-end developer: accessibility, React and Remix'
   },
   traits: [
     'creative',
@@ -333,7 +333,7 @@ const nl: typeof en = {
     linkedInNewTab: ' (opent in een nieuw tabblad)'
   },
   hero: {
-    kicker: 'Front-end developer bij UBO Agency',
+    kicker: 'Front-end developer',
     srTitle: 'Timo Smit is een creatieve front-end developer',
     beforeTrait: 'Timo Smit is een ',
     afterTrait: 'front-end developer!'
@@ -552,7 +552,7 @@ const nl: typeof en = {
   seo: {
     homeTitle: 'Timo Smit | Front-end developer, toegankelijkheid & React',
     homeDescription:
-      'Timo Smit is front-end developer bij UBO Agency, met focus op digitale toegankelijkheid (WCAG), React, Next.js en Remix.',
+      'Timo Smit is front-end developer in Nederland, met focus op digitale toegankelijkheid (WCAG), React, Next.js en Remix.',
     aboutTitle: 'Over mij',
     aboutDescription:
       'Over Timo Smit: een creatieve front-end developer uit Utrecht met user experience en toegankelijkheid als kern, en de merken waarvoor hij bouwde.',
@@ -568,7 +568,7 @@ const nl: typeof en = {
     notFoundTitle: 'Pagina niet gevonden',
     notFoundDescription: 'Deze pagina bestaat niet of is verplaatst.',
     jobTitle: 'Front-end developer',
-    ogImageAlt: 'Timo Smit, front-end developer bij UBO Agency: toegankelijkheid, React en Remix'
+    ogImageAlt: 'Timo Smit, front-end developer: toegankelijkheid, React en Remix'
   },
   traits: [
     'creatieve',
