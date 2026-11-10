@@ -74,6 +74,7 @@ async function findOriginalImages(dir: string, imagesRoot: string): Promise<stri
 export function responsiveImagesPlugin(): Plugin {
   let publicDir = ''
   let outDir = ''
+  let isBuild = false
   const cache = new Map<string, Buffer>()
 
   async function variantBuffer(originalPath: string, width: number, format: ImageFormat): Promise<Buffer> {
@@ -90,6 +91,7 @@ export function responsiveImagesPlugin(): Plugin {
     configResolved(config) {
       publicDir = config.publicDir
       outDir = path.resolve(config.root, config.build.outDir)
+      isBuild = config.command === 'build'
     },
     configureServer(server) {
       server.middlewares.use(async (request, response, next) => {
@@ -122,6 +124,8 @@ export function responsiveImagesPlugin(): Plugin {
       })
     },
     async closeBundle() {
+      // Dev servers call closeBundle on close too (the prerender server does): only write variants in a build.
+      if (!isBuild) return
       const imagesDir = path.join(publicDir, 'images')
       const originals = await findOriginalImages(imagesDir, imagesDir)
 

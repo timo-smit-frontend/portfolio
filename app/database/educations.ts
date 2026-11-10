@@ -1,7 +1,5 @@
 import type { LocalizedCopy } from './experiences.ts'
 
-const PLACEHOLDER = '/images/education/placeholder.svg'
-
 export const EDUCATIONS = {
   accessibility: {
     title: { en: 'Accessibility', nl: 'Toegankelijkheid' } satisfies LocalizedCopy,
@@ -24,8 +22,7 @@ export const EDUCATIONS = {
       nl: `<p>Ik heb veel tijd in <strong>React</strong> en <strong>Next.js</strong> gestoken, waaronder <strong>React - The Complete Guide (2024 Edition)</strong> op Udemy. Ik studeerde ook <strong>Angular</strong> via Udemy's Complete Guide, wat helpt als de stack geen React is.</p>
       <p>Bij <strong>Capgemini</strong> gebruikte ik React en Next.js dagelijks. Op <strong>Project Enhance</strong> voor het World Food Programme lag de focus op performance en UX. Voor de <strong>Tweede Kamer</strong> bouwde ik de frontend in React en Next.js rond WCAG.</p>
       <p>Bij <strong>UBO Agency</strong> werk ik nog steeds in React, onder meer op het LMS van Casio, en in Remix op Fairbanks, Movimento en IM Duurzaam. Dezelfde componentgedachte, ander framework.</p>`
-    } satisfies LocalizedCopy,
-    image: PLACEHOLDER
+    } satisfies LocalizedCopy
   },
   ai: {
     title: { en: 'Artificial Intelligence', nl: 'Kunstmatige intelligentie' } satisfies LocalizedCopy,
@@ -36,8 +33,7 @@ export const EDUCATIONS = {
       nl: `<p>Kunstmatige intelligentie kwam in het werk na mijn bachelor, toen ik elke dag aan het shippen was. In ongeveer <strong>drie jaar</strong> professionele front-end — een jaar bij <strong>Capgemini</strong>, daarna <strong>UBO Agency</strong> — leerde ik het als sparringpartner te gebruiken, niet als vervanging: sneller op React en Remix, nog steeds verantwoordelijk voor wat live gaat.</p>
       <p>Bij <strong>UBO Agency</strong> is dat onderdeel van hoe we leveren. Opdrachtwerk zoals <strong>Fairbanks</strong>, <strong>Movimento</strong>, <strong>Casio</strong> en <strong>Profield</strong> vraagt nog steeds om toegankelijkheid, motion en een frontend die overeind blijft. Kunstmatige intelligentie helpt me daar. Het slaat <strong>WCAG</strong>, content of het gesprek tussen design en development niet over.</p>
       <p>Ik leer het hetzelfde als React: op echte projecten, daarna het vak aanscherpen. De puzzel blijft de puzzel. Kunstmatige intelligentie laat me alleen meer stukjes proberen voor de deadline.</p>`
-    } satisfies LocalizedCopy,
-    image: PLACEHOLDER
+    } satisfies LocalizedCopy
   },
   consultancy: {
     title: { en: 'Consultancy & client work', nl: 'Consultancy & opdrachtgevers' } satisfies LocalizedCopy,
@@ -48,8 +44,7 @@ export const EDUCATIONS = {
       nl: `<p>Bij <strong>Capgemini</strong> leerde ik consultancy op echt opdrachtwerk: praten met stakeholders, complexe requirements lezen en het werk live krijgen. Dat omvatte <strong>Project Enhance</strong> met het <strong>United Nations World Food Programme</strong>, gericht op performance en user experience, en het toegankelijkheidsproject voor de Tweede Kamer.</p>
       <p>Bij <strong>UBO Agency</strong> is de mix van opdrachtgevers breed. Onder meer <strong>Fairbanks</strong> (meertalige Remix), <strong>Movimento</strong> (werving in de zorg en sollicitaties), <strong>Casio</strong> (toegankelijkheid), <strong>Brouwer Metaal</strong> (internationale site met 3D-productmodellen) en <strong>IM Duurzaam</strong> (GSAP-motion). Ik werkte ook met techbedrijven zoals NTT DATA en Worldstream, en notarissen zoals Van Eeten en Hak en Rein Vos. Kunstmatige intelligentie zit in hoe ik die mix ship, niet als een losse dienst die ik verkoop.</p>
       <p>Ik volgde Coursera-cursussen in <strong>Giving Helpful Feedback</strong>, <strong>High-Impact Business Writing</strong> en <strong>Teamwork Skills</strong>. Duidelijk communiceren hoort bij het werk, het is geen extraatje.</p>`
-    } satisfies LocalizedCopy,
-    image: PLACEHOLDER
+    } satisfies LocalizedCopy
   },
   creativeDeveloper: {
     title: { en: 'Creative background', nl: 'Creatieve achtergrond' } satisfies LocalizedCopy,
@@ -60,7 +55,6 @@ export const EDUCATIONS = {
       nl: `<p>Tijdens <strong>Communication and Multimedia Design</strong> aan de Hogeschool van Amsterdam werd ik UX/UI-designer en front-end developer ineen. Ik studeerde af in juni 2023. Die mix is nog steeds de kern: creative development met user experience en toegankelijkheid in het midden.</p>
       <p>Bij <strong>SmartHOTEL</strong> gebruikte ik Figma en user-centered research om hun digitale platforms te vernieuwen. Bij <strong>Accent Interactive</strong> zat ik naast developers, ontwierp ik en bouwde ik frontend in Laravel en SCSS, onder meer een nieuwe versie van PlanAhead voor opdrachtgevers zoals ProRail.</p>
       <p><strong>Capgemini</strong> duwde daarna de React- en Next.js-kant, inclusief het World Food Programme en de Tweede Kamer. Bij <strong>UBO Agency</strong> houd ik beide kanten: motion en 3D op sites zoals IM Duurzaam en Brouwer Metaal, en de brug tussen design en development op toegankelijkheid. Voor mij is coderen als een puzzel. Creativiteit toevoegen en iets maken dat blij maakt, maakt het proces bijzonder.</p>`
-    } satisfies LocalizedCopy,
-    image: PLACEHOLDER
+    } satisfies LocalizedCopy
   }
 }

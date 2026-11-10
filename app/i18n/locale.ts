@@ -13,10 +13,27 @@ export const LOCALE_META: Record<
     og: string
     hrefLang: string
     label: string
+    /** The language's own name, and a line on what switching does, both in that language (for the tooltip). */
+    name: string
+    switchHint: string
   }
 > = {
-  en: { html: 'en-GB', og: 'en_GB', hrefLang: 'en-GB', label: 'EN' },
-  nl: { html: 'nl-NL', og: 'nl_NL', hrefLang: 'nl-NL', label: 'NL' }
+  en: {
+    html: 'en-GB',
+    og: 'en_GB',
+    hrefLang: 'en-GB',
+    label: 'EN',
+    name: 'English',
+    switchHint: 'Read the whole site in English instead. Your quest progress is kept.'
+  },
+  nl: {
+    html: 'nl-NL',
+    og: 'nl_NL',
+    hrefLang: 'nl-NL',
+    label: 'NL',
+    name: 'Nederlands',
+    switchHint: 'Lees deze site in het Nederlands. Je voortgang blijft bewaard.'
+  }
 }
 
 export function localeFromPath(pathname: string): Locale {

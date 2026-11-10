@@ -1,42 +1,35 @@
+import { Tooltip } from '~/components/elements/Tooltip'
+import { useMotionPreference } from '~/components/motion/MotionPreference'
+import { useLocale } from '~/i18n/useLocale'
 import { cn } from '~/services/utils'
 
 /**
- * Pause/play control for auto-updating or moving content (WCAG 2.2.2).
- * The accessible name switches between the pause and play label; the icon shows the action.
+ * One pause/play control for every moving part of the site: water, flowers, Byte, the typing traits and
+ * the blinking cursors (WCAG 2.2.2). A toggle button: fixed name, aria-pressed carries the state.
  */
-export default function MotionToggle({
-  paused,
-  onToggle,
-  pauseLabel,
-  playLabel,
-  className
-}: {
-  paused: boolean
-  onToggle: () => void
-  pauseLabel: string
-  playLabel: string
-  className?: string
-}) {
+export default function MotionToggle({ className }: { className?: string }) {
+  const { paused, toggle } = useMotionPreference()
+  const { t } = useLocale()
+
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className={cn(
-        'inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full text-site-cream-fg/70 smooth hover:bg-site-cream-fg/10 hover:text-site-cream-fg',
-        className
-      )}
-    >
-      <span className="sr-only">{paused ? playLabel : pauseLabel}</span>
-      {paused ? (
-        <svg viewBox="0 0 24 24" className="size-5" fill="currentColor" aria-hidden>
-          <path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l11.1-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z" />
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" className="size-5" fill="currentColor" aria-hidden>
-          <rect x="6" y="5" width="4" height="14" rx="1" />
-          <rect x="14" y="5" width="4" height="14" rx="1" />
-        </svg>
-      )}
-    </button>
+    <Tooltip label={paused ? t.motion.play : t.motion.pause} hint={paused ? t.motion.playHint : t.motion.pauseHint}>
+      <button
+        type="button"
+        onClick={toggle}
+        aria-pressed={paused}
+        className={cn('tile inline-flex min-h-10 min-w-10 items-center justify-center', className)}
+      >
+        {paused ? (
+          <svg viewBox="0 0 8 8" className="size-3" fill="currentColor" shapeRendering="crispEdges" aria-hidden>
+            <path d="M1 0h2v1h1v1h1v1h1v2H5v1H4v1H3v1H1z" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 8 8" className="size-3" fill="currentColor" shapeRendering="crispEdges" aria-hidden>
+            <path d="M1 0h2v8H1zM5 0h2v8H5z" />
+          </svg>
+        )}
+        <span className="sr-only">{t.motion.pause}</span>
+      </button>
+    </Tooltip>
   )
 }

@@ -1,10 +1,10 @@
-import { Outlet } from 'react-router'
 import Layout from '~/components/layout/Layout'
+import GameShell from '~/game/GameShell'
 
 export default function Root() {
   return (
     <Layout>
-      <Outlet />
+      <GameShell />
     </Layout>
   )
 }

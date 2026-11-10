@@ -5,7 +5,7 @@ import { messages } from '../i18n/messages.ts'
 import { getSeoForPath } from './pages.ts'
 import { ALMA_MATER, CERTIFICATES, EMPLOYER, KNOWS_ABOUT, LINKEDIN_URL, SIDE_BUSINESS, SITE_NAME, SITE_URL, canonicalUrl } from './site.ts'
 
-const PAGE_PATHS = ['/', '/experience', '/education', '/contact'] as const
+const PAGE_PATHS = ['/', '/about', '/experience', '/education', '/contact'] as const
 
 function pageName(path: string): string {
   const seo = getSeoForPath(path)

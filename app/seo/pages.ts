@@ -51,7 +51,7 @@ export type SeoPage = {
 const PERSON_ID = `${SITE_URL}/#person`
 const WEBSITE_ID = `${SITE_URL}/#website`
 const SIDE_BUSINESS_ID = `${SITE_URL}/#hello-world-cards`
-const INDEXABLE_PAGES = ['/', '/experience', '/education', '/contact'] as const
+const INDEXABLE_PAGES = ['/', '/about', '/experience', '/education', '/contact'] as const
 
 function titleWithBrand(pageTitle: string): string {
   return `${pageTitle} | ${SITE_NAME}`
@@ -314,6 +314,17 @@ export function getSeoForPath(pathname: string): SeoPage {
       description: t.seo.homeDescription,
       type: 'profile',
       webPageType: 'ProfilePage'
+    })
+  }
+
+  if (pageKey === '/about') {
+    return page({
+      path: localizedPath,
+      locale,
+      title: titleWithBrand(t.seo.aboutTitle),
+      description: t.seo.aboutDescription,
+      webPageType: 'AboutPage',
+      breadcrumbName: t.nav.about
     })
   }
 

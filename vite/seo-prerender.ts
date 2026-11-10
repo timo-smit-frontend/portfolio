@@ -51,7 +51,7 @@ function xhtmlLinks(page: { alternates: Array<{ hrefLang: string; href: string }
     .join('\n')
 }
 
-const CONTENT_PATHS = ['app/database', 'app/i18n/messages.ts', 'app/components', 'app/routes', 'public/images']
+const CONTENT_PATHS = ['app/database', 'app/i18n/messages.ts', 'app/components', 'app/game', 'app/routes', 'public/images']
 let cachedLastModified: string | undefined
 
 /** Date of the last commit that touched the site content; falls back to today outside a git checkout. */

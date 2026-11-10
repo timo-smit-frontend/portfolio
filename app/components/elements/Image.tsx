@@ -1,4 +1,4 @@
-import { forwardRef, useLayoutEffect, useRef, useState, type ImgHTMLAttributes, type Ref } from 'react'
+import { forwardRef, useLayoutEffect, useRef, useState, type ImgHTMLAttributes, type ReactEventHandler, type Ref } from 'react'
 import { resolveImageTitle } from '~/services/imageCopy'
 import {
   DEFAULT_SRCSET_MAX_WIDTH,
@@ -30,12 +30,31 @@ function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
 const LAZY_SIZES = `auto, ${PRIORITY_IMAGE_SIZES}`
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
-  { src, alt, title, width, height, maxwidth, sizes, priority = false, loading, fetchPriority, decoding, className, ...props },
+  {
+    src,
+    alt,
+    title,
+    width,
+    height,
+    maxwidth,
+    sizes,
+    priority = false,
+    loading,
+    fetchPriority,
+    decoding,
+    className,
+    onLoad,
+    onError,
+    ...props
+  },
   ref
 ) {
   const imgRef = useRef<HTMLImageElement>(null)
   const [layoutWidth, setLayoutWidth] = useState(0)
   const resolved = resolveSrc(src)
+  // The src that finished (or failed) loading. Until it matches the current one, the image box shows a skeleton.
+  const [settledSrc, setSettledSrc] = useState<string | null>(null)
+  const settled = settledSrc === resolved
   const resolvedTitle = resolveImageTitle(resolved, title, alt)
   const maxWidth = maxwidth ?? DEFAULT_SRCSET_MAX_WIDTH
   const resolvedLoading = loading ?? (priority ? 'eager' : 'lazy')
@@ -61,13 +80,30 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
     return () => observer.disconnect()
   }, [resolved, isEager, sizes])
 
+  // An image can finish before hydration, so React never sees its load event: check once on mount.
+  useLayoutEffect(() => {
+    const el = imgRef.current
+    if (el?.complete && el.naturalWidth > 0) setSettledSrc(resolved)
+  }, [resolved])
+
+  const handleLoad: ReactEventHandler<HTMLImageElement> = (event) => {
+    setSettledSrc(resolved)
+    onLoad?.(event)
+  }
+  const handleError: ReactEventHandler<HTMLImageElement> = (event) => {
+    setSettledSrc(resolved)
+    onError?.(event)
+  }
+
   const resolvedFetchPriority = fetchPriority ?? (priority ? 'high' : undefined)
   const imgProps = {
     ...props,
     width,
     height,
     title: resolvedTitle,
-    className: cn('min-w-0 max-w-full', className),
+    className: cn('min-w-0 max-w-full', !settled && 'img-skeleton', className),
+    onLoad: handleLoad,
+    onError: handleError,
     loading: resolvedLoading,
     ...(decoding != null ? { decoding } : isEager ? {} : { decoding: 'async' as const }),
     sizes: resolvedSizes,

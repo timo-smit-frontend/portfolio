@@ -1,36 +1,42 @@
 import { Link } from 'react-router'
-import { Animated } from '~/components/elements/Animated'
+import SkipToMainContent from '~/components/elements/SkipToMainContent'
 import { homePath } from '~/components/layout/nav'
+import PixelSprite from '~/game/PixelSprite'
+import { HERO_FRAMES, HERO_PALETTE } from '~/game/sprites'
 import { useLocale } from '~/i18n/useLocale'
 
 export default function ErrorPage() {
   const { locale, t } = useLocale()
 
   return (
-    <main
-      className="flex min-h-screen flex-col items-center justify-center bg-site-chrome py-16 text-site-cyan-fg sm:py-24 lg:py-32"
-      aria-labelledby="error-title"
-    >
-      <div className="container-full">
-        <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-          <Animated delay={100}>
-            <p className="title-xl text-site-gold">404</p>
-          </Animated>
-          <Animated delay={200}>
-            <h1 id="error-title" className="title-l">
-              {t.error.title}
-            </h1>
-          </Animated>
-          <Animated delay={300}>
-            <p className="content-l text-site-cyan-fg/80">{t.error.description}</p>
-          </Animated>
-          <Animated delay={400}>
-            <Link to={homePath(locale)} className="button-gold mt-2">
-              {t.error.back}
-            </Link>
-          </Animated>
+    <>
+      <SkipToMainContent />
+      <main
+        id="main"
+        tabIndex={-1}
+        className="flex min-h-dvh flex-col items-center justify-center bg-[radial-gradient(ellipse_at_50%_35%,#123a44_0%,#081d23_70%)] px-4 py-16"
+        aria-labelledby="error-title"
+      >
+        <div className="flex w-full max-w-xl flex-col items-center gap-6">
+          {/* The player has walked off the edge of the map. */}
+          <div aria-hidden className="flex items-end gap-2">
+            <PixelSprite rows={HERO_FRAMES.up[0]!} palette={HERO_PALETTE} scale={6} />
+            <span className="arcade animate-px-bob pb-20 text-2xl text-site-gold">!</span>
+          </div>
+          <div className="pixel-drop w-full">
+            <div className="panel enter-window flex flex-col items-center gap-4 px-6 py-8 text-center sm:px-10">
+              <p className="eyebrow">404 · {t.game.notFound}</p>
+              <h1 id="error-title" className="heading text-3xl">
+                {t.error.title}
+              </h1>
+              <p className="prose-panel">{t.error.description}</p>
+              <Link to={homePath(locale)} className="button-gold mt-2">
+                {t.game.backToTown}
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   )
 }

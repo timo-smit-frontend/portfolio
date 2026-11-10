@@ -10,7 +10,7 @@ import { responsiveImagesPlugin } from './vite/responsive-images.ts'
 
 const FONT_START = '<!--app-font-start-->'
 const FONT_END = '<!--app-font-end-->'
-const OUTFIT_LATIN_FONT = /outfit-latin-wght-normal.*\.woff2$/
+const BODY_FONT = /outfit-latin-wght-normal.*\.woff2$/
 
 function buildFontPreloadTag(href: string): string {
   return `${FONT_START}\n    <link rel="preload" href="${href}" as="font" type="font/woff2" crossorigin />\n    ${FONT_END}`
@@ -26,10 +26,8 @@ function applyFontPreload(html: string, href: string | null): string {
   return html
 }
 
-function outfitLatinHref(ctx: IndexHtmlTransformContext, base: string): string | null {
-  const font = ctx.bundle
-    ? Object.values(ctx.bundle).find((item) => item.type === 'asset' && OUTFIT_LATIN_FONT.test(item.fileName))
-    : undefined
+function bodyFontHref(ctx: IndexHtmlTransformContext, base: string): string | null {
+  const font = ctx.bundle ? Object.values(ctx.bundle).find((item) => item.type === 'asset' && BODY_FONT.test(item.fileName)) : undefined
 
   if (!font || font.type !== 'asset') {
     return null
@@ -72,7 +70,7 @@ function fontPreloadPlugin(): Plugin {
     transformIndexHtml: {
       order: 'post',
       handler(html, ctx) {
-        return moveModuleScriptsToBody(applyFontPreload(html, outfitLatinHref(ctx, base)))
+        return moveModuleScriptsToBody(applyFontPreload(html, bodyFontHref(ctx, base)))
       }
     }
   }
@@ -137,7 +135,10 @@ function seoPlugin(): Plugin {
       process.env.HWC_PRERENDER = '1'
       const { createServer } = await import('vite')
       const vite = await createServer({
-        server: { middlewareMode: true, hmr: false, watch: null },
+        // Its own cache and no WebSocket, so a build also works while the dev server is running.
+        server: { middlewareMode: true, hmr: false, ws: false, watch: null },
+        cacheDir: 'node_modules/.vite-prerender',
+        optimizeDeps: { noDiscovery: true, include: [] },
         appType: 'custom',
         mode: 'production'
       })

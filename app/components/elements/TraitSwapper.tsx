@@ -74,7 +74,7 @@ const TraitSwapper = ({ traits = messages.en.traits, paused = false }: { traits?
   const displayedTrait = isWide ? (animating ? word.slice(0, chars) : word) : (smallScreenTrait ?? word)
 
   return (
-    <span className="text-site-gold-display" aria-hidden="true">
+    <span className="text-site-gold" aria-hidden="true">
       {displayedTrait}
       {/* The cursor slot always takes space on wide screens, so toggling it never shifts the layout. */}
       <span className={cn('hidden min-[800px]:inline', !animating && 'invisible')}>_</span>

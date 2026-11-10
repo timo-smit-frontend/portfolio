@@ -1,43 +1,62 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes } from 'react-router'
 import Seo from '~/components/elements/Seo'
 import ScrollToTop from '~/components/layout/ScrollToTop'
-import { InitialDocumentProvider } from '~/hooks/initialDocument'
+import { MotionPreferenceProvider } from '~/components/motion/MotionPreference'
+import { ProgressProvider } from '~/game/progress'
 import Root from '~/root'
-import Home from '~/routes/home'
 
-const Experience = lazy(() => import('~/routes/experience'))
-const Education = lazy(() => import('~/routes/education'))
-const Contact = lazy(() => import('~/routes/contact'))
 const ErrorPage = lazy(() => import('~/routes/error'))
 
-function PageRoutes() {
+/** Fetch the other places once idle, so walking into a building never waits on a chunk. */
+function usePreloadPlaces() {
+  useEffect(() => {
+    const preload = () =>
+      void Promise.all([
+        import('~/game/interior/ExperiencePlace'),
+        import('~/game/interior/EducationPlace'),
+        import('~/game/interior/ContactPlace')
+      ])
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(preload, { timeout: 4000 })
+      return () => window.cancelIdleCallback(id)
+    }
+    const id = globalThis.setTimeout(preload, 2000)
+    return () => globalThis.clearTimeout(id)
+  }, [])
+}
+
+// Every place is a route into the same game: the shell in Root stays mounted, the URL picks the place.
+function PlaceRoutes() {
   return (
     <>
-      <Route index element={<Home />} />
-      <Route path="experience" element={<Experience />} />
-      <Route path="education" element={<Education />} />
-      <Route path="contact" element={<Contact />} />
+      <Route index element={null} />
+      <Route path="about" element={null} />
+      <Route path="experience" element={null} />
+      <Route path="education" element={null} />
+      <Route path="contact" element={null} />
     </>
   )
 }
 
 export function App() {
+  usePreloadPlaces()
+
   return (
-    <>
-      <ScrollToTop />
-      <Seo />
-      <InitialDocumentProvider>
+    <MotionPreferenceProvider>
+      <ProgressProvider>
+        <ScrollToTop />
+        <Seo />
         <Suspense fallback={null}>
           <Routes>
             <Route element={<Root />}>
-              {PageRoutes()}
-              <Route path="nl">{PageRoutes()}</Route>
+              {PlaceRoutes()}
+              <Route path="nl">{PlaceRoutes()}</Route>
             </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>
-      </InitialDocumentProvider>
-    </>
+      </ProgressProvider>
+    </MotionPreferenceProvider>
   )
 }

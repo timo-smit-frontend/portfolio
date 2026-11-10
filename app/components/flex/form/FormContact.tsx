@@ -1,13 +1,9 @@
 import { FormEvent, useRef, useState } from 'react'
-import { Animated } from '~/components/elements/Animated'
-import Breadcrumbs from '~/components/elements/Breadcrumbs'
-import SectionCard from '~/components/elements/SectionCard'
-import useLocationFinder from '~/hooks/useLocationFinder'
 import { useLocale } from '~/i18n/useLocale'
 import { LINKEDIN_URL, sendContactMessage } from '~/services/contact'
 import { cn, isValidEmail } from '~/services/utils'
 
-const contactLinkClass = 'group flex w-fit items-center gap-2 transition-colors hover:text-site-gold-ink'
+const contactLinkClass = 'group flex min-h-11 w-fit items-center gap-2 font-semibold text-px-ink hover:text-px-red'
 
 function LinkedInIcon() {
   return (
@@ -37,7 +33,7 @@ export function FormContactLinks({ variant = 'stacked' }: { variant?: 'stacked' 
 
   return (
     <div>
-      <h2 className="text-lg font-bold leading-7">{t.contact.heading}</h2>
+      <h3 className="arcade text-[0.6rem] text-px-red">{t.contact.heading}</h3>
       <ul className={listClass}>
         <li>
           <ContactLinkedInLink />
@@ -53,7 +49,7 @@ function applyRequiredValidity(input: HTMLInputElement | HTMLTextAreaElement, va
   input.setCustomValidity(value.trim() === '' ? hint : '')
 }
 
-function ContactForm() {
+export function ContactForm() {
   const { t } = useLocale()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -128,8 +124,8 @@ function ContactForm() {
   return (
     // noValidate: the inline, persistent error messages below (linked via aria-describedby) replace the
     // transient native validation bubbles; focus moves to the first invalid field (WCAG 3.3.1 / 3.3.3).
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5 text-site-cream-fg">
-      <p className="text-sm leading-7 text-site-cream-fg/70">{t.contact.requiredNote}</p>
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+      <p className="text-sm leading-7 text-px-ink/75">{t.contact.requiredNote}</p>
 
       <div className="hidden" aria-hidden>
         <label htmlFor="contact-company">{t.contact.company}</label>
@@ -144,7 +140,7 @@ function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="contact-name" className="text-sm font-medium leading-7">
+        <label htmlFor="contact-name" className="text-lg font-semibold leading-7">
           {t.contact.name} <span aria-hidden>*</span>
         </label>
         <input
@@ -168,14 +164,14 @@ function ContactForm() {
           className="field"
         />
         {showNameError && (
-          <p id="contact-name-error" className="content-s text-site-cream-fg/70">
+          <p id="contact-name-error" className="content-s font-semibold text-px-red">
             {t.contact.nameHint}
           </p>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="contact-email" className="text-sm font-medium leading-7">
+        <label htmlFor="contact-email" className="text-lg font-semibold leading-7">
           {t.contact.email} <span aria-hidden>*</span>
         </label>
         <input
@@ -204,14 +200,14 @@ function ContactForm() {
           className="field"
         />
         {showEmailError && (
-          <p id="contact-email-error" className="content-s text-site-cream-fg/70">
+          <p id="contact-email-error" className="content-s font-semibold text-px-red">
             {currentEmailHint(email)}
           </p>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="contact-message" className="text-sm font-medium leading-7">
+        <label htmlFor="contact-message" className="text-lg font-semibold leading-7">
           {t.contact.message} <span aria-hidden>*</span>
         </label>
         <textarea
@@ -234,7 +230,7 @@ function ContactForm() {
           className="field min-h-40"
         />
         {showMessageError && (
-          <p id="contact-message-error" className="content-s text-site-cream-fg/70">
+          <p id="contact-message-error" className="content-s font-semibold text-px-red">
             {t.contact.messageHint}
           </p>
         )}
@@ -250,54 +246,13 @@ function ContactForm() {
       </button>
 
       <div aria-live="polite">
-        {status === 'success' && <p className="content-s text-site-cyan">{t.contact.success}</p>}
-        {status === 'error' && <p className="content-s text-site-cream-fg/70">{t.contact.error}</p>}
+        {status === 'success' && (
+          <p className="content-s pixel-corners px-4 py-3 font-semibold text-px-ink [--surface-bg:var(--color-site-gold)]">
+            {t.contact.success}
+          </p>
+        )}
+        {status === 'error' && <p className="content-s font-semibold text-px-red">{t.contact.error}</p>}
       </div>
     </form>
-  )
-}
-
-export default function FormContact({ title, description }: { title?: string; description?: string }) {
-  const { t } = useLocale()
-  const { ref } = useLocationFinder()
-  const heading = title ?? t.contact.title
-  const lead = description ?? t.contact.description
-
-  return (
-    <SectionCard
-      tone="cream"
-      first
-      id="form-contact"
-      innerClassName="px-6 pt-28 pb-16 sm:px-10 lg:px-16 lg:pt-32 lg:pb-20"
-      sectionRef={ref}
-    >
-      <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
-        <div className="flex flex-col gap-12">
-          <div className="flex max-w-xl flex-col gap-8">
-            <Breadcrumbs className="text-site-cream-fg/70" />
-            <div className="flex flex-col gap-2 lg:gap-4">
-              <Animated delay={100}>
-                <h1 className="title-section">{heading}</h1>
-              </Animated>
-              <Animated delay={200}>
-                <p className="content-l text-site-cream-fg/80">{lead}</p>
-              </Animated>
-            </div>
-          </div>
-
-          <Animated delay={300}>
-            <div>
-              <FormContactLinks />
-            </div>
-          </Animated>
-        </div>
-
-        <Animated delay={400}>
-          <div>
-            <ContactForm />
-          </div>
-        </Animated>
-      </div>
-    </SectionCard>
   )
 }
