@@ -1,5 +1,4 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react'
-import { PixelArrow } from '~/game/PixelArrow'
 import { quietFocus } from '~/game/quietFocus'
 import { useLocale } from '~/i18n/useLocale'
 
@@ -18,16 +17,13 @@ export default function GameDialog({
   onClose,
   eyebrow,
   title,
-  children,
-  footer
+  children
 }: {
   open: boolean
   onClose: () => void
   eyebrow: string
   title: string
   children: ReactNode
-  /** Extra controls next to Close, such as previous / next. */
-  footer?: ReactNode
 }) {
   const ref = useRef<HTMLDialogElement>(null)
   const titleId = useId()
@@ -40,9 +36,9 @@ export default function GameDialog({
     if (!dialog) return
     if (open && !dialog.open) {
       const element = document.activeElement instanceof HTMLElement ? document.activeElement : null
-      // Paging from one dialog to the next (previous / next): the new one may open while the old one is still
-      // up, with focus on its pager button. Take over the old dialog's opener, so closing goes back to the room
-      // or the desk you used, not to a button in a closed dialog.
+      // Opened from inside another dialog: the new one may open while the old one is still up, with focus on
+      // a button in it. Take over the old dialog's opener, so closing goes back to the room or the desk you
+      // used, not to a button in a closed dialog.
       const host = element?.closest('dialog')
       const inherited = host && host !== dialog ? openers.get(host) : undefined
       opener.current = inherited ?? { element, quiet: element?.dataset.quietFocus !== undefined }
@@ -110,52 +106,8 @@ export default function GameDialog({
             </form>
           </header>
           <div className="scroll-panel min-h-0 flex-1 overflow-y-auto px-6 pb-8 sm:px-9">{children}</div>
-          {footer ? (
-            <footer className="flex items-center justify-between gap-3 border-t-[3px] border-px-ink/15 px-6 py-4 sm:px-9">{footer}</footer>
-          ) : null}
         </div>
       </div>
     </dialog>
-  )
-}
-
-type PagerStep = { label: string; onClick: () => void }
-
-/**
- * Previous / next buttons for browsing a set of dialogs (desks, bookcases). No wrapping around: the first item
- * has no previous and the last no next, so with two items found the buttons never both point at the other one.
- */
-export function DialogPager({ previous, next }: { previous?: PagerStep; next?: PagerStep }) {
-  const { t } = useLocale()
-  return (
-    <>
-      {previous ? (
-        <button
-          type="button"
-          onClick={previous.onClick}
-          className="tile arcade inline-flex min-h-11 items-center gap-2 px-3 text-[0.55rem]"
-        >
-          <PixelArrow dir="left" />
-          <span>
-            <span className="sr-only">{t.game.previous}: </span>
-            {previous.label}
-          </span>
-        </button>
-      ) : null}
-      {next ? (
-        // ml-auto: on its own (first item), it still sits on the right, where "next" belongs.
-        <button
-          type="button"
-          onClick={next.onClick}
-          className="tile arcade ml-auto inline-flex min-h-11 items-center gap-2 px-3 text-right text-[0.55rem]"
-        >
-          <span>
-            <span className="sr-only">{t.game.nextItem}: </span>
-            {next.label}
-          </span>
-          <PixelArrow dir="right" />
-        </button>
-      ) : null}
-    </>
   )
 }

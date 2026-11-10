@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import Image from '~/components/elements/Image'
 import { EDUCATIONS } from '~/database/educations'
-import GameDialog, { DialogPager } from '~/game/interior/GameDialog'
+import GameDialog from '~/game/interior/GameDialog'
 import InteriorLayout, { ROOM_HINT_ID, useHashItem, useLeave } from '~/game/interior/InteriorLayout'
 import { useCompanion, useProgress } from '~/game/progress'
 import Room, { type Furniture, type WallDecor } from '~/game/Room'
@@ -25,7 +25,7 @@ export default function EducationPlace() {
   const [open, setOpen] = useState<EducationKey | null>(null)
   const leave = useLeave()
   const companion = useCompanion()
-  const { discover, isOpen } = useProgress()
+  const { discover } = useProgress()
   const count = KEYS.length
 
   // Using a bookcase in the room counts for the quest; reading again (tracker, journal, story mode) does not.
@@ -38,7 +38,6 @@ export default function EducationPlace() {
     setOpen(hash as EducationKey)
     return true
   })
-  const reachable = KEYS.filter((key) => isOpen(`edu:${key}`))
 
   const furniture = useMemo<Furniture[]>(
     () => [
@@ -95,12 +94,9 @@ export default function EducationPlace() {
         />
       }
     >
+      {/* No previous / next between bookcases: you walk to the other bookcases in the room to read them. */}
       {KEYS.map((key, index) => {
         const education = EDUCATIONS[key]
-        const at = reachable.indexOf(key)
-        // Neighbours among the ones you have found, without wrapping around (see DialogPager).
-        const previous = at > 0 ? reachable[at - 1] : undefined
-        const next = at >= 0 ? reachable[at + 1] : undefined
         // Only the accessibility topic has a photo (a WCAG presentation).
         const image = 'image' in education ? education.image : undefined
         return (
@@ -110,16 +106,6 @@ export default function EducationPlace() {
             onClose={() => setOpen((current) => (current === key ? null : current))}
             eyebrow={`${t.game.places.education} · ${index + 1}/${count}`}
             title={education.title[locale]}
-            footer={
-              reachable.length > 1 && at >= 0 ? (
-                <DialogPager
-                  previous={
-                    previous === undefined ? undefined : { label: EDUCATIONS[previous].title[locale], onClick: () => setOpen(previous) }
-                  }
-                  next={next === undefined ? undefined : { label: EDUCATIONS[next].title[locale], onClick: () => setOpen(next) }}
-                />
-              ) : undefined
-            }
           >
             <div className="flex flex-col gap-6">
               <div className="prose-paper" dangerouslySetInnerHTML={{ __html: education.description[locale] }} />

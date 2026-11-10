@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import Image from '~/components/elements/Image'
 import Accordion from '~/components/flex/content/Accordion'
 import { EXPERIENCES, type Experience, type ExperienceProject } from '~/database/experiences'
-import GameDialog, { DialogPager } from '~/game/interior/GameDialog'
+import GameDialog from '~/game/interior/GameDialog'
 import InteriorLayout, { ROOM_HINT_ID, useHashItem, useLeave } from '~/game/interior/InteriorLayout'
 import { useCompanion, useProgress } from '~/game/progress'
 import Room, { type Furniture, type WallDecor } from '~/game/Room'
@@ -113,7 +113,7 @@ export default function ExperiencePlace() {
   const [open, setOpen] = useState<number | null>(null)
   const leave = useLeave()
   const companion = useCompanion()
-  const { discover, isOpen } = useProgress()
+  const { discover } = useProgress()
   const count = EXPERIENCES.length
 
   // Using a desk in the room counts for the quest; reading again (tracker, journal, story mode) does not.
@@ -127,8 +127,6 @@ export default function ExperiencePlace() {
     setOpen(index)
     return true
   })
-  // Previous / next only cycle through desks you have already found (or everything in story mode).
-  const reachable = EXPERIENCES.map((_, index) => index).filter((index) => isOpen(`job:${index}`))
 
   const furniture = useMemo<Furniture[]>(
     () => [
@@ -175,31 +173,18 @@ export default function ExperiencePlace() {
         />
       }
     >
-      {EXPERIENCES.map((job, index) => {
-        const at = reachable.indexOf(index)
-        // Neighbours among the ones you have found, without wrapping around (see DialogPager).
-        const previous = at > 0 ? reachable[at - 1] : undefined
-        const next = at >= 0 ? reachable[at + 1] : undefined
-        return (
-          <GameDialog
-            key={job.title}
-            open={open === index}
-            onClose={() => setOpen((current) => (current === index ? null : current))}
-            eyebrow={`${t.game.places.experience} · ${index + 1}/${count}`}
-            title={job.title}
-            footer={
-              reachable.length > 1 && at >= 0 ? (
-                <DialogPager
-                  previous={previous === undefined ? undefined : { label: EXPERIENCES[previous]!.title, onClick: () => setOpen(previous) }}
-                  next={next === undefined ? undefined : { label: EXPERIENCES[next]!.title, onClick: () => setOpen(next) }}
-                />
-              ) : undefined
-            }
-          >
-            <JobDetails job={job} locale={locale} />
-          </GameDialog>
-        )
-      })}
+      {/* No previous / next between desks: you walk to the other desks in the room to read them. */}
+      {EXPERIENCES.map((job, index) => (
+        <GameDialog
+          key={job.title}
+          open={open === index}
+          onClose={() => setOpen((current) => (current === index ? null : current))}
+          eyebrow={`${t.game.places.experience} · ${index + 1}/${count}`}
+          title={job.title}
+        >
+          <JobDetails job={job} locale={locale} />
+        </GameDialog>
+      ))}
     </InteriorLayout>
   )
 }
