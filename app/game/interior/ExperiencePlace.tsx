@@ -39,7 +39,7 @@ export function formatPeriod(period: { start: string; end?: string } | undefined
 /** A brand logo on a white plate. Decorative: the name is always right next to it. */
 export function LogoPlate({ src, width, height, className }: { src: string; width: number; height: number; className?: string }) {
   return (
-    <span className={cn('item-slot shrink-0 [--surface-bg:#fff] [--surface-ring:inset_0_0_0_2px_rgb(31_36_51/0.14)]', className)}>
+    <span className={cn('item-slot shrink-0', className)}>
       {/* Fixed sizes: logos are drawn with w-auto, so the browser must not derive their width from a measurement. */}
       <Image src={src} width={width} height={height} alt="" sizes="10rem" className="max-h-full w-auto object-contain" />
     </span>

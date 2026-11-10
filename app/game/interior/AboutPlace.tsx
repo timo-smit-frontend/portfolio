@@ -148,7 +148,7 @@ export default function AboutPlace() {
       <GameDialog open={open === 'brands'} onClose={closeIf('brands')} eyebrow={t.game.places.about} title={t.game.collabs}>
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {BRAND_LOGOS.map((logo) => (
-            <li key={logo.src} className="item-slot h-24 [--surface-bg:#fff] [--surface-ring:inset_0_0_0_2px_rgb(31_36_51/0.14)]">
+            <li key={logo.src} className="item-slot h-24">
               <Image
                 src={logo.src}
                 alt={logo.title}

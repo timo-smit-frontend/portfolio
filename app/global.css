@@ -69,6 +69,32 @@
  * stepped (clip-path) and shadows are hard offsets without blur, like a polished handheld RPG.
  * ------------------------------------------------------------------------- */
 
+/* The stepped corner shape, shared by pixel-corners and the framed logo plate. */
+:root {
+  --pixel-corners: polygon(
+    0 6px,
+    3px 6px,
+    3px 3px,
+    6px 3px,
+    6px 0,
+    calc(100% - 6px) 0,
+    calc(100% - 6px) 3px,
+    calc(100% - 3px) 3px,
+    calc(100% - 3px) 6px,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 3px) calc(100% - 6px),
+    calc(100% - 3px) calc(100% - 3px),
+    calc(100% - 6px) calc(100% - 3px),
+    calc(100% - 6px) 100%,
+    6px 100%,
+    6px calc(100% - 3px),
+    3px calc(100% - 3px),
+    3px calc(100% - 6px),
+    0 calc(100% - 6px)
+  );
+}
+
 /*
  * Stepped 3px pixel corners. The shape is drawn on a ::before layer behind the content, never with
  * clip-path on the element itself: clip-path would also cut off focus outlines (WCAG 2.4.7) and any child
@@ -86,28 +112,7 @@
     pointer-events: none;
     background: var(--surface-bg, transparent);
     box-shadow: var(--surface-ring, none);
-    clip-path: polygon(
-      0 6px,
-      3px 6px,
-      3px 3px,
-      6px 3px,
-      6px 0,
-      calc(100% - 6px) 0,
-      calc(100% - 6px) 3px,
-      calc(100% - 3px) 3px,
-      calc(100% - 3px) 6px,
-      100% 6px,
-      100% calc(100% - 6px),
-      calc(100% - 3px) calc(100% - 6px),
-      calc(100% - 3px) calc(100% - 3px),
-      calc(100% - 6px) calc(100% - 3px),
-      calc(100% - 6px) 100%,
-      6px 100%,
-      6px calc(100% - 3px),
-      3px calc(100% - 3px),
-      3px calc(100% - 6px),
-      0 calc(100% - 6px)
-    );
+    clip-path: var(--pixel-corners);
   }
 }
 
@@ -346,11 +351,25 @@
   }
 }
 
-/* Item slot: a light plate for brand logos, which are drawn for light backgrounds. */
+/*
+ * Item slot: a white plate for brand logos, which are drawn for light backgrounds. The frame is its own
+ * stepped layer (an inset ring would stop short of the cut corners and let the white show past it).
+ */
 @utility item-slot {
   @apply pixel-corners flex items-center justify-center p-3;
-  --surface-bg: var(--color-px-paper);
-  --surface-ring: inset 0 -4px 0 rgb(31 36 51 / 0.12);
+  --surface-bg: rgb(31 36 51 / 0.14);
+  /* Custom properties inherit: never pick up the ring of the panel it sits in. */
+  --surface-ring: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    z-index: -1;
+    pointer-events: none;
+    background: #fff;
+    clip-path: var(--pixel-corners);
+  }
 }
 
 @utility pixelated {
