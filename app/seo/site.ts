@@ -4,7 +4,7 @@ export const SITE_NAME = 'Timo Smit'
 export const OG_IMAGE = { src: '/og-image.jpg', width: 1200, height: 630, type: 'image/jpeg' } as const
 /** Portrait used for the Person entity in structured data. */
 export const PERSON_IMAGE = '/images/timosmit-headshot.png'
-export const SITE_THEME_COLOR = '#061A1E'
+export const SITE_THEME_COLOR = '#0C2A30'
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/timo-smit-09983b14a/'
 export const EMPLOYER = { name: 'UBO Agency', url: 'https://ubo.agency' } as const
 export const ALMA_MATER = {

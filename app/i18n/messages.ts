@@ -28,10 +28,11 @@ const en = {
     linkedInNewTab: ' (opens in a new tab)'
   },
   hero: {
-    kicker: 'Front-end developer',
     srTitle: 'Timo Smit is a creative Front-end Developer',
-    beforeTrait: 'Timo Smit is a ',
-    afterTrait: 'Front-end Developer!'
+    name: 'Timo Smit',
+    /** Typed in front of the current trait, so "an" follows it: "is an enthusiastic". */
+    beforeTrait: (trait: string): string => (/^[aeiou]/i.test(trait) ? 'is an ' : 'is a '),
+    afterTrait: 'front-end developer!'
   },
   motion: {
     pause: 'Pause animations',
@@ -238,7 +239,35 @@ const en = {
   error: {
     title: 'This page was not found',
     description: 'This page does not exist or has been moved.',
-    back: 'Back to home'
+    back: 'Back to home',
+    eyebrow: 'Out of bounds',
+    title404: 'You walked off the map',
+    lead: "The town ends here. Past the edge there's nothing but stars and tiles that were never drawn.",
+    pathLabel: 'Looked for',
+    sceneLabel:
+      'The edge of the town at night: a path that breaks off into a starry void, a lamp, a signpost reading 404, and Timo with Pip, his cat. The path back to town leads off to the left.',
+    controls: 'Arrow keys or WASD to walk, Enter to read the sign or pet Pip. Walk off to the left to go back to town.',
+    controlsTouch: 'Tap to walk, tap the sign or Pip. Walk off to the left to go back to town.',
+    sign: (path: string) => [
+      `ERROR 404. Nothing was ever built at ${path}.`,
+      'Maybe the link was old, or a letter slipped. The places on this map are all still standing.'
+    ],
+    bump: [
+      "You can't go that way! Those tiles were never drawn.",
+      'Just stars down there. Better stay on the ground.',
+      'One more step and you fall out of the map.'
+    ],
+    pip: [
+      "Mrrp? There's nothing to sniff out there.",
+      "*stares at the void* ...I don't like it. Let's go home.",
+      'Mrow! The fish shop is that way. Back to town!',
+      '*purrs* At least the lamp is warm here.'
+    ],
+    pipName: 'PIP',
+    signName: 'SIGN',
+    pageNotFound: 'Page not found',
+    fastTravel: 'Fast travel',
+    fastTravelHint: 'Or jump straight to one of the places that do exist:'
   },
   selectedWork: {
     title: 'Selected work',
@@ -332,9 +361,9 @@ const nl: typeof en = {
     linkedInNewTab: ' (opent in een nieuw tabblad)'
   },
   hero: {
-    kicker: 'Front-end developer',
     srTitle: 'Timo Smit is een creatieve front-end developer',
-    beforeTrait: 'Timo Smit is een ',
+    name: 'Timo Smit',
+    beforeTrait: () => 'is een ',
     afterTrait: 'front-end developer!'
   },
   motion: {
@@ -541,7 +570,36 @@ const nl: typeof en = {
   error: {
     title: 'Deze pagina is niet gevonden',
     description: 'Deze pagina bestaat niet of is verplaatst.',
-    back: 'Terug naar home'
+    back: 'Terug naar home',
+    eyebrow: 'Buiten de kaart',
+    title404: 'Je bent van de kaart gelopen',
+    lead: 'Hier houdt het dorp op. Voorbij de rand zijn alleen sterren en tegels die nooit getekend zijn.',
+    pathLabel: 'Gezocht naar',
+    sceneLabel:
+      'De rand van het dorp bij nacht: een pad dat afbreekt boven een leegte vol sterren, een lantaarn, een wegwijzer met 404, en Timo met Pip, zijn kat. Het pad terug naar het dorp loopt naar links.',
+    controls:
+      'Pijltjestoetsen of WASD om te lopen, Enter om het bord te lezen of Pip te aaien. Loop naar links om terug te gaan naar het dorp.',
+    controlsTouch: 'Tik om te lopen, tik op het bord of op Pip. Loop naar links om terug te gaan naar het dorp.',
+    sign: (path: string) => [
+      `ERROR 404. Op ${path} is nooit iets gebouwd.`,
+      'Misschien was de link oud, of is er een letter verschoven. De plekken op deze kaart staan er allemaal nog.'
+    ],
+    bump: [
+      'Daar kun je niet heen! Die tegels zijn nooit getekend.',
+      'Daar beneden zijn alleen sterren. Blijf maar op de grond.',
+      'Nog één stap en je valt van de kaart.'
+    ],
+    pip: [
+      'Mrrp? Daar valt niks te snuffelen.',
+      '*staart in de leegte* ...Niet fijn. Naar huis.',
+      'Mrauw! De visboer is die kant op. Terug naar het dorp!',
+      '*spint* Bij de lantaarn is het tenminste warm.'
+    ],
+    pipName: 'PIP',
+    signName: 'BORD',
+    pageNotFound: 'Pagina niet gevonden',
+    fastTravel: 'Snel reizen',
+    fastTravelHint: 'Of spring direct naar een van de plekken die wel bestaan:'
   },
   selectedWork: {
     title: 'Geselecteerd werk',

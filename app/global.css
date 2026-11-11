@@ -243,10 +243,6 @@
   }
 }
 
-@utility container-full {
-  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
-}
-
 @utility prose-panel {
   @apply font-site-outfit text-[1.0625rem] leading-[1.7] text-ui-text/90;
 
@@ -271,26 +267,6 @@
     @apply font-semibold;
     background: linear-gradient(transparent 62%, rgb(228 184 74 / 0.6) 62%);
   }
-}
-
-@utility title-xl {
-  @apply heading text-3xl sm:text-4xl;
-}
-
-@utility title-l {
-  @apply heading text-2xl sm:text-3xl;
-}
-
-@utility title-xs {
-  @apply heading text-xl;
-}
-
-@utility content-l {
-  @apply prose-panel text-lg;
-}
-
-@utility content-m {
-  @apply prose-panel;
 }
 
 @utility content-s {

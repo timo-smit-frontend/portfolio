@@ -4,7 +4,7 @@ import { usePrefersReducedMotion } from '~/components/elements/useMediaQuery'
 const STORAGE_KEY = 'ts-motion-paused'
 
 type MotionPreference = {
-  /** Autonomous motion (3D scene, typing, logo ring) is paused. Scroll-linked and hover effects still respond. */
+  /** Autonomous motion (water, flowers, Byte, typing, cursors) is paused. Scroll-linked and hover effects still respond. */
   paused: boolean
   /** The visitor prefers reduced motion at OS level: no large transforms at all. */
   reduced: boolean

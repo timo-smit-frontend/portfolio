@@ -68,15 +68,19 @@ function Welcome({ onStart }: { onStart: () => void }) {
     <div className="absolute inset-0 z-20 flex overflow-y-auto bg-[#04141a]/55 px-safe-4 pt-safe-20 pb-6 sm:pb-28 in-data-[welcome=seen]:hidden">
       <div className="pixel-drop m-auto w-full max-w-xl">
         <div className="panel enter-window flex flex-col items-center gap-4 px-6 py-7 text-center sm:gap-5 sm:px-10 sm:py-10">
-          <p className="eyebrow">{t.hero.kicker}</p>
-          <p aria-hidden className="heading text-5xl text-ui-text [text-shadow:0_4px_0_var(--color-px-ink)] sm:text-6xl">
-            Timo Smit
-          </p>
-          <p aria-hidden className="font-site-pixel text-xl leading-snug sm:text-2xl">
-            {t.hero.beforeTrait}
-            <TraitSwapper key={locale} traits={t.traits} paused={paused} />
-            <br />
-            {t.hero.afterTrait}
+          <p className="eyebrow">{t.game.welcome}</p>
+          {/* One sentence on three rows. The longest row ("is een charismatische_") is ~10.8em wide, so the
+              size follows the card's text width (viewport minus 2×16px gutter and 2×24px padding) / 11, and
+              every row stays on one line down to a 320px phone; capped at 2.75rem inside the max-w-xl card. */}
+          <p
+            aria-hidden
+            className="heading text-[clamp(1.125rem,calc((100vw-5rem)/11),2.75rem)] text-ui-text [text-shadow:0_3px_0_var(--color-px-ink)] sm:[text-shadow:0_4px_0_var(--color-px-ink)]"
+          >
+            <span className="block whitespace-nowrap">{t.hero.name}</span>
+            <span className="block whitespace-nowrap">
+              <TraitSwapper key={locale} traits={t.traits} paused={paused} before={t.hero.beforeTrait} />
+            </span>
+            <span className="block whitespace-nowrap">{t.hero.afterTrait}</span>
           </p>
           <p className="max-w-md text-base leading-relaxed text-ui-muted">
             {t.game.intro} {t.game.quests.intro}
