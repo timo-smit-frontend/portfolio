@@ -30,17 +30,19 @@ export const HERO_PALETTE: Palette = {
   Y: '#e0a93a', // mustard chest print
   P: '#3a4a72', // jeans
   p: '#272c50', // jeans shade
-  D: '#2a2b3c', // sneakers
-  g: '#4a4e60', // sneaker toe caps
-  B: '#f8f8f0' // soles
+  D: '#e4e0d4', // sneakers: off-white
+  g: '#f8f8f0', // sneaker toe caps, lit
+  B: '#8b8794' // soles: grey, so the white upper sits on a line
 }
 
 // 12 x 20, drawn after Timo himself: tall (190 cm) and slim, so the head is narrow (the face is six pixels wide
-// between the ears), the shoulders stay inside the hair and the legs are long. The hair is the likeness: a
-// tousled mass, fuller on top than the head is wide, with an uneven top edge, a loose tuft out to the right and
-// a strand falling over the forehead. Straight brows over blue-grey eyes and stubble along the jaw keep him
-// a grown man rather than a kid. Light comes from the top left: bright tips on the hair, and the hair, tee
-// and jeans darken on the right. Each top is head, torso and hips (15 rows); the legs swap per walk frame.
+// between the ears), the shoulders stay inside the hair and the legs are long. The neck shows in every view and
+// the shoulders slope down a pixel on each side of it; without that step they read as a flat bar. The hair is
+// the likeness: a tousled mass, fuller on top than the head is wide, with an uneven top edge, a loose tuft out
+// to the right and a strand falling over the forehead. Straight brows over blue-grey eyes and stubble along the
+// jaw keep him a grown man rather than a kid. Light comes from the top left: bright tips on the hair, and the
+// hair, tee and jeans darken on the right. Each top is head, torso and hips (15 rows); the legs swap per walk
+// frame.
 const FRONT_TOP = [
   '....OOO.O...',
   '..OOhlhOhOO.',
@@ -52,8 +54,8 @@ const FRONT_TOP = [
   '..orSSSSro..',
   '..otSmmSto..',
   '...otSSto...',
-  '...kTuuTk...',
-  '.kTTTTTTTuk.',
+  '....osso....',
+  '..kTTTTTuk..',
   '.kTuTTTTuuk.',
   '.oSuTYYTuso.',
   '.oSKPPPpKSo.'
@@ -71,7 +73,7 @@ const BACK_TOP = [
   '..ofddddfo..',
   '...ofddfo...',
   '....osso....',
-  '...kTTTTk...',
+  '..kTTTTTuk..',
   '.kTTTTTTTuk.',
   '.kTuTTTTuuk.',
   '.oSuTTTTuso.',
@@ -92,12 +94,12 @@ const SIDE_HEAD = [
   '.oSSrSSsfo..',
   '.omSStsso...',
   '..ottsso....',
-  '...kTssTk...',
-  '...kTTTuk...'
+  '....oso.....',
+  '...kTTuk....'
 ]
 
 // The near arm: a short sleeve at the shoulder and the hand at the hip.
-const SIDE_TOP = [...SIDE_HEAD, '...kTuTuk...', '...kTuSuk...', '...KPPSpK...']
+const SIDE_TOP = [...SIDE_HEAD, '...kTuTk....', '...kTuSk....', '...KPPSK....']
 
 // Legs: each one lit on its left and shaded on its right, so two read side by side without a gap.
 const LEGS_STAND = ['...KPpPpK...', '...KPpPpK...', '...KPpPpK...', '..KgDKKgDK..', '..KBBKKBBK..']
@@ -123,7 +125,7 @@ const FRONT_PASSING_A = ['.oSuTYYTuso.', '.oSKPPPpKSo.', ...LEGS_STAND.slice(0, 
 const FRONT_PASSING_B = ['.oSuTYYTuso.', '.oSKPPPpKSo.', ...LEGS_STAND.slice(0, 4), '...KKKKBBK..']
 
 // Walking away it is the trailing leg and arm that are nearest, so those are the long ones, and the foot that
-// lifts shows you its white sole.
+// lifts shows you its sole.
 const BACK_CONTACT_A = ['.oSuTTTTuso.', '..oKPPPpKSo.', '...KPpPpKSo.', '...KPpPpK...', '..KDDKDDK...', '..KBBKKK....']
 const BACK_CONTACT_B = ['.oSuTTTTuso.', '.oSKPPPpKo..', '.oSKPpPpK...', '...KPpPpK...', '...KDDKDDK..', '....KKKBBK..']
 const BACK_PASSING_A = ['.oSuTTTTuso.', '.oSKPPPpKSo.', ...BACK_LEGS_STAND.slice(0, 3), '..KDDKKBBK..', '..KBBKKKK...']
@@ -132,8 +134,8 @@ const BACK_PASSING_B = ['.oSuTTTTuso.', '.oSKPPPpKSo.', ...BACK_LEGS_STAND.slice
 // Side on: the near leg is lit, the far leg in shade. Stride A puts the near leg in front with the near arm
 // back (and the far hand showing ahead of the chest); stride B is the other way round. Passing, the trailing
 // foot is lifted behind the standing leg.
-const SIDE_CONTACT_A = ['...kTTuTk...', '..osTTTSo...', '...KPPPpSo..', '...KPPPpK...', '..KPPKKppK..', '.KgDDK.KDDK.', '.KBBBK.KBBK.']
-const SIDE_CONTACT_B = ['...kuTTuk...', '..oSsTTuso..', '..oSPPPpK...', '...KpPPPK...', '..KppKKPPK..', '.KDDDK.KgDK.', '.KBBBK.KBBK.']
+const SIDE_CONTACT_A = ['...kTuTk....', '..osTTSo....', '...KPPpSo...', '...KPPpK....', '..KPPKKppK..', '.KgDDK.KDDK.', '.KBBBK.KBBK.']
+const SIDE_CONTACT_B = ['...kuTuk....', '..oSsTuso...', '..oSPPpK....', '...KpPPK....', '..KppKKPPK..', '.KDDDK.KgDK.', '.KBBBK.KBBK.']
 const SIDE_PASSING_A = [...SIDE_TOP.slice(12), '...KPPpK....', '...KPPpK....', '...KPPKpK...', '..KgDDKDDK..', '..KBBBKKK...']
 const SIDE_PASSING_B = [...SIDE_TOP.slice(12), '...KPPpK....', '...KpPPK....', '...KpKPPK...', '..KDDKKgDK..', '..KBBK.KK...']
 
@@ -179,7 +181,7 @@ export function heroFrame(walking: boolean, steps: number, t: number): number {
 export const HERO_SIT: Record<Exclude<Direction, 'right'>, SpriteRows> = {
   down: [...FRONT_TOP, '...KPpPpK...', '...KPpPpK...', '..KgDKKgDK..'],
   up: BACK_TOP,
-  left: [...SIDE_TOP.slice(0, 14), '..KKPPSpK...', '.KPPPPPPpK..', '.KPPKKKKK...', '.KPpK.......', 'KgDDK.......']
+  left: [...SIDE_TOP.slice(0, 14), '..KKPPSK....', '.KPPPPPpK...', '.KPPKKKK....', '.KPpK.......', 'KgDDK.......']
 }
 
 export const HERO_FRONT = HERO_FRAMES.down[0]!
