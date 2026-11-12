@@ -7,4 +7,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.timosmit.dev/sitemap.xml
-Sitemap: https://www.timosmit.dev/nl/sitemap.xml

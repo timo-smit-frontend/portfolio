@@ -1,7 +1,6 @@
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
-import type { Locale } from '../app/i18n/locale.ts'
 import { applySeoHead } from '../app/seo/head.ts'
 import { buildLlmsFullTxt, buildLlmsTxt } from '../app/seo/llms.ts'
 import { getIndexableSeoPages, getSeoForPath } from '../app/seo/pages.ts'
@@ -70,9 +69,10 @@ export function contentLastModified(): string {
   return cachedLastModified
 }
 
-export function buildSitemapXml(locale: Locale = 'en'): string {
+/** One sitemap for both languages: every page once, with hreflang links to its translation. */
+export function buildSitemapXml(): string {
   const lastmod = contentLastModified()
-  const urls = getIndexableSeoPages(locale)
+  const urls = getIndexableSeoPages()
     .map((page) => {
       const loc = page.canonical ?? canonicalUrl(page.path)
       return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${xhtmlLinks(page)}\n  </url>`
@@ -82,16 +82,11 @@ export function buildSitemapXml(locale: Locale = 'en'): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`
 }
 
-export function writeSitemap(dir: string, locale: Locale = 'en'): string {
-  const sitemapPath = locale === 'nl' ? path.join(dir, 'nl', 'sitemap.xml') : path.join(dir, 'sitemap.xml')
-  fs.mkdirSync(path.dirname(sitemapPath), { recursive: true })
-  fs.writeFileSync(sitemapPath, buildSitemapXml(locale))
+export function writeSitemap(dir: string): string {
+  const sitemapPath = path.join(dir, 'sitemap.xml')
+  fs.mkdirSync(dir, { recursive: true })
+  fs.writeFileSync(sitemapPath, buildSitemapXml())
   return sitemapPath
-}
-
-export function writeSitemaps(dir: string): void {
-  writeSitemap(dir, 'en')
-  writeSitemap(dir, 'nl')
 }
 
 export function writeLlms(dir: string): void {
@@ -101,7 +96,7 @@ export function writeLlms(dir: string): void {
 }
 
 export function writeSeoPublic(dir: string): void {
-  writeSitemaps(dir)
+  writeSitemap(dir)
   writeLlms(dir)
 }
 

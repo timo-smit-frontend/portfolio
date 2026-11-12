@@ -276,7 +276,7 @@ const en = {
   seo: {
     homeTitle: 'Timo Smit | Front-end Developer, Accessibility & React',
     homeDescription:
-      'Timo Smit is a front-end developer in the Netherlands, focused on web accessibility (WCAG), React, Next.js and Remix.',
+      'Timo Smit is a front-end developer from Utrecht, the Netherlands, building fast, accessible websites with React, Next.js and Remix, with WCAG at the core.',
     aboutTitle: 'About',
     aboutDescription:
       'About Timo Smit: a creative front-end developer from Utrecht with user experience and accessibility at the core, and the brands he has built for.',
@@ -288,9 +288,10 @@ const en = {
       'How Timo Smit learned accessibility, React and Next.js, AI-assisted development and consultancy, starting with Communication and Multimedia Design.',
     contactTitle: 'Contact',
     contactDescription:
-      'Get in touch with Timo Smit about front-end development, web accessibility or a new project. Send a message or connect on LinkedIn.',
+      'Get in touch with Timo Smit about front-end development, web accessibility (WCAG) or a new project. Send him a message here or connect on LinkedIn.',
     notFoundTitle: 'Page not found',
-    notFoundDescription: 'This page does not exist or has been moved.',
+    notFoundDescription:
+      'This page does not exist or has been moved. Head back to the town square to explore the portfolio of Timo Smit, front-end developer.',
     jobTitle: 'Front-end Developer',
     ogImageAlt: 'Timo Smit, front-end developer: accessibility, React and Remix'
   },
@@ -608,7 +609,7 @@ const nl: typeof en = {
   seo: {
     homeTitle: 'Timo Smit | Front-end developer, toegankelijkheid & React',
     homeDescription:
-      'Timo Smit is front-end developer in Nederland, met focus op digitale toegankelijkheid (WCAG), React, Next.js en Remix.',
+      'Timo Smit is front-end developer uit Utrecht en bouwt snelle, toegankelijke websites met React, Next.js en Remix, met toegankelijkheid (WCAG) als kern.',
     aboutTitle: 'Over mij',
     aboutDescription:
       'Over Timo Smit: een creatieve front-end developer uit Utrecht met user experience en toegankelijkheid als kern, en de merken waarvoor hij bouwde.',
@@ -617,12 +618,13 @@ const nl: typeof en = {
       'Front-endwerk bij UBO Agency, Capgemini, Accent Interactive en SmartHOTEL, voor onder meer Casio, Fairbanks, de Tweede Kamer en het World Food Programme.',
     educationTitle: 'Opleiding',
     educationDescription:
-      'Hoe Timo Smit toegankelijkheid, React en Next.js, werken met AI en consultancy leerde, te beginnen bij Communication and Multimedia Design.',
+      'Hoe Timo Smit toegankelijkheid, React en Next.js, werken met AI en consultancy leerde, te beginnen bij de bachelor Communication and Multimedia Design.',
     contactTitle: 'Contact',
     contactDescription:
       'Neem contact op met Timo Smit over front-end development, digitale toegankelijkheid of een nieuw project. Stuur een bericht of verbind via LinkedIn.',
     notFoundTitle: 'Pagina niet gevonden',
-    notFoundDescription: 'Deze pagina bestaat niet of is verplaatst.',
+    notFoundDescription:
+      'Deze pagina bestaat niet of is verplaatst. Ga terug naar het dorpsplein en ontdek het portfolio van Timo Smit, front-end developer.',
     jobTitle: 'Front-end developer',
     ogImageAlt: 'Timo Smit, front-end developer: toegankelijkheid, React en Remix'
   },

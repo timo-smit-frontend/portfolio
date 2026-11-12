@@ -51,6 +51,7 @@ export type SeoPage = {
 const PERSON_ID = `${SITE_URL}/#person`
 const WEBSITE_ID = `${SITE_URL}/#website`
 const SIDE_BUSINESS_ID = `${SITE_URL}/#hello-world-cards`
+const EMPLOYER_ID = `${SITE_URL}/#ubo-agency`
 const INDEXABLE_PAGES = ['/', '/about', '/experience', '/education', '/contact'] as const
 
 function titleWithBrand(pageTitle: string): string {
@@ -82,11 +83,7 @@ function personNode(locale: Locale): Record<string, unknown> {
       width: 400,
       height: 400
     },
-    worksFor: {
-      '@type': 'Organization',
-      name: EMPLOYER.name,
-      url: EMPLOYER.url
-    },
+    worksFor: { '@id': EMPLOYER_ID },
     alumniOf: {
       '@type': 'CollegeOrUniversity',
       name: ALMA_MATER.name,
@@ -126,6 +123,21 @@ function personNode(locale: Locale): Record<string, unknown> {
   }
 }
 
+function logoNode(logo: { src: string; width: number; height: number }): Record<string, unknown> {
+  return { '@type': 'ImageObject', url: toAbsoluteUrl(logo.src), width: logo.width, height: logo.height }
+}
+
+function employerNode(): Record<string, unknown> {
+  return {
+    '@type': 'Organization',
+    '@id': EMPLOYER_ID,
+    name: EMPLOYER.name,
+    url: EMPLOYER.url,
+    logo: logoNode(EMPLOYER.logo),
+    sameAs: [...EMPLOYER.sameAs]
+  }
+}
+
 function sideBusinessNode(): Record<string, unknown> {
   return {
     '@type': 'Organization',
@@ -133,6 +145,8 @@ function sideBusinessNode(): Record<string, unknown> {
     name: SIDE_BUSINESS.name,
     url: SIDE_BUSINESS.url,
     description: SIDE_BUSINESS.description,
+    logo: logoNode(SIDE_BUSINESS.logo),
+    sameAs: [...SIDE_BUSINESS.sameAs],
     founder: { '@id': PERSON_ID },
     foundingDate: '2026-09'
   }
@@ -267,10 +281,11 @@ function page({
     lcp,
     jsonLd: serializeJsonLdGraph(
       noindex
-        ? [personNode(locale), websiteNode(locale)]
+        ? [personNode(locale), websiteNode(locale), employerNode()]
         : [
             personNode(locale),
             websiteNode(locale),
+            employerNode(),
             sideBusinessNode(),
             webPageNode({
               path,

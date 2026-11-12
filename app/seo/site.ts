@@ -6,7 +6,12 @@ export const OG_IMAGE = { src: '/og-image.jpg', width: 1200, height: 630, type: 
 export const PERSON_IMAGE = '/images/timosmit-headshot.png'
 export const SITE_THEME_COLOR = '#0C2A30'
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/timo-smit-09983b14a/'
-export const EMPLOYER = { name: 'UBO Agency', url: 'https://ubo.agency' } as const
+export const EMPLOYER = {
+  name: 'UBO Agency',
+  url: 'https://ubo.agency',
+  logo: { src: '/images/logo/ubo.png', width: 310, height: 163 },
+  sameAs: ['https://www.linkedin.com/company/ubo-agency/', 'https://www.instagram.com/ubo_agency/', 'https://www.facebook.com/ubo.agency']
+} as const
 export const ALMA_MATER = {
   name: 'Amsterdam University of Applied Sciences',
   alternateName: 'Hogeschool van Amsterdam',
@@ -15,7 +20,13 @@ export const ALMA_MATER = {
 export const SIDE_BUSINESS = {
   name: 'Hello World Cards',
   url: 'https://helloworldcards.com',
-  description: 'One-person business in graded Pokémon cards, founded and built by Timo Smit.'
+  description: 'One-person business in graded Pokémon cards, founded and built by Timo Smit.',
+  logo: { src: '/images/logo/hello-world-cards.png', width: 620, height: 239 },
+  sameAs: [
+    'https://www.instagram.com/helloworldcards/',
+    'https://www.marktplaats.nl/u/hello-world-cards/25399885/',
+    'https://www.vinted.nl/member/310793799'
+  ]
 } as const
 /** Topics the Person entity is known for; keep in line with the CV, experience and education copy. */
 export const KNOWS_ABOUT = [

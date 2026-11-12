@@ -104,13 +104,7 @@ function seoPlugin(): Plugin {
 
         if (url === '/sitemap.xml') {
           response.setHeader('Content-Type', 'application/xml; charset=utf-8')
-          response.end(buildSitemapXml('en'))
-          return
-        }
-
-        if (url === '/nl/sitemap.xml') {
-          response.setHeader('Content-Type', 'application/xml; charset=utf-8')
-          response.end(buildSitemapXml('nl'))
+          response.end(buildSitemapXml())
           return
         }
 
