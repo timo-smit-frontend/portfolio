@@ -27,6 +27,7 @@ import {
   HERO_FRAMES,
   HERO_HEIGHT,
   HERO_PALETTE,
+  heroFrame,
   ROBOT,
   ROBOT_BACK,
   ROBOT_PALETTE,
@@ -995,14 +996,14 @@ export default function Town({
             return
           }
           const walking = Boolean(p.from)
-          const stepFrame = walking && p.t < 0.5 ? (p.steps % 2 ? 1 : 3) : 0
+          const stepFrame = heroFrame(walking, p.steps, p.t)
           const frames = p.dir === 'right' ? HERO_FRAMES.left : HERO_FRAMES[p.dir]
-          // Idle: an occasional blink. Walking: a one-pixel bob on each stride.
+          // Idle: an occasional blink. Walking: the stride frames dip a pixel themselves.
           const blink = !walking && p.dir === 'down' && !still && clock % 4200 < 130
           const rows = blink ? HERO_BLINK : (frames[stepFrame] ?? frames[0]!)
           const hero = spriteCanvas(rows, HERO_PALETTE, p.dir === 'right')
           // Jumping into or out of the boat: an arc over the gap.
-          const bob = (stepFrame ? 1 : 0) + (p.hop && p.from && !still ? Math.round(Math.sin(Math.PI * p.t) * 8) : 0)
+          const bob = p.hop && p.from && !still ? Math.round(Math.sin(Math.PI * p.t) * 8) : 0
           const e = p.entering ? Math.min(1, (now - p.entering) / 300) : 0
           ctx.globalAlpha = 1 - e
           ctx.fillStyle = 'rgb(6 20 24 / 0.35)'

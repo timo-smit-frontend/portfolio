@@ -10,6 +10,7 @@ import {
   HERO_BLINK,
   HERO_FRAMES,
   HERO_PALETTE,
+  heroFrame,
   PIP_BLINK,
   PIP_HEART,
   PIP_HEART_PALETTE,
@@ -627,7 +628,7 @@ export default function EdgeOfMap({ text, onExit }: { text: EdgeOfMapText; onExi
       const k = h.moving ? h.t : 1
       const hx = Math.round((h.fromX + (h.x - h.fromX) * k) * TILE)
       const hy = Math.round((h.fromY + (h.y - h.fromY) * k) * TILE)
-      const walkFrame = h.moving ? (k < 0.5 ? (h.steps % 2 ? 1 : 3) : 0) : 0
+      const walkFrame = heroFrame(h.moving, h.steps, k)
       const blink = !still && !h.moving && h.dir === 'down' && clock % 3300 < 140
       const frames = HERO_FRAMES[h.dir === 'right' ? 'left' : h.dir]
       const heroRows = blink ? HERO_BLINK : frames[walkFrame]!

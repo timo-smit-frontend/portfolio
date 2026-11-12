@@ -26,6 +26,7 @@ import {
   HERO_HEIGHT,
   HERO_PALETTE,
   HERO_SIT,
+  heroFrame,
   TALK,
   type Direction
 } from '~/game/sprites'
@@ -715,14 +716,14 @@ export default function Room({
             return
           }
           const frames = p.dir === 'right' ? HERO_FRAMES.left : HERO_FRAMES[p.dir]
-          const stepFrame = p.from && p.t < 0.5 ? (p.steps % 2 ? 1 : 3) : 0
+          const stepFrame = heroFrame(Boolean(p.from), p.steps, p.t)
           const blink = !p.from && !p.seat && p.dir === 'down' && !still && clock % 4200 < 130
           const rows = blink ? HERO_BLINK : frames[stepFrame]!
           const sprite = spriteCanvas(rows, HERO_PALETTE, p.dir === 'right')
           // Halfway down onto (or up from) a chair you bend your knees a pixel.
           const bend = p.seat && p.sit > 0 ? 1 : 0
           px(ctx, 'rgb(6 14 20 / 0.35)', x + 1, y + 14, 10, 2)
-          ctx.drawImage(sprite, x, y + 15 - rows.length - (stepFrame ? 1 : 0) + bend)
+          ctx.drawImage(sprite, x, y + 15 - rows.length + bend)
         }
       })
       if (pip.current) {

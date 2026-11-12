@@ -9,131 +9,177 @@ export type Direction = 'down' | 'up' | 'left' | 'right'
 
 export const HERO_PALETTE: Palette = {
   K: '#1f2433', // ink: jeans and sneakers keep the dark outline
-  O: '#2a1810', // hair outline (selective outlines: each part is outlined in a dark tone of itself)
-  o: '#66382c', // skin outline
-  k: '#3a2f3a', // tee outline
-  H: '#5c3a22', // hair: textured dark brown, longer on top
-  h: '#8c6038', // lighter tips, lit from the top left
-  d: '#3a2419', // hair shadow, down the right
-  f: '#8a6450', // the short faded sides: skin showing through cropped hair
-  S: '#f2c1a3', // fair skin
-  s: '#d89282', // skin shade, ears: hue-shifted toward rose
-  r: '#eb9a8c', // flushed cheeks
-  E: '#263040', // eyes
-  b: '#9a6a4c', // eyebrows: soft, lighter than the hair
-  m: '#a8605a', // mouth: closed, a slight smile
-  t: '#e2a892', // light stubble
-  T: '#8e7672', // taupe crew-neck tee
-  u: '#66566a', // tee shade: cooler, toward violet
+  O: '#24150e', // hair outline (selective outlines: each part is outlined in a dark tone of itself)
+  o: '#6e3c2e', // skin outline
+  k: '#3b3646', // tee outline
+  H: '#553421', // hair: tousled dark brown, full on top
+  h: '#7d5431', // lighter strands, lit from the top left
+  l: '#9c7040', // the brightest tips
+  d: '#372015', // hair shadow, down the right, and the short sides
+  f: '#7c5848', // the cropped back and sides fading into the neck
+  S: '#f3c4a6', // fair skin
+  s: '#dc9a84', // skin shade, ears: hue-shifted toward rose
+  r: '#ee9f90', // flushed cheeks
+  E: '#2f3f5c', // eyes: blue-grey
+  b: '#7a4e32', // eyebrows: straight, a shade lighter than the hair
+  n: '#b87462', // closed eyelids, mid-blink
+  m: '#cc8a78', // mouth: closed, a slight smile
+  t: '#cfa089', // light stubble along the jaw
+  T: '#9794a0', // heather grey crew-neck tee
+  u: '#6f6a80', // tee shade and the collar: cooler, toward violet
   Y: '#e0a93a', // mustard chest print
-  P: '#344266', // jeans
-  p: '#242748', // jeans shade
+  P: '#3a4a72', // jeans
+  p: '#272c50', // jeans shade
   D: '#2a2b3c', // sneakers
   g: '#4a4e60', // sneaker toe caps
   B: '#f8f8f0' // soles
 }
 
-// 12 x 20, drawn after Timo himself: tall (190 cm) and slim, with a long narrow face, so he stands well above Byte.
-// Head and body are shared; legs swap per walk frame. The hair stands up in loose tufts; every dip between them
-// is one pixel deep, so the outline stays closed and no ground shows through. Light comes from the top left:
-// lit tips on the hair, and the hair, tee and jeans darken on the right.
+// 12 x 20, drawn after Timo himself: tall (190 cm) and slim, so the head is narrow (the face is six pixels wide
+// between the ears), the shoulders stay inside the hair and the legs are long. The hair is the likeness: a
+// tousled mass, fuller on top than the head is wide, with an uneven top edge, a loose tuft out to the right and
+// a strand falling over the forehead. Straight brows over blue-grey eyes and stubble along the jaw keep him
+// a grown man rather than a kid. Light comes from the top left: bright tips on the hair, and the hair, tee
+// and jeans darken on the right. Each top is head, torso and hips (15 rows); the legs swap per walk frame.
 const FRONT_TOP = [
-  '...OO.OOO...',
-  '..OhhOhhhO..',
-  '.OHhhHhHhdO.',
-  'OfHhHHHSHdfO',
-  'OfSbbSSbbSfO',
-  '.oSSESSESSo.',
-  'osSSESSESSso',
-  '.orSSSsSSro.',
-  '..oSSSSSSo..',
-  '..otsmmsto..',
-  '..kottttok..',
-  '.kTTossoTTk.',
-  'kTTuTTTTuuTk',
-  'oSkTTYYTukso',
-  'oSoTTTTTukso',
-  '..KPPPpPPK..'
+  '....OOO.O...',
+  '..OOhlhOhOO.',
+  '.OhlhHhhHhdO',
+  '.OHhHHhHHHdO',
+  '.OHShHhSSHdO',
+  '.OdSbSSbSdO.',
+  '.osSESSESso.',
+  '..orSSSSro..',
+  '..otSmmSto..',
+  '...otSSto...',
+  '...kTuuTk...',
+  '.kTTTTTTTuk.',
+  '.kTuTTTTuuk.',
+  '.oSuTYYTuso.',
+  '.oSKPPPpKSo.'
 ]
 
-// From behind: short strands falling from the crown, a shadow down the right, and the cropped sides fading
-// into the nape, which ends in a small dark point at the centre.
+// From behind: the same tousled top, mirrored, over the cropped back and sides, which fade into the nape.
 const BACK_TOP = [
-  '...OOOOOO...',
-  '..OhHhhHhO..',
-  '.OhHHhHHhdO.',
-  '.OHHdHHHdHO.',
-  '.OdHdHHHdHO.',
-  '.odHHHHdHdo.',
-  'osdHHHHdHdso',
-  '.ofHHHHdHfo.',
-  '..OfHHHHfO..',
-  '..osSddSso..',
-  '..kossssok..',
-  '.kTTossoTTk.',
-  'kTTuTTTTuuTk',
-  'oSkTTTTTukso',
-  'oSoTTTTTukso',
-  '..KPPPpPPK..'
+  '...O.OOO....',
+  '.OOhOhhlOO..',
+  'OhlhHhhHhdO.',
+  '.OhHHhHHHdO.',
+  '.OHHhHdHHdO.',
+  '.OdHdHHdHdO.',
+  '.osddHdddso.',
+  '..ofddddfo..',
+  '...ofddfo...',
+  '....osso....',
+  '...kTTTTk...',
+  '.kTTTTTTTuk.',
+  '.kTuTTTTuuk.',
+  '.oSuTTTTuso.',
+  '.oSKPPPpKSo.'
 ]
 
-// Facing left, after his profile: the fringe hangs forward over the forehead, a short sideburn tapers off before the ear,
-// the ear is in the clear and the hair covers the back of the head down to the neck. Slim torso, chin back under the mouth.
+// Facing left: the fringe pushes forward over the forehead, a pixel past the face, and from there the hair
+// rises back in a slope to its highest point over the crown (forward, not a wall standing up at the front). It
+// does not bulge out behind: the back and sides are cropped short and dark, fading into the neck, ear in the clear. Stubble under the jaw, the chin back under the mouth.
 const SIDE_HEAD = [
-  '...OOO.OO...',
-  '..OhhhOhhO..',
-  '.OHhHHhHHHO.',
-  'OHHhHHHHHHdO',
-  'OHHHHSHHHHdO',
-  '.OSESSHsHHdO',
-  '.oSESSfsHHdO',
-  'oSSSSSSsHHO.',
-  '.oSSSSSSSfO.',
-  '.omSSSSssO..',
-  '..otSSsso...'
+  '.....OO.O...',
+  '..OOOhhOhO..',
+  '.OlhhHhHhhO.',
+  'OhhHHhHHHdO.',
+  'OHhSSHHHddO.',
+  '.oSbSSdddfO.',
+  'oSSESSsdfO..',
+  '.oSSrSSsfo..',
+  '.omSStsso...',
+  '..ottsso....',
+  '...kTssTk...',
+  '...kTTTuk...'
 ]
 
-// The near arm: a short sleeve at the shoulder and the hand at the hip; on a step it swings forward or back.
-const SIDE_TOP = [...SIDE_HEAD, '...oTssTk...', '...kTuuTk...', '...kTTuuk...', '...kTSsuk...', '...KPPPpK...']
-const SIDE_TOP_ARM_FORWARD = [...SIDE_HEAD, '...oTssTk...', '...ouuTTk...', '..oSsTTuk...', '..oSKTTuk...', '...KPPPpK...']
-const SIDE_TOP_ARM_BACK = [...SIDE_HEAD, '...oTssTk...', '...kTTuuo...', '...kTTuSso..', '...kTTuKso..', '...KPPPpK...']
+// The near arm: a short sleeve at the shoulder and the hand at the hip.
+const SIDE_TOP = [...SIDE_HEAD, '...kTuTuk...', '...kTuSuk...', '...KPPSpK...']
 
-const LEGS_STAND = ['..KPPKKPpK..', '..KPPKKPpK..', '..KgDKKgDK..', '..KBBKKBBK..']
-const LEGS_STEP_A = ['..KPPKKPpK..', '..KPPKKPpK..', '..KgDKKPpK..', '..KBBK.KDDK.']
-const LEGS_STEP_B = ['..KPPKKPpK..', '..KPPKKPpK..', '..KPPKKgDK..', '.KDDK.KBBK..']
-const SIDE_LEGS_STAND = ['....KPpK....', '....KPpK....', '...KgDDK....', '...KBBBK....']
-const SIDE_LEGS_STEP = ['...KPPPPK...', '..KPPKKPPK..', '.KgDK..KgDK.', '.KBBK..KBBK.']
+// Legs: each one lit on its left and shaded on its right, so two read side by side without a gap.
+const LEGS_STAND = ['...KPpPpK...', '...KPpPpK...', '...KPpPpK...', '..KgDKKgDK..', '..KBBKKBBK..']
+const BACK_LEGS_STAND = ['...KPpPpK...', '...KPpPpK...', '...KPpPpK...', '..KDDKKDDK..', '..KBBKKBBK..']
+const SIDE_LEGS_STAND = ['...KPPpK....', '...KPPpK....', '...KPPpK....', '..KgDDDK....', '..KBBBBK....']
 
-/** [stand, stepA, stand, stepB] per direction; `right` is `left` mirrored at draw time. */
+/*
+ * The walk: four poses per direction, two tiles to a cycle. A stride (`contact`: one leg out in front, the
+ * other behind, the body a pixel lower because the legs are spread, so those frames start with an empty row),
+ * then `passing` (the front leg now carries him, upright, while the other foot comes off the ground on its way
+ * forward), and the same again on the other foot. The arms swing against the legs.
+ */
+const DIP = '............'
+const FRONT_BODY = FRONT_TOP.slice(0, 13)
+const BACK_BODY = BACK_TOP.slice(0, 13)
+
+// Facing you, the limb coming towards you is drawn longer: the leading foot is flat on the ground while the
+// trailing one is tucked in under its leg with no sole down, and the arm swinging forward ends a row lower than
+// the one swinging back. Passing, the lifted foot shows no sole on the ground either.
+const FRONT_CONTACT_A = ['.oSuTYYTuso.', '..oKPPPpKSo.', '...KPpPpKSo.', '...KPpPpK...', '..KgDKgDK...', '..KBBKKK....']
+const FRONT_CONTACT_B = ['.oSuTYYTuso.', '.oSKPPPpKo..', '.oSKPpPpK...', '...KPpPpK...', '...KgDKgDK..', '....KKKBBK..']
+const FRONT_PASSING_A = ['.oSuTYYTuso.', '.oSKPPPpKSo.', ...LEGS_STAND.slice(0, 4), '..KBBKKKK...']
+const FRONT_PASSING_B = ['.oSuTYYTuso.', '.oSKPPPpKSo.', ...LEGS_STAND.slice(0, 4), '...KKKKBBK..']
+
+// Walking away it is the trailing leg and arm that are nearest, so those are the long ones, and the foot that
+// lifts shows you its white sole.
+const BACK_CONTACT_A = ['.oSuTTTTuso.', '..oKPPPpKSo.', '...KPpPpKSo.', '...KPpPpK...', '..KDDKDDK...', '..KBBKKK....']
+const BACK_CONTACT_B = ['.oSuTTTTuso.', '.oSKPPPpKo..', '.oSKPpPpK...', '...KPpPpK...', '...KDDKDDK..', '....KKKBBK..']
+const BACK_PASSING_A = ['.oSuTTTTuso.', '.oSKPPPpKSo.', ...BACK_LEGS_STAND.slice(0, 3), '..KDDKKBBK..', '..KBBKKKK...']
+const BACK_PASSING_B = ['.oSuTTTTuso.', '.oSKPPPpKSo.', ...BACK_LEGS_STAND.slice(0, 3), '..KBBKKDDK..', '...KKKKBBK..']
+
+// Side on: the near leg is lit, the far leg in shade. Stride A puts the near leg in front with the near arm
+// back (and the far hand showing ahead of the chest); stride B is the other way round. Passing, the trailing
+// foot is lifted behind the standing leg.
+const SIDE_CONTACT_A = ['...kTTuTk...', '..osTTTSo...', '...KPPPpSo..', '...KPPPpK...', '..KPPKKppK..', '.KgDDK.KDDK.', '.KBBBK.KBBK.']
+const SIDE_CONTACT_B = ['...kuTTuk...', '..oSsTTuso..', '..oSPPPpK...', '...KpPPPK...', '..KppKKPPK..', '.KDDDK.KgDK.', '.KBBBK.KBBK.']
+const SIDE_PASSING_A = [...SIDE_TOP.slice(12), '...KPPpK....', '...KPPpK....', '...KPPKpK...', '..KgDDKDDK..', '..KBBBKKK...']
+const SIDE_PASSING_B = [...SIDE_TOP.slice(12), '...KPPpK....', '...KpPPK....', '...KpKPPK...', '..KDDKKgDK..', '..KBBK.KK...']
+
+/** [stand, stride A, passing A, stride B, passing B] per direction; `right` is `left` mirrored at draw time. */
 export const HERO_FRAMES: Record<Exclude<Direction, 'right'>, SpriteRows[]> = {
   down: [
     [...FRONT_TOP, ...LEGS_STAND],
-    [...FRONT_TOP, ...LEGS_STEP_A],
-    [...FRONT_TOP, ...LEGS_STAND],
-    [...FRONT_TOP, ...LEGS_STEP_B]
+    [DIP, ...FRONT_BODY, ...FRONT_CONTACT_A],
+    [...FRONT_BODY, ...FRONT_PASSING_A],
+    [DIP, ...FRONT_BODY, ...FRONT_CONTACT_B],
+    [...FRONT_BODY, ...FRONT_PASSING_B]
   ],
   up: [
-    [...BACK_TOP, ...LEGS_STAND],
-    [...BACK_TOP, ...LEGS_STEP_B],
-    [...BACK_TOP, ...LEGS_STAND],
-    [...BACK_TOP, ...LEGS_STEP_A]
+    [...BACK_TOP, ...BACK_LEGS_STAND],
+    [DIP, ...BACK_BODY, ...BACK_CONTACT_A],
+    [...BACK_BODY, ...BACK_PASSING_A],
+    [DIP, ...BACK_BODY, ...BACK_CONTACT_B],
+    [...BACK_BODY, ...BACK_PASSING_B]
   ],
   left: [
     [...SIDE_TOP, ...SIDE_LEGS_STAND],
-    [...SIDE_TOP_ARM_FORWARD, ...SIDE_LEGS_STEP],
-    [...SIDE_TOP, ...SIDE_LEGS_STAND],
-    [...SIDE_TOP_ARM_BACK, ...SIDE_LEGS_STEP]
+    [DIP, ...SIDE_HEAD, ...SIDE_CONTACT_A],
+    [...SIDE_HEAD, ...SIDE_PASSING_A],
+    [DIP, ...SIDE_HEAD, ...SIDE_CONTACT_B],
+    [...SIDE_HEAD, ...SIDE_PASSING_B]
   ]
 }
 
 /**
+ * Which of HERO_FRAMES to draw. `t` runs from 0 to 1 over one tile and `steps` counts the tiles walked: the
+ * first half of a tile is a stride, the second half the passing pose after it, alternating feet per tile.
+ */
+export function heroFrame(walking: boolean, steps: number, t: number): number {
+  if (!walking) return 0
+  const stride = steps % 2 ? 1 : 3
+  return t < 0.5 ? stride : stride + 1
+}
+
+/**
  * Sitting on an office chair. From behind only the top half shows (the back rest hides the rest); facing you
- * the knees come forward over short shins; side on the thigh lies flat on the seat and the shin hangs down.
+ * the shins hang down short under the lap; side on the thigh lies flat on the seat and the shin hangs down.
  */
 export const HERO_SIT: Record<Exclude<Direction, 'right'>, SpriteRows> = {
-  down: [...FRONT_TOP.slice(0, 15), 'oSKPPPPPPKso', '..KPPKKPpK..', '..KgDKKgDK..'],
+  down: [...FRONT_TOP, '...KPpPpK...', '...KPpPpK...', '..KgDKKgDK..'],
   up: BACK_TOP,
-  left: [...SIDE_TOP.slice(0, 15), '..KKPPPpK...', '.KPPPPPPpK..', '.KPPKKKKK...', 'KgDDK.......']
+  left: [...SIDE_TOP.slice(0, 14), '..KKPPSpK...', '.KPPPPPPpK..', '.KPPKKKKK...', '.KPpK.......', 'KgDDK.......']
 }
 
 export const HERO_FRONT = HERO_FRAMES.down[0]!
@@ -142,7 +188,7 @@ export const HERO_FRONT = HERO_FRAMES.down[0]!
 export const HERO_HEIGHT = HERO_FRONT.length
 
 /** Standing still, facing you, mid-blink. */
-export const HERO_BLINK: SpriteRows = [...FRONT_TOP.slice(0, 5), '.oSSSSSSSSo.', 'osSSsSSsSSso', ...FRONT_TOP.slice(7), ...LEGS_STAND]
+export const HERO_BLINK: SpriteRows = [...FRONT_TOP.slice(0, 6), '.osSnSSnSso.', ...FRONT_TOP.slice(7), ...LEGS_STAND]
 
 /** Byte, the little helper robot who greets visitors in town. 12 x 14. */
 export const ROBOT_PALETTE: Palette = {
